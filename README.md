@@ -1,13 +1,9 @@
-
-
-# Hunt-Sage - "Cyber Defense & Threat Hunting Knowledge Hub"
-
 <!-- Banner -->
 <p align="center">
   <img src="assets/images/hunt-sage-banner.png" alt="Hunt-Sage Banner" width="80%">
 </p>
 
-<h1 align="center">🔍 Hunt-Sage — Cyber Defense Knowledge Hub</h1>
+<h1 align="center">🔍 Cyber Defense & Threat Hunting Knowledge Hub</h1>
 <p align="center">
   Seek. Analyze. Neutralize.
 </p>
@@ -28,7 +24,7 @@ A curated public knowledge base designed to:
 - Provide **hands-on defensive labs and CTFs**
 - Share **cybersecurity research & ATT&CK-aligned detections**
 
-> _Built by Ashok Kumar — Air Force Veteran & Cybersecurity Practitioner (GCIH)_
+> _Built by iamjammie_
 
 ---
 
@@ -105,7 +101,7 @@ A **Contributor Hall of Fame** will be added soon ✨
 
 ## 📄 License
 
-All **original content** in this repository is © 2025 Ashok Kumar – All Rights Reserved.  
+All **original content** in this repository is © 2025 iamjammie – All Rights Reserved.  
 Educational use permitted with proper attribution.
 
 👉 If you'd like, I can switch to MIT License for open-source adoption.
@@ -117,8 +113,4 @@ Educational use permitted with proper attribution.
   © Hunt-Sage | Built with 🧠 + 💻
 </p>
 
-
-
-
-"Seek. Analyze. Neutralize."
 
