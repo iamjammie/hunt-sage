@@ -1,0 +1,68 @@
+title: "Hunt-Sage"
+name: "Hunt-Sage"
+description: "Cyber Defense, Threat Hunting & CTF Knowledge Hub by Ashok Kumar"
+url: "https://iamjammie.github.io"
+baseurl: "/hunt-sage"
+
+remote_theme: "mmistakes/minimal-mistakes"
+
+minimal_mistakes_skin: "dark"
+locale: "en-IN"
+timezone: "Asia/Kolkata"
+
+search: true
+search_full_content: true
+search_provider: "lunr"
+
+author:
+  name: "Ashok Kumar"
+  avatar: "/assets/images/avatar.png"
+  bio: "Cybersecurity practitioner, threat hunter, and Air Force veteran."
+  location: "India"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/iamjammie"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/ashok-kumar-5b62819b"
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope"
+      url: "mailto:hunt-sage@gov.in"
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-include-cache
+
+collections:
+  ctf:
+    output: true
+    permalink: /ctf/:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: false
+      share: true
+  - scope:
+      path: ""
+      type: "ctf"
+    values:
+      layout: single
+      author_profile: true
+  - scope:
+      path: ""
+    values:
+      sidebar:
+        nav: "main"
+
+permalink: /blog/:categories/:title/
+
+logo: "/assets/images/hunt-sage-banner.png"
