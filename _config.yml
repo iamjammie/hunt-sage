@@ -1,6 +1,6 @@
 title: "Hunt-Sage"
 name: "Hunt-Sage"
-description: "Cyber Defense, Threat Hunting & CTF Knowledge Hub by Ashok Kumar"
+description: "Cyber Defense, Threat Hunting & CTF Knowledge Hub by Jammie"
 url: "https://iamjammie.github.io"
 baseurl: "/hunt-sage"
 
@@ -15,9 +15,9 @@ search_full_content: true
 search_provider: "lunr"
 
 author:
-  name: "Ashok Kumar"
+  name: "iamjammie"
   avatar: "/assets/images/avatar.png"
-  bio: "Cybersecurity practitioner, threat hunter, and Air Force veteran."
+  bio: "Cybersecurity Strategist | Threat hunter | Redefining Detection"
   location: "India"
   links:
     - label: "GitHub"
