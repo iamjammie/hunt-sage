@@ -1,0 +1,11 @@
+main:
+  - title: "Home"
+    url: "/hunt-sage/"
+  - title: "About"
+    url: "/hunt-sage/about/"
+  - title: "Blog"
+    url: "/hunt-sage/blog/"
+  - title: "CTF"
+    url: "/hunt-sage/ctf/"
+  - title: "Research"
+    url: "/hunt-sage/research/"

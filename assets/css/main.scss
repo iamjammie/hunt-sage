@@ -1,0 +1,31 @@
+---
+---
+
+@import "minimal-mistakes/skins/dark";
+@import "minimal-mistakes";
+
+:root {
+  --hs-cyber-midnight: #0A0F1F;
+  --hs-radar-green: #6AFB73;
+  --hs-tactical-gray: #2C3542;
+  --hs-alert-red: #E63946;
+  --hs-signal-white: #F7FAFC;
+}
+
+body {
+  background-color: var(--hs-cyber-midnight);
+}
+
+a,
+a:visited {
+  color: var(--hs-radar-green);
+}
+
+.site-title,
+.site-title a {
+  color: var(--hs-signal-white);
+}
+
+.btn {
+  border-radius: 999px;
+}
