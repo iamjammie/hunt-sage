@@ -1,0 +1,62 @@
+title: PowerShell Encoded Command Execution
+id: f62b4d41-9c2f-4e8a-b9b3-3c5e7a2b1d0f
+name: powershell_encoded_command
+status: stable
+description: |
+  Detects PowerShell execution using encoded command parameters (-EncodedCommand, -enc, -ec).
+  Attackers use Base64 encoding to obfuscate malicious commands and evade command-line logging.
+  This technique is associated with multiple threat actors and is commonly seen in the
+  initial execution phase of attacks.
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+  - https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_powershell_exe
+author: hunt-sage (iamjammie)
+date: 2025/06/01
+modified: 2025/06/22
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+  selection_cmdline:
+    CommandLine|contains:
+      - ' -EncodedCommand '
+      - ' -encodedcommand '
+      - ' -enc '
+      - ' -ec '
+  condition: selection_img and selection_cmdline
+falsepositives:
+  - Legitimate automation and deployment scripts using encoded commands
+  - SCCM / Intune scripts
+  - Some monitoring agents
+  - Developers testing encoded payloads on dev machines
+level: medium
+tags:
+  - attack.execution
+  - attack.defense_evasion
+  - attack.t1059.001
+  - attack.t1027
+hunt_notes: |
+  When this fires, immediately:
+  1. Decode the Base64 payload: [System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String("PAYLOAD"))
+  2. Check the parent process — what launched PowerShell?
+  3. Look for subsequent network connections from powershell.exe (Sysmon EID 3)
+  4. Check for file drops in Temp directories within 2 minutes
+kql_equivalent: |
+  DeviceProcessEvents
+  | where FileName in~ ("powershell.exe", "pwsh.exe")
+  | where ProcessCommandLine has_any ("-EncodedCommand", "-enc ", "-ec ")
+  | project Timestamp, DeviceName, AccountName, ProcessCommandLine, InitiatingProcessFileName
+  | order by Timestamp desc
+spl_equivalent: |
+  index=sysmon EventCode=1
+  (Image="*\\powershell.exe" OR Image="*\\pwsh.exe")
+  (CommandLine="* -EncodedCommand *" OR CommandLine="* -enc *" OR CommandLine="* -ec *")
+  | table _time, host, user, Image, CommandLine, ParentImage
+mitre_mapping:
+  tactic: Execution
+  technique: T1059.001
+  sub_technique: Command and Scripting Interpreter - PowerShell

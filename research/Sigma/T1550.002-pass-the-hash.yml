@@ -1,0 +1,81 @@
+title: Possible Pass-the-Hash Lateral Movement
+id: a8b2c3d4-e5f6-7890-abcd-ef1234567890
+name: pass_the_hash_ntlm_type3
+status: experimental
+description: |
+  Detects potential Pass-the-Hash (PtH) activity by identifying network logons (Type 3)
+  using NTLM authentication with a blank or missing workstation name field.
+  
+  In legitimate NTLM Type 3 logons, the workstation name is usually populated.
+  PtH tools (Mimikatz, Impacket, CrackMapExec) frequently produce Type 3 NTLM
+  logons without a workstation name, as they bypass normal Windows authentication APIs.
+  
+  This rule requires volume-based tuning — single hits are often noise; 
+  clusters from same source IP within short windows are high fidelity.
+references:
+  - https://attack.mitre.org/techniques/T1550/002/
+  - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4624
+  - https://blog.gentilkiwi.com/mimikatz
+author: hunt-sage (iamjammie)
+date: 2025/06/08
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4624
+    LogonType: 3
+    AuthenticationPackageName: 'NTLM'
+  filter_workstation_populated:
+    WorkstationName|contains:
+      - ''
+  filter_machine_accounts:
+    TargetUserName|endswith: '$'
+  filter_anonymous:
+    TargetUserName:
+      - 'ANONYMOUS LOGON'
+      - '-'
+  condition: selection and filter_workstation_populated and not filter_machine_accounts and not filter_anonymous
+falsepositives:
+  - Some legacy applications use NTLM without providing workstation name
+  - Scheduled tasks running domain credentials on some configurations
+  - Certain network monitoring appliances
+  - NAS devices using NTLM for file shares
+level: medium
+tags:
+  - attack.lateral_movement
+  - attack.credential_access
+  - attack.t1550.002
+  - attack.t1003.001
+hunt_notes: |
+  Tuning guidance:
+  - Single events = noise, require at least 3-5 from same source IP
+  - Build a baseline of legitimate NTLM Type 3 logons with blank workstation in your environment
+  - Correlate with LSASS access events (Sysmon EID 10) on the source host
+  
+  Pivot actions on hit:
+  1. Source IP → Which host is this? Check it for LSASS access events
+  2. Destination host → What did the attacker do after authenticating? (EID 4688 within 5 min)
+  3. TargetUserName → Is this account used elsewhere right now? (concurrent logons)
+kql_equivalent: |
+  SecurityEvent
+  | where EventID == 4624
+  | where LogonType == 3
+  | where AuthenticationPackageName == "NTLM"
+  | where WorkstationName == "" or WorkstationName == "-"
+  | where TargetUserName !endswith "$"
+  | where TargetUserName !in ("ANONYMOUS LOGON")
+  | summarize Count = count(), Targets = make_set(Computer)
+      by TargetUserName, IpAddress, bin(TimeGenerated, 30m)
+  | where Count > 3
+  | order by Count desc
+spl_equivalent: |
+  index=wineventlog EventCode=4624 Logon_Type=3 Authentication_Package=NTLM
+  (Workstation_Name="-" OR NOT Workstation_Name=*)
+  NOT (user="*$" OR user="ANONYMOUS LOGON")
+  | stats count by user, src_ip, dest
+  | where count > 3
+mitre_mapping:
+  tactic: Lateral Movement, Credential Access
+  technique: T1550.002
+  sub_technique: Use Alternate Authentication Material - Pass the Hash

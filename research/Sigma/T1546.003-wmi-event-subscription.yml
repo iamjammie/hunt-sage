@@ -1,0 +1,64 @@
+title: WMI Event Subscription Persistence
+id: d4e5f6a7-b8c9-0123-def0-456789012345
+name: wmi_event_subscription_persistence
+status: stable
+description: |
+  Detects creation of WMI event subscriptions, which are commonly used by attackers
+  for persistent code execution. WMI subscriptions consist of three components:
+  - __EventFilter: defines the triggering condition (e.g., system startup)
+  - __EventConsumer: defines what to execute
+  - __FilterToConsumerBinding: links filter to consumer
+  
+  Most environments have zero legitimate permanent WMI subscriptions.
+  Any hit on this rule should be treated as high priority.
+references:
+  - https://attack.mitre.org/techniques/T1546/003/
+  - https://www.fireeye.com/blog/threat-research/2019/06/hunting-for-perticious-wmi.html
+author: hunt-sage (iamjammie)
+date: 2025/06/29
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  filter_subscription:
+    EventID:
+      - 19  # WmiEventFilter activity
+      - 20  # WmiEventConsumer activity
+      - 21  # WmiEventConsumerToFilter activity
+  condition: filter_subscription
+falsepositives:
+  - Antivirus and security products (some use WMI subscriptions legitimately)
+  - System Center Configuration Manager (SCCM)
+  - Some monitoring agents (Carbon Black, CrowdStrike may trigger this)
+level: high
+tags:
+  - attack.persistence
+  - attack.privilege_escalation
+  - attack.t1546.003
+hunt_notes: |
+  CRITICAL: Enumerate all WMI subscriptions on the affected host immediately.
+  
+  PowerShell audit commands:
+    Get-WMIObject -Namespace root\subscription -Class __EventFilter | Select Name, Query
+    Get-WMIObject -Namespace root\subscription -Class __EventConsumer | Select Name, CommandLineTemplate, ScriptText
+    Get-WMIObject -Namespace root\subscription -Class __FilterToConsumerBinding
+  
+  Removal if malicious:
+    $filter = Get-WMIObject -Namespace root\subscription -Class __EventFilter -Filter "Name='MALICIOUS_NAME'"
+    $filter | Remove-WmiObject
+  
+  Look for:
+  - Consumer pointing to scripts in user directories, temp folders
+  - EventFilter with __InstanceCreationEvent for SystemBoot
+  - Base64 encoded commands in consumer CommandLineTemplate
+kql_equivalent: |
+  Event
+  | where Source == "Microsoft-Windows-Sysmon"
+  | where EventID in (19, 20, 21)
+  | extend EventType = case(EventID == 19, "WMIEventFilter", EventID == 20, "WMIEventConsumer", "WMIBinding")
+  | project TimeGenerated, Computer, EventType, EventData
+  | order by TimeGenerated desc
+mitre_mapping:
+  tactic: Persistence, Privilege Escalation
+  technique: T1546.003
+  sub_technique: Event Triggered Execution - Windows Management Instrumentation Event Subscription

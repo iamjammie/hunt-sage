@@ -1,0 +1,65 @@
+title: CertUtil LOLBin Encode/Decode Abuse
+id: b2c3d4e5-f6a7-8901-bcde-f23456789012
+name: certutil_encode_decode_lolbin
+status: stable
+description: |
+  Detects the use of certutil.exe to encode or decode files. While certutil is a legitimate
+  Windows utility for certificate management, it is commonly abused by attackers to:
+  - Encode files for exfiltration (base64)
+  - Decode and execute malware payloads
+  - Bypass data loss prevention controls
+  
+  This is a well-documented Living off the Land binary (LOLBin) technique.
+references:
+  - https://attack.mitre.org/techniques/T1140/
+  - https://lolbas-project.github.io/lolbas/Binaries/Certutil/
+  - https://attack.mitre.org/techniques/T1027/
+author: hunt-sage (iamjammie)
+date: 2025/06/22
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\certutil.exe'
+    CommandLine|contains:
+      - '-encode'
+      - '-decode'
+      - '-urlcache'
+      - '-verifyctl'
+      - '-f '
+  condition: selection
+falsepositives:
+  - PKI administrators legitimately using certutil for certificate management
+  - Script-based certificate enrollment processes
+  - Some backup/archiving tools
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.exfiltration
+  - attack.t1140
+  - attack.t1027
+  - attack.t1048
+hunt_notes: |
+  Certutil encode/decode in non-PKI contexts should always be investigated.
+  Immediate pivot points:
+  1. What file was being encoded/decoded? (check CommandLine arguments)
+  2. Where is the output file? (check for file creation events within 30s)
+  3. Was the output file transmitted? (check for network events from same process tree)
+  4. What process spawned certutil? (InitiatingProcessFileName)
+  
+  Combination of certutil + WinRAR + curl/PowerShell in same timeline = likely exfiltration.
+kql_equivalent: |
+  DeviceProcessEvents
+  | where FileName =~ "certutil.exe"
+  | where ProcessCommandLine has_any ("-encode", "-decode", "-urlcache", "-verifyctl")
+  | project Timestamp, DeviceName, AccountName, ProcessCommandLine, InitiatingProcessFileName
+  | order by Timestamp desc
+spl_equivalent: |
+  index=sysmon EventCode=1 Image="*\\certutil.exe"
+  (CommandLine="*-encode*" OR CommandLine="*-decode*" OR CommandLine="*-urlcache*")
+  | table _time, host, user, CommandLine, ParentImage
+mitre_mapping:
+  tactic: Defense Evasion, Exfiltration
+  technique: T1140
+  sub_technique: Deobfuscate/Decode Files or Information
