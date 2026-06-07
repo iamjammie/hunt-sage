@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://iamjammie.github.io/hunt-sage/"><strong>🌐 Visit Website</strong></a> •
+  <a href="https://github.com/iamjammie/hunt-sage"><strong>🌐 Visit Website</strong></a> •
   <a href="https://github.com/iamjammie/hunt-sage/issues">Report Issue</a> •
   <a href="https://www.linkedin.com/in/ashok-kumar-5b62819b">Connect</a>
 </p>
