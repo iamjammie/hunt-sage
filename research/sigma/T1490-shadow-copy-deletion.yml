@@ -1,0 +1,47 @@
+title: Shadow Copy Deletion or Recovery Inhibition
+id: 3d7a9c14-5b2e-4e88-86f1-a0c4e7b92d05
+status: experimental
+description: |
+  Detects commands that delete Volume Shadow Copies or disable Windows recovery, a near-universal
+  precursor to ransomware encryption (vssadmin, wmic, wbadmin, bcdedit, diskshadow).
+references:
+  - https://attack.mitre.org/techniques/T1490/
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.impact
+  - attack.t1490
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_vssadmin:
+    Image|endswith: '\vssadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  selection_wmic:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains|all:
+      - 'shadowcopy'
+      - 'delete'
+  selection_wbadmin:
+    Image|endswith: '\wbadmin.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'catalog'
+  selection_bcdedit:
+    Image|endswith: '\bcdedit.exe'
+    CommandLine|contains|all:
+      - 'recoveryenabled'
+      - 'no'
+  selection_diskshadow:
+    Image|endswith: '\diskshadow.exe'
+    CommandLine|contains|all:
+      - 'delete'
+      - 'shadows'
+  condition: 1 of selection_*
+falsepositives:
+  - Backup administrators intentionally pruning shadow copies (should be rare and scheduled)
+  - Imaging or decommissioning scripts
+level: high

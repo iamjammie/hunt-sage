@@ -17,7 +17,7 @@ header:
 excerpt: "A regional company suffered an internal data spill. Walk through the investigation process — from first alert to full reconstruction of the attacker's timeline."
 ---
 
-> **Scenario Context**: Argon Dynamics is a small regional manufacturing company. They detected an anomaly in their DLP system suggesting internal data may have been copied and staged. No external alert fired. This is a hunt walkthrough using the [argon_nexus scenario](/argon_nexus) — you can follow along with the challenge artifacts.
+> **Scenario Context**: Argon Dynamics is a small regional manufacturing company. They detected an anomaly in their DLP system suggesting internal data may have been copied and staged. No external alert fired. This is a hunt walkthrough using the [argon_nexus scenario](https://github.com/iamjammie/argon_nexus) — you can follow along with the challenge artifacts.
 
 ---
 
@@ -204,7 +204,7 @@ Day 2
 This incident exposed five detection gaps:
 
 1. **No alert on macro-enabled Office documents** from external email
-2. **No alert on encoded PowerShell** (we now have one — see the [Sigma rules](/research/sigma))
+2. **No alert on encoded PowerShell** (we now have one — see the [Sigma rules]({{ site.baseurl }}/research/sigma/))
 3. **Service account used interactively from a workstation** — should never happen
 4. **certutil used to encode a file** — classic LOLBin abuse
 5. **Outbound HTTPS from a non-browser process** to a low-reputation IP
@@ -215,7 +215,7 @@ Every gap is now a detection rule. The attacker educated us for free.
 
 ## Detections Added Post-Incident
 
-See the full rule set in [/research/sigma](/research/sigma/). Rules added from this investigation:
+See the full rule set in [/research/sigma]({{ site.baseurl }}/research/sigma/). Rules added from this investigation:
 
 - `T1059.001-powershell-encoded-command.yml`
 - `T1078.002-service-account-interactive-logon.yml`
@@ -224,4 +224,4 @@ See the full rule set in [/research/sigma](/research/sigma/). Rules added from t
 
 ---
 
-*Try the full scenario yourself: [Argon Nexus CTF Challenge](/ctf/argon-nexus/)*
+*Try the full scenario yourself: [Argon Nexus CTF Challenge]({{ site.baseurl }}/ctf/argon-nexus/)*
