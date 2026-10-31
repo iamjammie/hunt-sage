@@ -251,4 +251,4 @@ This is tedious. Do it anyway. The alternative is chasing false positives foreve
 
 ---
 
-*View all Sigma rules from this post in [/research/sigma](/research/sigma/).*
+*View all Sigma rules from this post in [/research/sigma]({{ site.baseurl }}/research/sigma/).*

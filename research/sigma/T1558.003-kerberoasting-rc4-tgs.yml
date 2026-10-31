@@ -1,0 +1,35 @@
+title: Kerberoasting - RC4 Service Ticket Requests
+id: 2f9a6b7e-91cd-4d1c-8e33-0b8f5a1c7d02
+status: experimental
+description: |
+  Detects Kerberos service ticket requests (event 4769) using RC4-HMAC (0x17) for user-owned
+  service accounts. Kerberoasting tools request RC4 tickets because they are cheapest to crack.
+  A single event is weak; aggregate by requesting account and source IP (several distinct SPNs
+  within minutes) before alerting. In AES-only environments this rule is high fidelity.
+references:
+  - https://attack.mitre.org/techniques/T1558/003/
+  - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4769
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.credential_access
+  - attack.t1558.003
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4769
+    TicketEncryptionType: '0x17'
+    Status: '0x0'
+  filter_machine_and_krbtgt:
+    ServiceName|endswith: '$'
+  filter_krbtgt:
+    ServiceName: 'krbtgt'
+  filter_machine_requester:
+    TargetUserName|endswith: '$'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - Legacy applications or devices that only support RC4
+  - Vulnerability scanners and inventory tools enumerating SPNs
+level: medium

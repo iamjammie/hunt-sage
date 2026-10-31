@@ -1,7 +1,7 @@
 title: PowerShell Encoded Command Execution
 id: f62b4d41-9c2f-4e8a-b9b3-3c5e7a2b1d0f
 name: powershell_encoded_command
-status: stable
+status: experimental
 description: |
   Detects PowerShell execution using encoded command parameters (-EncodedCommand, -enc, -ec).
   Attackers use Base64 encoding to obfuscate malicious commands and evade command-line logging.

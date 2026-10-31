@@ -1,0 +1,50 @@
+title: Suspicious LSASS Process Access
+id: 7c1d1a52-3f0e-4b6c-9a41-5d2e8b0f6a01
+status: experimental
+description: |
+  Detects processes opening a handle to lsass.exe with access rights commonly used to read
+  credential material (PROCESS_VM_READ combined with query rights), excluding well-known
+  system and security-product sources. Typical of Mimikatz, ProcDump, comsvcs.dll MiniDump,
+  and custom dumpers.
+references:
+  - https://attack.mitre.org/techniques/T1003/001/
+  - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.credential_access
+  - attack.t1003.001
+logsource:
+  category: process_access
+  product: windows
+detection:
+  selection:
+    TargetImage|endswith: '\lsass.exe'
+    GrantedAccess|contains:
+      - '0x1010'
+      - '0x1410'
+      - '0x1438'
+      - '0x143a'
+      - '0x1fffff'
+  filter_core_system:
+    SourceImage:
+      - 'C:\Windows\System32\wininit.exe'
+      - 'C:\Windows\System32\csrss.exe'
+      - 'C:\Windows\System32\services.exe'
+      - 'C:\Windows\System32\svchost.exe'
+      - 'C:\Windows\System32\wbem\WmiPrvSE.exe'
+      - 'C:\Windows\System32\WerFault.exe'
+      - 'C:\Windows\System32\lsm.exe'
+  filter_defender:
+    SourceImage|startswith:
+      - 'C:\ProgramData\Microsoft\Windows Defender\'
+      - 'C:\Program Files\Windows Defender\'
+      - 'C:\Program Files\Windows Defender Advanced Threat Protection\'
+  filter_msmpeng:
+    SourceImage|endswith: '\MsMpEng.exe'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - EDR/AV agents and backup or monitoring tools not covered by the filters; add them by exact path and signer
+  - Note the filters deliberately do not exclude all of System32: rundll32.exe (comsvcs.dll MiniDump) and taskmgr.exe live there
+  - Windows Error Reporting and crash-dump tooling
+level: high

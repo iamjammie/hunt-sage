@@ -4,11 +4,12 @@ name: pass_the_hash_ntlm_type3
 status: experimental
 description: |
   Detects potential Pass-the-Hash (PtH) activity by identifying network logons (Type 3)
-  using NTLM authentication with a blank or missing workstation name field.
-  
-  In legitimate NTLM Type 3 logons, the workstation name is usually populated.
-  PtH tools (Mimikatz, Impacket, CrackMapExec) frequently produce Type 3 NTLM
-  logons without a workstation name, as they bypass normal Windows authentication APIs.
+  using NTLM authentication with a session key length of 0 (event 4624 KeyLength = 0).
+
+  Legitimate NTLMv2 network logons negotiate a 128-bit session key. Several PtH tools
+  (Mimikatz sekurlsa::pth, older Impacket/CrackMapExec flows) produce Type 3 NTLM logons
+  where KeyLength is 0, a long-documented PtH indicator. It is a heuristic, not proof:
+  modern tooling can negotiate keys, so treat a miss as "no signal", not "no PtH".
   
   This rule requires volume-based tuning — single hits are often noise; 
   clusters from same source IP within short windows are high fidelity.
@@ -26,18 +27,16 @@ detection:
     EventID: 4624
     LogonType: 3
     AuthenticationPackageName: 'NTLM'
-  filter_workstation_populated:
-    WorkstationName|contains:
-      - ''
+    KeyLength: 0
   filter_machine_accounts:
     TargetUserName|endswith: '$'
   filter_anonymous:
     TargetUserName:
       - 'ANONYMOUS LOGON'
       - '-'
-  condition: selection and filter_workstation_populated and not filter_machine_accounts and not filter_anonymous
+  condition: selection and not filter_machine_accounts and not filter_anonymous
 falsepositives:
-  - Some legacy applications use NTLM without providing workstation name
+  - Some legacy applications and appliances that do not negotiate NTLM session keys
   - Scheduled tasks running domain credentials on some configurations
   - Certain network monitoring appliances
   - NAS devices using NTLM for file shares
@@ -50,7 +49,7 @@ tags:
 hunt_notes: |
   Tuning guidance:
   - Single events = noise, require at least 3-5 from same source IP
-  - Build a baseline of legitimate NTLM Type 3 logons with blank workstation in your environment
+  - Build a baseline of legitimate NTLM Type 3 logons with KeyLength 0 in your environment
   - Correlate with LSASS access events (Sysmon EID 10) on the source host
   
   Pivot actions on hit:
@@ -62,7 +61,7 @@ kql_equivalent: |
   | where EventID == 4624
   | where LogonType == 3
   | where AuthenticationPackageName == "NTLM"
-  | where WorkstationName == "" or WorkstationName == "-"
+  | where KeyLength == 0
   | where TargetUserName !endswith "$"
   | where TargetUserName !in ("ANONYMOUS LOGON")
   | summarize Count = count(), Targets = make_set(Computer)
@@ -70,8 +69,7 @@ kql_equivalent: |
   | where Count > 3
   | order by Count desc
 spl_equivalent: |
-  index=wineventlog EventCode=4624 Logon_Type=3 Authentication_Package=NTLM
-  (Workstation_Name="-" OR NOT Workstation_Name=*)
+  index=wineventlog EventCode=4624 Logon_Type=3 Authentication_Package=NTLM Key_Length=0
   NOT (user="*$" OR user="ANONYMOUS LOGON")
   | stats count by user, src_ip, dest
   | where count > 3

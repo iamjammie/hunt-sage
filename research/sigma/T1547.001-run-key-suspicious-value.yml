@@ -1,0 +1,41 @@
+title: Run Key Persistence with Suspicious Value
+id: 1c5d8f27-4e90-4a3b-b6d1-9a0e3c7f2b07
+status: experimental
+description: |
+  Detects registry Run/RunOnce values set to commands that execute from user-writable
+  paths or use script interpreters and LOLBins.
+references:
+  - https://attack.mitre.org/techniques/T1547/001/
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.persistence
+  - attack.privilege_escalation
+  - attack.t1547.001
+logsource:
+  category: registry_set
+  product: windows
+detection:
+  selection_key:
+    TargetObject|contains:
+      - '\CurrentVersion\Run\'
+      - '\CurrentVersion\RunOnce\'
+  selection_value:
+    Details|contains:
+      - '\AppData\'
+      - '\Temp\'
+      - '\Users\Public\'
+      - '\ProgramData\'
+      - 'powershell'
+      - 'cmd.exe /c'
+      - 'wscript'
+      - 'cscript'
+      - 'mshta'
+      - 'rundll32'
+      - 'regsvr32'
+      - 'http://'
+      - 'https://'
+  condition: selection_key and selection_value
+falsepositives:
+  - Legitimate applications that autostart from AppData (Teams, OneDrive, Zoom, Spotify, updaters)
+level: medium

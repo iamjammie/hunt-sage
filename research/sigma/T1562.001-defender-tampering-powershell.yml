@@ -1,0 +1,44 @@
+title: Microsoft Defender Disabled or Excluded via PowerShell/Command Line
+id: 4a7c1e85-2d63-4b09-a8f4-6e0b3d9c5a09
+status: experimental
+description: |
+  Detects Set-MpPreference/Add-MpPreference usage that disables Defender protections or
+  adds exclusions, and attempts to stop Defender services.
+references:
+  - https://attack.mitre.org/techniques/T1562/001/
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.defense_evasion
+  - attack.t1562.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_cmdlet:
+    CommandLine|contains:
+      - 'Set-MpPreference'
+      - 'Add-MpPreference'
+  selection_disable:
+    CommandLine|contains:
+      - 'DisableRealtimeMonitoring'
+      - 'DisableBehaviorMonitoring'
+      - 'DisableIOAVProtection'
+      - 'DisableScriptScanning'
+      - 'DisableBlockAtFirstSeen'
+      - 'ExclusionPath'
+      - 'ExclusionExtension'
+      - 'ExclusionProcess'
+  selection_service:
+    Image|endswith:
+      - '\sc.exe'
+      - '\net.exe'
+      - '\net1.exe'
+    CommandLine|contains|all:
+      - 'stop'
+      - 'WinDefend'
+  condition: (selection_cmdlet and selection_disable) or selection_service
+falsepositives:
+  - Administrators adding approved exclusions through scripts (verify with change records)
+  - Software installers that add Defender exclusions for their directories
+level: high

@@ -1,0 +1,39 @@
+title: DCSync - Directory Replication from Non-Domain-Controller Account
+id: 5e8c3d21-7a4b-4f60-b9d2-1c6e0a9f3d03
+status: experimental
+description: |
+  Detects directory-replication extended rights being exercised (event 4662) by an account
+  that is not a computer account. DCSync (Mimikatz lsadump::dcsync, Impacket secretsdump)
+  uses DS-Replication-Get-Changes(-All) to pull password hashes from a domain controller.
+  Requires Audit Directory Service Access on domain controllers.
+references:
+  - https://attack.mitre.org/techniques/T1003/006/
+  - https://adsecurity.org/?p=1729
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.credential_access
+  - attack.t1003.006
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4662
+    AccessMask: '0x100'
+    Properties|contains:
+      - '1131f6aa-9c07-11d1-f79f-00c04fc2dcd2'
+      - '1131f6ad-9c07-11d1-f79f-00c04fc2dcd2'
+      - '89e95b76-444d-4c62-991a-0facbeda640c'
+  filter_machine_accounts:
+    SubjectUserName|endswith: '$'
+  filter_sync_accounts:
+    SubjectUserName|startswith:
+      - 'MSOL_'
+      - 'AAD_'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - Microsoft Entra Connect sync accounts with non-default names
+  - Defender for Identity or other directory sensors using a service account
+  - Backup or replication products with replication rights
+level: high
