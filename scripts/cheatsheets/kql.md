@@ -1,6 +1,5 @@
 ---
 title: "KQL for Hunters"
-permalink: /cheatsheets/kql/
 excerpt: "Operators, patterns and gotchas for Microsoft Sentinel and Defender Advanced Hunting."
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: "LOLBins Quick Reference"
-permalink: /cheatsheets/lolbins/
 excerpt: "Commonly abused Windows binaries: what they are used for and which arguments give them away."
 ---
 
