@@ -21,6 +21,22 @@ Both scripts must pass; CI runs them on every PR.
 - Avoid `{{` and `{%` inside code blocks (Jekyll treats them as Liquid). Use `{% raw %}...{% endraw %}` if you must.
 - Write for practitioners: concrete queries, field names, thresholds, and the *why*.
 
+## Cheat sheets (PDF)
+
+Cheat sheets are **published as PDFs**, not web pages. Edit the markdown source in `scripts/cheatsheets/<name>.md`, then rebuild and commit the PDF:
+
+```bash
+pip install markdown pygments pyyaml
+npm i -g playwright && npx playwright install chromium   # once; Chromium renders the PDF
+python scripts/build_cheatsheets.py                       # all sheets, or name one: ... kql
+```
+
+- Every page is watermarked `iamjammie/hunt-sage` and carries a repo/licence footer; don't remove them.
+- Keep each sheet to roughly 2-3 A4 pages: tables and short code blocks, no long prose.
+- In a table cell, a literal pipe inside code must be written as `&#124;`.
+- Link to site pages with `{{ site.baseurl }}/...` (converted to absolute URLs in the PDF). `check_links.py` verifies the links and that every source has a built PDF.
+- New sheet: add the source, build the PDF, add a row to `cheatsheets/index.md` and an entry in `_data/navigation.yml`.
+
 ## Hunt playbooks (`hunt/playbooks/`)
 
 Follow the existing structure: metadata table → **Hypothesis** → **Data required** → **Hunt steps** (KQL and SPL, simplest first) → **Triage** → **Common false positives** → **Escalate when** → **Validate and operationalise**. State assumptions about log sources and field names, and note platform differences. Do not include working malware, weaponised exploit code, or instructions for attacking systems you don't own.

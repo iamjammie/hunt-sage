@@ -77,7 +77,7 @@ C:\Sysmon\Sysmon64.exe -accepteula -i C:\Sysmon\sysmonconfig.xml
 # Update later:  Sysmon64.exe -c C:\Sysmon\newconfig.xml
 ```
 
-Review the config before deploying it and pin the version. See the [Sysmon cheat sheet]({{ site.baseurl }}/cheatsheets/sysmon/).
+Review the config before deploying it and pin the version. See the [Sysmon cheat sheet]({{ site.baseurl }}/cheatsheets/sysmon.pdf).
 
 ## Step 4: Ship logs to a SIEM
 
@@ -101,11 +101,11 @@ Event | where TimeGenerated > ago(1h) | summarize count() by Computer, Source
 
 ## Step 5: Network visibility (optional but valuable)
 
-Mirror the lab switch/vSwitch to a sensor running **Zeek** (and **Suricata**). Security Onion does this out of the box. Zeek logs feed the beaconing, DNS and lateral-movement hunts. See [Network & DNS (Zeek)]({{ site.baseurl }}/cheatsheets/network-zeek/).
+Mirror the lab switch/vSwitch to a sensor running **Zeek** (and **Suricata**). Security Onion does this out of the box. Zeek logs feed the beaconing, DNS and lateral-movement hunts. See [Network & DNS (Zeek)]({{ site.baseurl }}/cheatsheets/network-zeek.pdf).
 
 ## Step 6: Linux telemetry
 
-On LIN01: install `auditd` with the [starter ruleset]({{ site.baseurl }}/cheatsheets/linux-logs-auditd/), forward auth/audit logs, optionally install `osquery`.
+On LIN01: install `auditd` with the [starter ruleset]({{ site.baseurl }}/cheatsheets/linux-logs-auditd.pdf), forward auth/audit logs, optionally install `osquery`.
 
 ## Step 7: Operate the lab
 

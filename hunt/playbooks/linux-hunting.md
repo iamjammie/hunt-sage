@@ -12,7 +12,7 @@ excerpt: "SSH abuse, reverse shells, cron/systemd/SSH-key persistence, LD_PRELOA
 | **Time-box** | 3-6 hours |
 | **Difficulty** | ★★☆ |
 
-Linux telemetry is often the weakest in an enterprise. Hunt #0 is *confirm you have `execve` auditing or an EDR on your Linux servers*. See [Linux logs & auditd]({{ site.baseurl }}/cheatsheets/linux-logs-auditd/).
+Linux telemetry is often the weakest in an enterprise. Hunt #0 is *confirm you have `execve` auditing or an EDR on your Linux servers*. See [Linux logs & auditd]({{ site.baseurl }}/cheatsheets/linux-logs-auditd.pdf).
 
 ## Hypothesis
 

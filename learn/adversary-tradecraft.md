@@ -41,7 +41,7 @@ Adversaries increasingly use **tools already on the system** (PowerShell, WMI, `
 - *What arguments* (download, encode, remote target)
 - *Where from* (user-writable paths) and *where to* (rare network destinations)
 
-Reference: [LOLBAS](https://lolbas-project.github.io/) (Windows), [GTFOBins](https://gtfobins.github.io/) (Linux), [LOLDrivers](https://www.loldrivers.io/). See our [LOLBin cheat sheet]({{ site.baseurl }}/cheatsheets/lolbins/).
+Reference: [LOLBAS](https://lolbas-project.github.io/) (Windows), [GTFOBins](https://gtfobins.github.io/) (Linux), [LOLDrivers](https://www.loldrivers.io/). See our [LOLBin cheat sheet]({{ site.baseurl }}/cheatsheets/lolbins.pdf).
 
 ## Hands-on-keyboard vs automated
 

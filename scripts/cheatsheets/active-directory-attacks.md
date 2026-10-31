@@ -1,6 +1,5 @@
 ---
 title: "Active Directory Attacks → Artefacts"
-permalink: /cheatsheets/active-directory-attacks/
 excerpt: "A quick map from AD attack technique to what it looks like in logs and how to hunt it."
 ---
 

@@ -1,6 +1,5 @@
 ---
 title: "Network & DNS Hunting (Zeek)"
-permalink: /cheatsheets/network-zeek/
 excerpt: "Zeek logs and fields, command-line one-liners, ports of interest and DNS anomaly patterns."
 ---
 

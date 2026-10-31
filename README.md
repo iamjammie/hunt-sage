@@ -28,7 +28,7 @@ A public knowledge base that takes you from **"what is threat hunting?"** to **r
 |--------|--------------|-----------|
 | 📘 **Learn** (theory) | 8 chapters + glossary: hunting vs. detection vs. IR, the hunt loop, PEAK / TaHiTI / Sqrrl / HMM, hypotheses and intel, data & telemetry, hunting techniques, adversary tradecraft, detection engineering, building a program | [`learn/`](learn/index.md) |
 | 🎯 **Hunt** (practice) | 14 playbooks, each with hypothesis, data checks, **KQL + SPL** queries, triage, false positives, escalation criteria, emulation and hardening: PowerShell, LOLBins, LSASS, Kerberoasting, DCSync, lateral movement, persistence, defense evasion, C2/DNS, exfiltration, ransomware precursors, web shells, Linux, cloud & identity | [`hunt/`](hunt/index.md) |
-| 🧾 **Cheat sheets** | Windows & Sysmon event IDs, Linux logs/auditd, KQL, Splunk SPL, Zeek/network, LOLBins, AD attack artefacts | [`cheatsheets/`](cheatsheets/index.md) |
+| 🧾 **Cheat sheets** (PDF) | 8 watermarked A4 PDFs to download and print: Windows & Sysmon event IDs, Linux logs/auditd, KQL, Splunk SPL, Zeek/network, LOLBins, AD attack artefacts | [`cheatsheets/`](cheatsheets/index.md) |
 | 🧪 **Labs** | Build a hunting lab, Atomic Red Team emulate-then-detect exercises, public datasets and ranges | [`labs/`](labs/index.md) |
 | 🧬 **Research** | 20 ATT&CK-mapped **Sigma rules**, a coverage map and detection-engineering notes | [`research/`](research/index.md) |
 | 📋 **Templates** | Hunt hypothesis card, hunt report, backlog, data-source assessment, IR hand-off | [`templates/`](templates/index.md) |
@@ -46,13 +46,13 @@ Learn the theory → run a playbook → practise in the lab → write the Sigma 
 ```text
 learn/            Theory chapters
 hunt/playbooks/   Hunt playbooks
-cheatsheets/      One-page references
+cheatsheets/      Built PDF cheat sheets (generated; sources in scripts/cheatsheets/)
 labs/             Lab build, emulation exercises, datasets
 templates/        Hunt templates
 resources/        Curated tools, books, courses
 research/         Sigma rules, ATT&CK map, detection engineering notes
 _posts/ _ctf/     Blog posts and CTF challenges
-scripts/          Validation (Sigma rules, internal links) used by CI
+scripts/          Validation (Sigma rules, links) used by CI + PDF cheat-sheet builder
 ```
 
 ## ✅ Quality checks
@@ -63,6 +63,15 @@ CI runs on every push and pull request:
 pip install -r scripts/requirements.txt
 python scripts/validate_rules.py   # Sigma syntax, metadata, ATT&CK tags, Splunk/KQL conversion, index listing
 python scripts/check_links.py      # front matter, internal links and anchors, nav entries
+```
+
+### Rebuilding the PDF cheat sheets
+
+Sources are markdown files in `scripts/cheatsheets/`. After editing one, rebuild and commit the PDFs (each page gets the repo watermark and footer):
+
+```bash
+pip install markdown pygments pyyaml      # plus Node.js + Playwright Chromium
+python scripts/build_cheatsheets.py       # or: python scripts/build_cheatsheets.py kql sysmon
 ```
 
 > Sigma rules are marked `experimental` until validated in a lab (`test`) and in production (`stable`). Queries in the playbooks are starting points: adapt field names to your data schema and test them before relying on them.

@@ -1,6 +1,5 @@
 ---
 title: "Sysmon Event IDs for Hunters"
-permalink: /cheatsheets/sysmon/
 excerpt: "What each Sysmon event gives you and the techniques it exposes."
 ---
 

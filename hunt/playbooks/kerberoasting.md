@@ -116,4 +116,4 @@ Burst from a non-admin workstation or any request for a honey SPN. Reset targete
 - Detection: [Kerberoasting via RC4 TGS requests]({{ site.baseurl }}/research/sigma/T1558.003-kerberoasting-rc4-tgs.yml)
 - Hardening: gMSA for services; AES-only (`msDS-SupportedEncryptionTypes`, disable RC4 where feasible); long random passwords; remove unnecessary SPNs; require preauth everywhere.
 
-See also: [Active Directory attacks cheat sheet]({{ site.baseurl }}/cheatsheets/active-directory-attacks/).
+See also: [Active Directory attacks cheat sheet]({{ site.baseurl }}/cheatsheets/active-directory-attacks.pdf).

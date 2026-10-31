@@ -1,6 +1,5 @@
 ---
 title: "Linux Logs & auditd for Hunters"
-permalink: /cheatsheets/linux-logs-auditd/
 excerpt: "Where evidence lives on Linux, a starter auditd ruleset, and triage one-liners."
 ---
 
