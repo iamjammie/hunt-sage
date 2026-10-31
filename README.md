@@ -3,13 +3,13 @@
   <img src="assets/images/hunt-sage-banner.png" alt="Hunt-Sage Banner" width="80%">
 </p>
 
-<h1 align="center">🔍 Cyber Defense & Threat Hunting Knowledge Hub</h1>
+<h1 align="center">🔍 Hunt-Sage: The One-Stop Threat Hunting Hub</h1>
 <p align="center">
   Seek. Analyze. Neutralize.
 </p>
 
 <p align="center">
-  <a href="https://github.com/iamjammie/hunt-sage"><strong>🌐 Visit Website</strong></a> •
+  <a href="https://iamjammie.github.io/hunt-sage/"><strong>🌐 Visit the Website</strong></a> •
   <a href="https://github.com/iamjammie/hunt-sage/issues">Report Issue</a> •
   <a href="https://www.linkedin.com/in/ashok-kumar-5b62819b">Connect</a>
 </p>
@@ -18,78 +18,81 @@
 
 ## 📌 What is Hunt-Sage?
 
-A curated public knowledge base designed to:
-- Enhance **Threat Hunting** & **Incident Response**
-- Strengthen **Blue Team tradecraft**
-- Provide **hands-on defensive labs and CTFs**
-- Share **cybersecurity research & ATT&CK-aligned detections**
+A public knowledge base that takes you from **"what is threat hunting?"** to **running hunts, shipping detections and building a hunt program**, with both the theory and the practical, copy-paste-ready material in one place.
 
 > _Built by iamjammie_
 
----
+## 🗺️ What's inside
 
-### 📚 Content Structure
+| Section | What you get | Start here |
+|--------|--------------|-----------|
+| 📘 **Learn** (theory) | 8 chapters + glossary: hunting vs. detection vs. IR, the hunt loop, PEAK / TaHiTI / Sqrrl / HMM, hypotheses and intel, data & telemetry, hunting techniques, adversary tradecraft, detection engineering, building a program | [`learn/`](learn/index.md) |
+| 🎯 **Hunt** (practice) | 14 playbooks, each with hypothesis, data checks, **KQL + SPL** queries, triage, false positives, escalation criteria, emulation and hardening: PowerShell, LOLBins, LSASS, Kerberoasting, DCSync, lateral movement, persistence, defense evasion, C2/DNS, exfiltration, ransomware precursors, web shells, Linux, cloud & identity | [`hunt/`](hunt/index.md) |
+| 🧾 **Cheat sheets** | Windows & Sysmon event IDs, Linux logs/auditd, KQL, Splunk SPL, Zeek/network, LOLBins, AD attack artefacts | [`cheatsheets/`](cheatsheets/index.md) |
+| 🧪 **Labs** | Build a hunting lab, Atomic Red Team emulate-then-detect exercises, public datasets and ranges | [`labs/`](labs/index.md) |
+| 🧬 **Research** | 20 ATT&CK-mapped **Sigma rules**, a coverage map and detection-engineering notes | [`research/`](research/index.md) |
+| 📋 **Templates** | Hunt hypothesis card, hunt report, backlog, data-source assessment, IR hand-off | [`templates/`](templates/index.md) |
+| 📚 **Resources** | Frameworks, tools, books, courses, communities | [`resources/`](resources/index.md) |
+| 📝 **Blog** & 🚩 **CTF** | Field notes, an end-to-end case study, and a defender-focused CTF | [`_posts/`](_posts), [`_ctf/`](_ctf) |
 
-| Section | Focus |
-|--------|------|
-| 📝 **Blog** | Practical notes, case studies, SOC learnings |
-| 🚩 **CTFs & Labs** | Realistic defender-focused challenges |
-| 🔬 **Research** | MITRE ATT&CK mapping & detection engineering |
+### Suggested path
 
----
+```text
+Learn the theory → run a playbook → practise in the lab → write the Sigma rule → track it on the coverage map
+```
+
+## 🛠️ Repository layout
+
+```text
+learn/            Theory chapters
+hunt/playbooks/   Hunt playbooks
+cheatsheets/      One-page references
+labs/             Lab build, emulation exercises, datasets
+templates/        Hunt templates
+resources/        Curated tools, books, courses
+research/         Sigma rules, ATT&CK map, detection engineering notes
+_posts/ _ctf/     Blog posts and CTF challenges
+scripts/          Validation (Sigma rules, internal links) used by CI
+```
+
+## ✅ Quality checks
+
+CI runs on every push and pull request:
+
+```bash
+pip install -r scripts/requirements.txt
+python scripts/validate_rules.py   # Sigma syntax, metadata, ATT&CK tags, Splunk/KQL conversion, index listing
+python scripts/check_links.py      # front matter, internal links and anchors, nav entries
+```
+
+> Sigma rules are marked `experimental` until validated in a lab (`test`) and in production (`stable`). Queries in the playbooks are starting points: adapt field names to your data schema and test them before relying on them.
 
 ## 🛠️ Built With
 
-- GitHub Pages (static & secure)
-- Jekyll + **Minimal Mistakes Theme**
-- Markdown, CSS, JS only
-- No backend, no cookies — **privacy by design**
-
-📍 **Dark / Light Theme Toggle** included 🌗
-
----
+- GitHub Pages (static, no backend, no cookies; privacy by design)
+- Jekyll + **Minimal Mistakes** theme
+- Markdown, YAML (Sigma), a little CSS/JS
+- 🌗 Dark / light theme toggle
 
 ## 🚀 Roadmap
 
 | Milestone | Status |
 |----------|:------:|
-| Publish initial blog series | 🚧 In progress |
-| Add downloadable CTF challenge artifacts | 🔜 |
-| Release detection rule packs (Sigma / ESA / FAZ) | 🔜 |
-| Build community submission workflow | 🕒 |
-| Add web-based cyber training portal | Future vision |
-
----
+| Learn path, playbook library, cheat sheets, labs, templates | ✅ Done |
+| Sigma rule pack with CI validation (20 rules) | ✅ Done |
+| Lab-validate rules and promote `experimental` → `test` | 🚧 In progress |
+| Playbooks for RDP/WinRM anomalies, DLL hijacking, process injection, AD CS abuse | 🔜 |
+| Splunk ESA / Fortinet FortiAnalyzer rule packs | 🔜 |
+| Downloadable CTF challenge artifacts | 🔜 |
+| Community submission workflow & contributor hall of fame | 🕒 |
 
 ## 🤝 Contributing
 
-This is a professional learning repo — contributions are welcome!
+Contributions are welcome: playbooks, Sigma rules, corrections, new challenge ideas. See **[CONTRIBUTING.md](CONTRIBUTING.md)** for conventions and the local checks to run.
 
-✔ Suggestions  
-✔ Issue reports  
-✔ New challenge ideas  
-✔ Detection rules  
-✔ Improvements to docs
-
-To contribute:
-1. Fork the repo
-2. Create a branch
-3. Submit a PR with a clear explanation
-
-A **Contributor Hall of Fame** will be added soon ✨
-
----
-
-## 📸 Site Preview
-
-> Screenshots will auto-appear here once content evolves  
-> Placeholder samples below 👇
-
-<p align="center">
-  <img src="assets/images/preview-home.png" width="80%" alt="Homepage preview (coming soon)">
-</p>
-
----
+1. Fork the repo and create a branch
+2. Make your change and run the two scripts above
+3. Open a PR with a clear explanation
 
 ## 📬 Contact
 
@@ -97,14 +100,14 @@ A **Contributor Hall of Fame** will be added soon ✨
 🔗 https://www.linkedin.com/in/ashok-kumar-5b62819b  
 🐙 GitHub: https://github.com/iamjammie
 
----
+## ⚠️ Responsible use
+
+Everything here is for **defensive** purposes in environments you own or are authorised to test. Run attack emulation only in isolated labs or with written approval.
 
 ## 📄 License
 
 All **original content** in this repository is © 2025 iamjammie – All Rights Reserved.  
 Educational use permitted with proper attribution.
-
-👉 If you'd like, I can switch to MIT License for open-source adoption.
 
 ---
 
@@ -112,5 +115,3 @@ Educational use permitted with proper attribution.
   <strong>Crafting defenders for the digital battlefield.</strong><br>
   © Hunt-Sage | Built with 🧠 + 💻
 </p>
-
-

@@ -1,0 +1,32 @@
+title: BITSAdmin Download or Persistent Transfer Job
+id: 2a8d5f61-7b30-4c94-9e1d-0f6b3a8c7d14
+status: experimental
+description: |
+  Detects bitsadmin.exe transfer and notification-command usage. BITS jobs are abused to
+  download payloads and to persist via SetNotifyCmdLine.
+references:
+  - https://attack.mitre.org/techniques/T1197/
+  - https://lolbas-project.github.io/lolbas/Binaries/Bitsadmin/
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.defense_evasion
+  - attack.persistence
+  - attack.t1197
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    - Image|endswith: '\bitsadmin.exe'
+    - OriginalFileName: 'bitsadmin.exe'
+  selection_args:
+    CommandLine|contains:
+      - '/transfer'
+      - '/addfile'
+      - '/SetNotifyCmdLine'
+      - '/create'
+  condition: selection_img and selection_args
+falsepositives:
+  - Legacy software distribution scripts that still use bitsadmin
+level: medium

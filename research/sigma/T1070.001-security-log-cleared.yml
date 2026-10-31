@@ -1,0 +1,24 @@
+title: Windows Event Log Cleared
+id: 9b4f2e60-c1a8-4d37-a5e9-7f3b8d0c1e04
+status: experimental
+description: |
+  Detects clearing of the Security log (event 1102) or any other event log (System event 104).
+  Log clearing is a common anti-forensic step and rarely occurs legitimately outside imaging
+  or decommissioning workflows.
+references:
+  - https://attack.mitre.org/techniques/T1070/001/
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.defense_evasion
+  - attack.t1070.001
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 1102
+  condition: selection
+falsepositives:
+  - Planned log maintenance or system re-imaging (verify against change records)
+level: high

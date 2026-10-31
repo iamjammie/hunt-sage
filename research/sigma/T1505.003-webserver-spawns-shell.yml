@@ -1,0 +1,50 @@
+title: Web Server Process Spawning Shell or Recon Tool
+id: 0d3f7a96-b2c4-4e51-93a8-4c1e6f8b0d10
+status: experimental
+description: |
+  Detects web server and application server processes (IIS w3wp, Apache, Nginx, Tomcat, PHP)
+  spawning command interpreters or reconnaissance utilities, a strong indicator of a web shell
+  or exploited public-facing application.
+references:
+  - https://attack.mitre.org/techniques/T1505/003/
+  - https://attack.mitre.org/techniques/T1190/
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.persistence
+  - attack.initial_access
+  - attack.t1505.003
+  - attack.t1190
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_parent:
+    ParentImage|endswith:
+      - '\w3wp.exe'
+      - '\httpd.exe'
+      - '\nginx.exe'
+      - '\php-cgi.exe'
+      - '\tomcat7.exe'
+      - '\tomcat8.exe'
+      - '\tomcat9.exe'
+      - '\tomcat10.exe'
+  selection_child:
+    Image|endswith:
+      - '\cmd.exe'
+      - '\powershell.exe'
+      - '\pwsh.exe'
+      - '\whoami.exe'
+      - '\net.exe'
+      - '\net1.exe'
+      - '\systeminfo.exe'
+      - '\ipconfig.exe'
+      - '\nltest.exe'
+      - '\certutil.exe'
+      - '\bitsadmin.exe'
+      - '\wmic.exe'
+  condition: selection_parent and selection_child
+falsepositives:
+  - Applications that deliberately shell out to cmd.exe or PowerShell (identify and exclude by exact command line)
+  - Admin scripts invoked via web-based management tools
+level: high

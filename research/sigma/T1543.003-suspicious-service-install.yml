@@ -1,0 +1,44 @@
+title: Suspicious Windows Service Installation
+id: 8e2b6d40-a3f7-4519-8c0e-5d1f9b7a4c08
+status: experimental
+description: |
+  Detects new services (System event 7045) whose image path runs from admin shares, temp or
+  user-writable paths, or via command interpreters. Covers PsExec-style remote execution
+  (PSEXESVC), Impacket psexec, Cobalt Strike jump psexec, and malware persistence.
+references:
+  - https://attack.mitre.org/techniques/T1543/003/
+  - https://attack.mitre.org/techniques/T1569/002/
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.persistence
+  - attack.privilege_escalation
+  - attack.lateral_movement
+  - attack.execution
+  - attack.t1543.003
+  - attack.t1569.002
+logsource:
+  product: windows
+  service: system
+detection:
+  selection:
+    Provider_Name: 'Service Control Manager'
+    EventID: 7045
+  susp_image:
+    ImagePath|contains:
+      - '\ADMIN$\'
+      - '%COMSPEC%'
+      - 'cmd.exe /c'
+      - 'cmd /c'
+      - 'powershell'
+      - '\Temp\'
+      - '\AppData\'
+      - '\Users\Public\'
+      - '\ProgramData\'
+  psexec:
+    ServiceName: 'PSEXESVC'
+  condition: selection and (susp_image or psexec)
+falsepositives:
+  - Legitimate admin use of PsExec (should be rare and from known admin hosts)
+  - Software installers that register services from ProgramData or Temp during setup
+level: high

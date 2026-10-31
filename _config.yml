@@ -1,6 +1,6 @@
 title: "Hunt-Sage"
 name: "Hunt-Sage"
-description: "Cyber Defense, Threat Hunting & CTF Knowledge Hub by Jammie"
+description: "One-stop threat hunting hub: theory, hunt playbooks, cheat sheets, labs and detection content"
 url: "https://iamjammie.github.io"
 baseurl: "/hunt-sage"
 
@@ -62,7 +62,71 @@ defaults:
     values:
       sidebar:
         nav: "main"
+  - scope:
+      path: "learn"
+    values:
+      layout: single
+      toc: true
+      toc_sticky: true
+      sidebar:
+        nav: "learn"
+  - scope:
+      path: "hunt"
+    values:
+      layout: single
+      toc: true
+      toc_sticky: true
+      sidebar:
+        nav: "hunt"
+  - scope:
+      path: "cheatsheets"
+    values:
+      layout: single
+      toc: true
+      toc_sticky: true
+      sidebar:
+        nav: "cheatsheets"
+  - scope:
+      path: "labs"
+    values:
+      layout: single
+      toc: true
+      toc_sticky: true
+      sidebar:
+        nav: "labs"
+  - scope:
+      path: "templates"
+    values:
+      layout: single
+      toc: true
+      sidebar:
+        nav: "labs"
+  - scope:
+      path: "resources"
+    values:
+      layout: single
+      toc: true
+      sidebar:
+        nav: "labs"
+  - scope:
+      path: "research"
+    values:
+      layout: single
+      toc: true
+      sidebar:
+        nav: "research"
 
-permalink: /blog/:categories/:title/
+permalink: /blog/:title/
+
+exclude:
+  - scripts
+  - CONTRIBUTING.md
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+
+# Sections below get their own sidebar nav (see _data/navigation.yml)
 
 logo: "/assets/images/hunt-sage-banner.png"

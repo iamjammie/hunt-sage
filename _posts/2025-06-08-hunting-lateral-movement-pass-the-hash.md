@@ -50,7 +50,7 @@ PtH attacks generate specific Windows Security event patterns:
 
 | Event ID | Description | PtH Indicator |
 |----------|-------------|---------------|
-| 4624 | Successful Logon | Logon Type 3 (Network) with NTLM, blank workstation name |
+| 4624 | Successful Logon | Logon Type 3 (Network) with NTLM and `KeyLength` 0 |
 | 4625 | Failed Logon | Multiple 4625s before success suggests hash spraying |
 | 4776 | NTLM Auth attempt | Source workstation doesn't match originating host |
 | 4648 | Logon with explicit credentials | Indicates RunAs-style lateral movement |
@@ -58,8 +58,10 @@ PtH attacks generate specific Windows Security event patterns:
 **The critical field for PtH detection in Event 4624**:
 - `Authentication Package: NTLM`
 - `Logon Type: 3`
-- `WorkstationName: (blank or mismatched)`
-- `SubjectLogonId: 0x0` (null session indicator)
+- `Key Length: 0` (no NTLM session key negotiated: a long-documented Mimikatz-style PtH artifact)
+- `WorkstationName`: blank or not matching the source IP's real hostname (supporting signal only; many legitimate clients also omit it)
+
+> **Caveat:** `KeyLength = 0` catches classic tooling, not everything. Modern frameworks can negotiate session keys. Treat a hit as high-value and a miss as *no signal*, and pair it with the LSASS-access and source-IP checks below.
 
 ---
 
@@ -67,13 +69,13 @@ PtH attacks generate specific Windows Security event patterns:
 
 ### Microsoft Sentinel / KQL
 
-**Hunt 1: Network logons via NTLM with blank workstation (PtH fingerprint)**
+**Hunt 1: Network logons via NTLM with no session key (PtH fingerprint)**
 ```kql
 SecurityEvent
 | where EventID == 4624
 | where LogonType == 3
 | where AuthenticationPackageName == "NTLM"
-| where WorkstationName == "" or WorkstationName == "-"
+| where KeyLength == 0
 | where TargetUserName !endswith "$"  // exclude machine accounts
 | summarize count(), 
             TargetSystems = make_set(Computer),
@@ -126,7 +128,7 @@ DeviceEvents
 index=wineventlog EventCode=4624 
     Logon_Type=3 
     Authentication_Package=NTLM
-    Workstation_Name="-"
+    Key_Length=0
 | where NOT like(user, "%$")
 | stats count by user, src_ip, dest
 | where count > 3

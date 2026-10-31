@@ -1,7 +1,7 @@
 title: WMI Event Subscription Persistence
 id: d4e5f6a7-b8c9-0123-def0-456789012345
 name: wmi_event_subscription_persistence
-status: stable
+status: experimental
 description: |
   Detects creation of WMI event subscriptions, which are commonly used by attackers
   for persistent code execution. WMI subscriptions consist of three components:
