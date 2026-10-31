@@ -1,6 +1,5 @@
 ---
 title: "Splunk SPL for Hunters"
-permalink: /cheatsheets/splunk-spl/
 excerpt: "Search patterns for stacking, rarity, time analysis and joins in Splunk."
 ---
 

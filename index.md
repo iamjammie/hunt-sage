@@ -55,7 +55,7 @@ feature_row2:
 | If you are... | Start with |
 |---|---|
 | New to hunting | [What is threat hunting?]({{ site.baseurl }}/learn/what-is-threat-hunting/) → [The hunting process]({{ site.baseurl }}/learn/hunting-process-and-frameworks/) |
-| A SOC analyst wanting a first real hunt | [PowerShell abuse playbook]({{ site.baseurl }}/hunt/playbooks/powershell-abuse/) and the [Windows event ID sheet]({{ site.baseurl }}/cheatsheets/windows-event-ids/) |
+| A SOC analyst wanting a first real hunt | [PowerShell abuse playbook]({{ site.baseurl }}/hunt/playbooks/powershell-abuse/) and the [Windows event ID sheet]({{ site.baseurl }}/cheatsheets/windows-event-ids.pdf) |
 | Building a lab | [Build a hunting lab]({{ site.baseurl }}/labs/) → [Emulate and detect]({{ site.baseurl }}/labs/emulate-and-detect/) |
 | A detection engineer | [Detection engineering]({{ site.baseurl }}/learn/detection-engineering/) → [Sigma rules]({{ site.baseurl }}/research/sigma/) |
 | Leading a hunt team | [Building a hunt program]({{ site.baseurl }}/learn/building-a-hunt-program/) → [Templates]({{ site.baseurl }}/templates/) |
