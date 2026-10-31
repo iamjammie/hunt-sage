@@ -1,6 +1,5 @@
 ---
 title: "Windows Security Event IDs for Hunters"
-permalink: /cheatsheets/windows-event-ids/
 excerpt: "The events that matter, what they mean, and which technique they expose."
 ---
 
@@ -131,7 +130,7 @@ excerpt: "The events that matter, what they mean, and which technique they expos
 | `Microsoft-Windows-Bits-Client/Operational` | 3, 59, 60, 61: BITS jobs |
 | `Microsoft-Windows-DNS-Client/Operational` | 3008, 3020: client DNS queries (without Sysmon) |
 | `Microsoft-Windows-SMBServer/Security` | 1006, 1007...: SMB server security events |
-| `Microsoft-Windows-Sysmon/Operational` | See [Sysmon sheet]({{ site.baseurl }}/cheatsheets/sysmon/) |
+| `Microsoft-Windows-Sysmon/Operational` | See [Sysmon sheet]({{ site.baseurl }}/cheatsheets/sysmon.pdf) |
 
 ## Quick hunts by event
 

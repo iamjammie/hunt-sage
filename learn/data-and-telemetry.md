@@ -34,7 +34,7 @@ If you can only collect a little, collect this first:
 6. **Persistence-relevant changes**: services (7045/4697), scheduled tasks (4698), registry run keys (Sysmon 12/13), WMI (Sysmon 19-21)
 7. **Cloud control-plane audit logs** and identity provider sign-ins
 
-See [Windows event IDs]({{ site.baseurl }}/cheatsheets/windows-event-ids/), [Sysmon]({{ site.baseurl }}/cheatsheets/sysmon/) and [Linux logs]({{ site.baseurl }}/cheatsheets/linux-logs-auditd/).
+See [Windows event IDs]({{ site.baseurl }}/cheatsheets/windows-event-ids.pdf), [Sysmon]({{ site.baseurl }}/cheatsheets/sysmon.pdf) and [Linux logs]({{ site.baseurl }}/cheatsheets/linux-logs-auditd.pdf).
 
 ## Mapping technique → telemetry
 

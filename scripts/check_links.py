@@ -6,6 +6,7 @@
 * internal absolute links use {{ site.baseurl }} (a bare "/foo/" breaks on GitHub Pages)
 * #anchors exist in the target page (GitHub-style heading ids)
 * nav entries in _data/navigation.yml resolve
+* every cheat-sheet source in scripts/cheatsheets/ has a built PDF in cheatsheets/ (and links inside the sources resolve)
 
 Usage: python scripts/check_links.py
 """
@@ -85,7 +86,7 @@ def main() -> int:
             if norm(link) in pages:
                 errors.append(f"{rel}: duplicate permalink {link}")
             pages[norm(link)] = (path, fm, body)
-        elif not rel.parts[0].startswith("_") and path.suffix in {".yml", ".png", ".css", ".scss", ".js"}:
+        elif not rel.parts[0].startswith("_") and path.suffix in {".yml", ".png", ".css", ".scss", ".js", ".pdf"}:
             statics.add("/" + rel.as_posix())
 
     anchors: dict[str, set[str]] = {}
@@ -97,8 +98,7 @@ def main() -> int:
                 ids.add(gfm_id(m.group(1)))
         anchors[link] = ids
 
-    for link, (path, fm, body) in pages.items():
-        rel = path.relative_to(ROOT)
+    def check_body(rel, body, self_key):
         for m in LINK_RE.finditer(strip_code(body)):
             url = m.group(1) or m.group(2)
             if re.match(r"^(https?:|mailto:|tel:)", url):
@@ -109,7 +109,7 @@ def main() -> int:
             has_base = url.startswith("\0BASE\0")
             url = url.replace("\0BASE\0", "")
             if url.startswith("#"):
-                if url[1:] and url[1:] not in anchors[link]:
+                if self_key and url[1:] and url[1:] not in anchors[self_key]:
                     errors.append(f"{rel}: anchor {url} not found on the page")
                 continue
             if not url.startswith("/"):
@@ -126,6 +126,16 @@ def main() -> int:
             elif frag and frag not in anchors[key]:
                 errors.append(f"{rel}: anchor #{frag} not found in {target}")
 
+    for link, (path, fm, body) in pages.items():
+        check_body(path.relative_to(ROOT), body, link)
+
+    src_dir = ROOT / "scripts" / "cheatsheets"
+    for src in sorted(src_dir.glob("*.md")) if src_dir.exists() else []:
+        _, body = split_front_matter(src.read_text(encoding="utf-8"))
+        check_body(src.relative_to(ROOT), body, None)
+        if f"/cheatsheets/{src.stem}.pdf" not in statics:
+            errors.append(f"{src.relative_to(ROOT)}: no built PDF cheatsheets/{src.stem}.pdf (run scripts/build_cheatsheets.py)")
+
     nav = yaml.safe_load((ROOT / "_data" / "navigation.yml").read_text(encoding="utf-8"))
 
     def walk(items):
@@ -134,7 +144,7 @@ def main() -> int:
                 u = it["url"]
                 if BASEURL and u.startswith(BASEURL):
                     u = u[len(BASEURL):] or "/"
-                if norm(u) not in pages:
+                if norm(u) not in pages and u not in statics:
                     errors.append(f"_data/navigation.yml: '{it['url']}' does not resolve")
             walk(it.get("children", []))
 

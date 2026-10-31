@@ -16,7 +16,7 @@ excerpt: "Signed Windows binaries abused to download, decode and execute: certut
 
 > *If an adversary is living off the land, trusted Windows binaries will be used in ways they rarely are legitimately: fetching remote content, executing scripts from the internet, loading DLLs from user-writable paths, or being invoked by Office/script hosts.*
 
-Reference catalogue: [LOLBAS](https://lolbas-project.github.io/). Quick summary in our [LOLBin cheat sheet]({{ site.baseurl }}/cheatsheets/lolbins/).
+Reference catalogue: [LOLBAS](https://lolbas-project.github.io/). Quick summary in our [LOLBin cheat sheet]({{ site.baseurl }}/cheatsheets/lolbins.pdf).
 
 ## Hunt steps
 
