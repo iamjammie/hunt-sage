@@ -1,0 +1,35 @@
+title: Rclone Usage Consistent with Data Exfiltration
+id: c3b79e04-8a12-4f56-b7d3-1e5a9c0f6d15
+status: experimental
+description: |
+  Detects rclone by original file name (catches renamed binaries) or by characteristic
+  command-line flags used to sync data to cloud storage. Rclone is a favourite of
+  double-extortion ransomware affiliates.
+references:
+  - https://attack.mitre.org/techniques/T1567/002/
+  - https://attack.mitre.org/software/S1040/
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.exfiltration
+  - attack.t1567.002
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_name:
+    OriginalFileName: 'rclone.exe'
+  selection_flags:
+    CommandLine|contains|all:
+      - ' copy '
+      - '--transfers'
+  selection_flags2:
+    CommandLine|contains:
+      - '--multi-thread-streams'
+      - 'mega:'
+      - '--no-check-certificate'
+      - '--auto-confirm'
+  condition: selection_name or (selection_flags and selection_flags2)
+falsepositives:
+  - Sanctioned use of rclone by engineers or backup jobs (allow-list by host, account and destination)
+level: high

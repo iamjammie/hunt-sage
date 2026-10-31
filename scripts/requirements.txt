@@ -1,0 +1,5 @@
+pyyaml>=6.0
+pySigma>=1.5,<2
+pySigma-backend-splunk==2.1.0
+pySigma-backend-kusto==1.0.1
+pySigma-pipeline-windows>=2.0,<3

@@ -1,0 +1,47 @@
+title: Linux Reverse Shell Command Line
+id: 6f2a8c35-d91b-4e07-b3a4-8e5c0f7d1b11
+status: experimental
+description: |
+  Detects common one-liner reverse shell patterns on Linux (bash /dev/tcp, netcat -e,
+  mkfifo pipes, socat exec, scripting-language socket shells).
+references:
+  - https://attack.mitre.org/techniques/T1059/004/
+  - https://gtfobins.github.io/
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.execution
+  - attack.t1059.004
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection_bash:
+    CommandLine|contains:
+      - '/dev/tcp/'
+      - '/dev/udp/'
+  selection_nc:
+    CommandLine|contains:
+      - 'nc -e'
+      - 'ncat -e'
+      - 'nc.traditional -e'
+      - 'netcat -e'
+      - 'ncat --exec'
+  selection_fifo:
+    CommandLine|contains|all:
+      - 'mkfifo'
+      - '/bin/sh'
+  selection_socat:
+    CommandLine|contains|all:
+      - 'socat'
+      - 'exec:'
+  selection_python:
+    CommandLine|contains|all:
+      - 'socket'
+      - 'connect'
+      - 'subprocess'
+  condition: 1 of selection_*
+falsepositives:
+  - Administrators or developers testing network connectivity with /dev/tcp
+  - Health checks that use bash /dev/tcp for port probing (exclude by exact command)
+level: high

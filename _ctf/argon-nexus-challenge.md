@@ -199,7 +199,7 @@ Compare that timestamp to the bulk file access — the difference is the attacke
 
 ## Solution Walkthrough
 
-The full solution walkthrough is available in the blog post: [**The Argon Dynamics Case Study**](/blog/argon-dynamics-case-study/)
+The full solution walkthrough is available in the blog post: [**The Argon Dynamics Case Study**]({{ site.baseurl }}/blog/argon-dynamics-case-study/)
 
 Try to complete the challenge before reading it.
 

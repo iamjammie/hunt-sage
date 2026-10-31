@@ -1,0 +1,37 @@
+title: Mshta Executing Remote or Inline Script Content
+id: e94c1a7b-3f68-4d25-a0b9-5c2d8e6f4a13
+status: experimental
+description: |
+  Detects mshta.exe launched with a URL or an inline scripting protocol (javascript:,
+  vbscript:), or executing HTA files from user-writable paths. A classic phishing and
+  proxy-execution technique.
+references:
+  - https://attack.mitre.org/techniques/T1218/005/
+  - https://lolbas-project.github.io/lolbas/Binaries/Mshta/
+author: hunt-sage (iamjammie)
+date: 2025-07-06
+tags:
+  - attack.defense_evasion
+  - attack.execution
+  - attack.t1218.005
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    - Image|endswith: '\mshta.exe'
+    - OriginalFileName: 'MSHTA.EXE'
+  selection_args:
+    CommandLine|contains:
+      - 'http://'
+      - 'https://'
+      - 'javascript:'
+      - 'vbscript:'
+      - '\AppData\'
+      - '\Temp\'
+      - '\Downloads\'
+      - '\Users\Public\'
+  condition: selection_img and selection_args
+falsepositives:
+  - Legacy line-of-business apps built on HTA files (usually local paths from Program Files)
+level: high
