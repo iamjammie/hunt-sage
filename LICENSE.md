@@ -1,6 +1,6 @@
 # Hunt-Sage licence
 
-Copyright © 2025-2026 iamjammie (Ashok Kumar). All rights reserved.
+Copyright © 2025-2026 iamjammie. All rights reserved.
 
 ## Original content
 
@@ -13,7 +13,7 @@ cheat sheets, templates, blog posts, CTF challenges, images and build scripts) m
 - Keep the watermark and footer on the PDF cheat sheets when you share them.
 - Do not sell this material or present it as your own.
 - Commercial reuse (training products, paid courses, inclusion in commercial tooling) requires
-  written permission: hunt-sage@gov.in.
+  written permission: open an issue at https://github.com/iamjammie/hunt-sage/issues.
 
 ## Detection rules
 
