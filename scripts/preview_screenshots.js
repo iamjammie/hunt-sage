@@ -10,8 +10,9 @@ const path = require('path');
     ['home', '/', 1400, 900, false],
     ['home-full', '/', 1400, 900, true],
     ['hunt', '/hunt/', 1400, 900, true],
+    ['light-playbook-light', '/hunt/playbooks/kerberoasting/', 1400, 900, false],
     ['playbook', '/hunt/playbooks/adcs-abuse/', 1400, 900, false],
-    ['coverage', '/research/mitre-mapping/', 1400, 900, false],
+    ['coverage', '/research/mitre-mapping/', 1400, 900, true],
     ['sigma', '/research/sigma/', 1400, 900, false],
     ['hypotheses', '/hunt/hypotheses/', 1400, 900, false],
     ['query-index', '/hunt/query-index/', 1400, 900, false],
@@ -27,10 +28,10 @@ const path = require('path');
     await page.goto(base + url, { waitUntil: 'networkidle' }).catch(e => errors.push('nav: ' + e));
     await page.waitForTimeout(400);
     await page.screenshot({ path: path.join(out, name + '.png'), fullPage: full });
-    if (name === 'home') {
+    if (name === 'home' || name === 'light-playbook-light') {
       await page.click('[data-hs-theme-toggle]').catch(e => errors.push('toggle: ' + e));
       await page.waitForTimeout(300);
-      await page.screenshot({ path: path.join(out, 'home-light.png') });
+      await page.screenshot({ path: path.join(out, name + '-light.png') });
     }
     console.log(name, errors.length ? 'ERRORS: ' + errors.join(' | ') : 'ok');
     await ctx.close();
