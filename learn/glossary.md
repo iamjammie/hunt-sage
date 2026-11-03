@@ -7,6 +7,8 @@ toc: false
 
 Alphabetical. Terms marked with a playbook link have a hunt on this site.
 
+<div class="hs-filter" data-hs-filter data-placeholder="Filter terms..."></div>
+
 | Term | Meaning |
 |---|---|
 | **Access mask** | Bit flags stating which rights a handle was opened with (e.g. Sysmon 10 `GrantedAccess`, 4663 `AccessMask`); stable across tool renames, so a strong hunt field. |

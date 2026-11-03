@@ -9,13 +9,9 @@ timebox: "3-5 hours"
 data: [email, edr, sysmon, proxy, windows-security]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1566.001 (Spearphishing Attachment), T1566.002 (Spearphishing Link), T1204.001 (Malicious Link), T1204.002 (Malicious File), T1027.006 (HTML Smuggling) |
-| **Tactic** | Initial Access / Execution |
-| **Data** | Email telemetry (Defender for Office 365 `EmailEvents`/`EmailAttachmentInfo`/`EmailUrlInfo` or vendor equivalent); process creation with parent and command line (`DeviceProcessEvents`, Sysmon 1, 4688); Sysmon 15 (Zone.Identifier); proxy/DNS for the first beacon |
-| **Time-box** | 3-5 hours |
-| **Difficulty** | ★★☆ |
+{% include playbook-meta.html %}
+
+**Data used:** Email telemetry (Defender for Office 365 `EmailEvents`/`EmailAttachmentInfo`/`EmailUrlInfo` or vendor equivalent); process creation with parent and command line (`DeviceProcessEvents`, Sysmon 1, 4688); Sysmon 15 (Zone.Identifier); proxy/DNS for the first beacon
 
 ## Background
 
@@ -207,3 +203,5 @@ A user-facing application spawned an interpreter **and** the child made an outbo
 - Hardening: ASR rules (block Office child processes, block executable content from email/webmail, block JS/VBScript launching downloaded content, block obfuscated scripts); remove ISO/IMG/VHD mount associations for standard users; map `.js`, `.jse`, `.wsf`, `.hta`, `.vbs` to Notepad; strip HTML, ISO, LNK and OneNote attachments at the gateway; disable the Run dialog (`NoRun`) where not needed; Safe Links with time-of-click checks; phishing-resistant MFA.
 
 See also: [PowerShell abuse]({{ site.baseurl }}/hunt/playbooks/powershell-abuse/), [LOLBin proxy execution]({{ site.baseurl }}/hunt/playbooks/lolbin-proxy-execution/), [C2 beaconing]({{ site.baseurl }}/hunt/playbooks/c2-beaconing/), [Persistence]({{ site.baseurl }}/hunt/playbooks/persistence/).
+
+{% include playbook-footer.html %}

@@ -5,10 +5,12 @@ Sources
   * hunt/playbooks/*.md       front matter `attack: [T1234, T1234.001]`
   * research/sigma/*.yml      `tags: [attack.t1234, ...]`
   * _posts/*.md, _ctf/*.md    front matter `attack: [...]` (write-ups)
+  * hunt/packs/*.md           front matter `attack: [...]`, `playbooks: [...]` (scenario packs)
+  * hunt/hypotheses.md        H-xxx rows, matched to playbooks by the link in the last column
   * _data/attack.yml          technique names, tactic membership, planned gaps
 
 Outputs
-  * _data/coverage.yml                               summary counts + per-tactic rows (for Liquid)
+  * _data/coverage.yml                               summary counts, per-tactic rows, per-playbook rules/hypotheses (for Liquid)
   * _includes/coverage-heatmap.html                   the heatmap + per-tactic tables (static HTML)
   * research/mitre-mapping/hunt-sage-navigator-layer.json   importable into ATT&CK Navigator
   * _includes/sigma-rules-table.html                 rule index tables for research/sigma/
@@ -98,7 +100,7 @@ def collect() -> tuple[dict, dict, list[str]]:
             if check(tid, r.name):
                 cov[tid]["rules"].append({"title": data["title"], "url": f"/research/sigma/{r.name}", "level": data.get("level"), "status": data.get("status")})
 
-    for p in sorted(list((ROOT / "_posts").glob("*.md")) + list((ROOT / "_ctf").glob("*.md"))):
+    for p in sorted(list((ROOT / "_posts").glob("*.md")) + list((ROOT / "_ctf").glob("*.md")) + list((ROOT / "hunt" / "packs").glob("*.md"))):
         fm = front_matter(p)
         ids = norm_ids(fm.get("attack"))
         if not ids:
@@ -106,6 +108,9 @@ def collect() -> tuple[dict, dict, list[str]]:
         if p.parent.name == "_posts":
             url = fm.get("permalink") or "/blog/" + re.sub(r"^\d{4}-\d{2}-\d{2}-", "", p.stem) + "/"
             kind = "post"
+        elif p.parent.name == "packs":
+            url = fm.get("permalink") or f"/hunt/packs/{p.stem}/"
+            kind = "pack"
         else:
             url = fm.get("permalink") or f"/ctf/{p.stem}/"
             kind = "ctf"
@@ -117,6 +122,52 @@ def collect() -> tuple[dict, dict, list[str]]:
         if t.get("planned") and tid in cov:
             errors.append(f"_data/attack.yml: {tid} is marked planned but content references it; remove `planned`")
     return cov, known, errors
+
+
+HYP_RE = re.compile(r"^\|\s*(H-\d{3})\s*\|.*\|\s*(.*?)\s*\|\s*$")
+LINK_RE = re.compile(r"\]\(\{\{\s*site\.baseurl\s*\}\}(/hunt/playbooks/[^)#]+/)")
+
+
+def hypotheses_by_playbook() -> dict[str, list[str]]:
+    """H-ids per playbook permalink, from the link in the last column of each row in hunt/hypotheses.md."""
+    out: dict[str, list[str]] = defaultdict(list)
+    for line in (ROOT / "hunt" / "hypotheses.md").read_text(encoding="utf-8").splitlines():
+        m = HYP_RE.match(line)
+        if not m:
+            continue
+        for url in LINK_RE.findall(m.group(2)):
+            if m.group(1) not in out[url]:
+                out[url].append(m.group(1))
+    return out
+
+
+def playbook_rows(cov: dict) -> list[dict]:
+    """One row per playbook: front matter + the Sigma rules and hypotheses mapped to it."""
+    hyps = hypotheses_by_playbook()
+    rows = []
+    for p in sorted((ROOT / "hunt" / "playbooks").glob("*.md")):
+        fm = front_matter(p)
+        url = fm.get("permalink", f"/hunt/playbooks/{p.stem}/")
+        rules: list[dict] = []
+        seen = set()
+        for tid in norm_ids(fm.get("attack")):
+            for r in cov.get(tid, {}).get("rules", []):
+                if r["url"] not in seen:
+                    seen.add(r["url"])
+                    rules.append(r)
+        rows.append({
+            "slug": p.stem,
+            "title": re.sub(r"^Playbook:\s*", "", fm.get("title", p.stem)),
+            "url": url,
+            "tactic": fm.get("tactic", ""),
+            "difficulty": fm.get("difficulty", 2),
+            "timebox": fm.get("timebox", ""),
+            "data": list(fm.get("data") or []),
+            "attack": norm_ids(fm.get("attack")),
+            "rules": sorted(rules, key=lambda r: r["title"]),
+            "hypotheses": hyps.get(url, []),
+        })
+    return sorted(rows, key=lambda r: r["title"].lower())
 
 
 def status_of(tid: str, c: dict, known: dict) -> str:
@@ -153,13 +204,18 @@ def build() -> tuple[dict, str, dict, list[str]]:
             if key in rows_by_tactic:
                 rows_by_tactic[key].append(row)
 
+    pb_rows = playbook_rows(cov)
+    hyp_count = sum(1 for line in (ROOT / "hunt" / "hypotheses.md").read_text(encoding="utf-8").splitlines() if HYP_RE.match(line))
     data = {
         "generated_by": "scripts/build_coverage.py (do not edit by hand)",
-        "summary": {"techniques": len(seen_ids), "rules": len(RULES), "playbooks": len(list((ROOT / "hunt" / "playbooks").glob("*.md"))), **summary},
+        "summary": {"techniques": len(seen_ids), "rules": len(RULES), "playbooks": len(pb_rows),
+                    "packs": len(list((ROOT / "hunt" / "packs").glob("*.md"))), "hypotheses": hyp_count,
+                    "cheatsheets": len(list((ROOT / "scripts" / "cheatsheets").glob("*.md"))), **summary},
         "tactics": [
             {"id": t["id"], "name": t["name"], "key": t["key"], "techniques": rows_by_tactic[t["key"]]}
             for t in tactics
         ],
+        "playbooks": pb_rows,
     }
     return data, render_html(data), render_layer(data), errors
 
@@ -174,7 +230,7 @@ def render_html(data: dict) -> str:
     out.append('<div class="hs-legend">'
                '<span class="l-full">Sigma rule (+ playbook)</span>'
                '<span class="l-hunt">Playbook only</span>'
-               '<span class="l-note">Write-up only</span>'
+               '<span class="l-note">Write-up or hunt pack only</span>'
                '<span class="l-gap">Planned</span></div>')
     out.append('<div class="hs-heatmap hs-no-attack-links">')
     for t in data["tactics"]:
@@ -203,7 +259,7 @@ def render_html(data: dict) -> str:
         for r in t["techniques"]:
             parts = [link(x["url"], "Sigma: " + x["title"]) for x in r["rules"]]
             parts += [link(x["url"], "Playbook: " + x["title"]) for x in r["playbooks"]]
-            parts += [link(x["url"], ("CTF: " if x["kind"] == "ctf" else "Post: ") + x["title"]) for x in r["notes"]]
+            parts += [link(x["url"], {"ctf": "CTF: ", "pack": "Pack: ", "post": "Post: "}.get(x["kind"], "Post: ") + x["title"]) for x in r["notes"]]
             content = " · ".join(parts) if parts else "-"
             out.append(f'<tr><td>{escape(r["name"])}</td><td><code>{r["id"]}</code></td>'
                        f'<td title="{r["label"]}">{r["icon"]}</td><td>{content}</td></tr>')

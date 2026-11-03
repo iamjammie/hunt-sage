@@ -1,0 +1,45 @@
+title: Network Share Enumeration Tooling on the Command Line
+id: f4a6c2d8-7b19-4e3a-9c5f-2d8e1a0b6f34
+status: experimental
+description: |
+  Detects command lines that enumerate network shares, either with built-in utilities
+  (net view / net share) and PowerShell cmdlets (Get-SmbShare, Find-DomainShare,
+  Invoke-ShareFinder) or with named offensive tooling (SharpShares, Snaffler, smbmap,
+  NetExec --shares). Bursts from a workstation are a Discovery signal.
+references:
+  - https://attack.mitre.org/techniques/T1135/
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.discovery
+  - attack.t1135
+  - attack.t1083
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_net:
+    Image|endswith:
+      - '\net.exe'
+      - '\net1.exe'
+    CommandLine|contains:
+      - ' view'
+      - ' share'
+  selection_powershell:
+    CommandLine|contains:
+      - 'Get-SmbShare'
+      - 'Find-DomainShare'
+      - 'Invoke-ShareFinder'
+      - 'Get-NetShare'
+  selection_tooling:
+    CommandLine|contains:
+      - 'SharpShares'
+      - 'Snaffler'
+      - 'smbmap'
+      - '--shares'
+      - 'ShareFinder'
+  condition: 1 of selection_*
+falsepositives:
+  - Inventory, backup and vulnerability-scanning tools that enumerate shares
+  - Administrators mapping or auditing shares during maintenance
+level: medium

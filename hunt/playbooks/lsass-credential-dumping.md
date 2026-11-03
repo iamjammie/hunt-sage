@@ -9,13 +9,9 @@ timebox: "3-4 hours"
 data: [sysmon, edr, windows-security]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1003.001 (LSASS Memory), T1003.002/.004 (SAM/LSA secrets), T1003.003 (NTDS) |
-| **Tactic** | Credential Access |
-| **Data** | Sysmon 10 (ProcessAccess) targeting `lsass.exe`; Sysmon 11 (FileCreate); Sysmon 1; EDR process-access telemetry; Security 4656/4663 if LSASS SACL set |
-| **Time-box** | 3-4 hours |
-| **Difficulty** | ★★☆ |
+{% include playbook-meta.html %}
+
+**Data used:** Sysmon 10 (ProcessAccess) targeting `lsass.exe`; Sysmon 11 (FileCreate); Sysmon 1; EDR process-access telemetry; Security 4656/4663 if LSASS SACL set
 
 ## Hypothesis
 
@@ -115,3 +111,5 @@ An unrecognised or user-path process opens LSASS with read access, a dump file a
 - Emulate: `Invoke-AtomicTest T1003.001` in the lab (disable or allowlist your lab EDR appropriately).
 - Detection: [LSASS access]({{ site.baseurl }}/research/sigma/T1003.001-lsass-access-suspicious.yml)
 - Hardening: enable **LSA protection (RunAsPPL)**, **Credential Guard**, ASR rule *Block credential stealing from LSASS*, remove local admin, limit WDigest (`UseLogonCredential=0`), reduce privileged logons to workstations (tiering).
+
+{% include playbook-footer.html %}

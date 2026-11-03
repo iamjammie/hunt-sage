@@ -9,13 +9,9 @@ timebox: "3-5 hours"
 data: [windows-security, edr, sysmon, powershell]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1087.002 (Domain Account Discovery), T1069.002 (Domain Groups), T1482 (Domain Trust Discovery), T1018 (Remote System Discovery), T1016 (System Network Configuration Discovery) |
-| **Tactic** | Discovery |
-| **Data** | Process creation with command line (4688 / Sysmon 1 / EDR); DC Security log 4661, 4662, 4798/4799, 5145; LDAP query logging (DC 1644 or Defender for Identity `IdentityQueryEvents`); Sysmon 3; Entra sign-in and audit logs for AzureHound |
-| **Time-box** | 3-5 hours |
-| **Difficulty** | ★★☆ |
+{% include playbook-meta.html %}
+
+**Data used:** Process creation with command line (4688 / Sysmon 1 / EDR); DC Security log 4661, 4662, 4798/4799, 5145; LDAP query logging (DC 1644 or Defender for Identity `IdentityQueryEvents`); Sysmon 3; Entra sign-in and audit logs for AzureHound
 
 ## Background
 
@@ -200,4 +196,6 @@ Any decoy read; `SharpHound`/`AzureHound`/`AdFind` by name from a non-security a
 - Detection: [AD enumeration tooling command line]({{ site.baseurl }}/research/sigma/T1087.002-ad-enumeration-tooling-command-line.yml), [SMB session enumeration burst]({{ site.baseurl }}/research/sigma/T1018-session-enumeration-burst-smb.yml)
 - Hardening: `NetCease` (restrict `NetSessionEnum` to admins) and `SAMRi10` (restrict remote SAM to admins; Windows 10 1607+ default policy "Network access: Restrict clients allowed to make remote calls to SAM"); remove Authenticated Users read on sensitive attributes where feasible; tiered admin model so admin sessions never appear on workstations; honey accounts and honey SPNs; alert on 4798/4799 fan-out; conditional access and device-code flow restrictions for Graph.
 
-See also: [Kerberoasting]({{ site.baseurl }}/hunt/playbooks/kerberoasting/), [Lateral movement]({{ site.baseurl }}/hunt/playbooks/lateral-movement/), [DCSync]({{ site.baseurl }}/hunt/playbooks/dcsync/), [Active Directory attacks cheat sheet]({{ site.baseurl }}/cheatsheets/active-directory-attacks.pdf).
+See also: [Kerberoasting]({{ site.baseurl }}/hunt/playbooks/kerberoasting/), [Lateral movement]({{ site.baseurl }}/hunt/playbooks/lateral-movement/), [DCSync]({{ site.baseurl }}/hunt/playbooks/dcsync/), [Active Directory attacks cheat sheet]({{ site.baseurl }}/cheatsheets/active-directory-attacks/).
+
+{% include playbook-footer.html %}

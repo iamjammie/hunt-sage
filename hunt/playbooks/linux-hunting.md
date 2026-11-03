@@ -9,15 +9,11 @@ timebox: "3-6 hours"
 data: [linux-auditd, zeek, edr]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1059.004 (Unix Shell), T1053.003 (Cron), T1543.002 (Systemd Service), T1098.004 (SSH Authorized Keys), T1574.006 (LD_PRELOAD), T1136.001, T1021.004 (SSH), T1070.003/.004 (history/file deletion), T1611 (container escape) |
-| **Tactics** | Execution, Persistence, Lateral Movement, Defense Evasion |
-| **Data** | auditd (`execve`, file watches), `/var/log/auth.log` or `secure`, journald, syslog; EDR for Linux/eBPF; osquery; Zeek |
-| **Time-box** | 3-6 hours |
-| **Difficulty** | ★★☆ |
+{% include playbook-meta.html %}
 
-Linux telemetry is often the weakest in an enterprise. Hunt #0 is *confirm you have `execve` auditing or an EDR on your Linux servers*. See [Linux logs & auditd]({{ site.baseurl }}/cheatsheets/linux-logs-auditd.pdf).
+**Data used:** auditd (`execve`, file watches), `/var/log/auth.log` or `secure`, journald, syslog; EDR for Linux/eBPF; osquery; Zeek
+
+Linux telemetry is often the weakest in an enterprise. Hunt #0 is *confirm you have `execve` auditing or an EDR on your Linux servers*. See [Linux logs & auditd]({{ site.baseurl }}/cheatsheets/linux-logs-auditd/).
 
 ## Hypothesis
 
@@ -140,3 +136,5 @@ Reverse-shell patterns, unexplained UID 0 accounts or SSH keys, `ld.so.preload`,
 - Emulate: Atomic Red Team Linux tests (`T1053.003`, `T1059.004`, `T1098.004`, `T1574.006`) in a throwaway VM.
 - Detection: [Reverse shell command lines]({{ site.baseurl }}/research/sigma/T1059.004-linux-reverse-shell.yml)
 - Hardening: SSH key management and `AuthorizedKeysFile` restrictions, disable password SSH, `noexec` on `/tmp` `/dev/shm`, immutable audit rules (`-e 2`), centralised auth/auditd logs, EDR on Linux.
+
+{% include playbook-footer.html %}

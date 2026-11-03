@@ -1,0 +1,65 @@
+{% comment %}
+Playbook footer: detections and hypotheses mapped to this playbook (from the generated coverage data),
+the hunt packs that use it, a run checklist, and previous/next navigation through the library.
+{% endcomment %}
+{% assign meta = site.data.coverage.playbooks | where: "url", page.permalink | first %}
+{% assign slug = page.permalink | remove: "/hunt/playbooks/" | remove: "/" %}
+{% assign playbooks = site.pages | where_exp: "p", "p.permalink contains '/hunt/playbooks/'" | sort: "title" %}
+{% assign packs = site.pages | where: "pack", true | sort: "title" %}
+
+<h2 id="detections-and-next-steps">Detections and next steps</h2>
+
+<div class="hs-pbfoot hs-no-attack-links">
+  <div class="hs-pbfoot__col">
+    <h3>Sigma rules for these techniques</h3>
+    {% if meta and meta.rules.size > 0 %}
+    <ul class="hs-pbfoot__list">
+      {% for r in meta.rules %}<li><a href="{{ r.url | relative_url }}">{{ r.title }}</a> <span class="hs-chip">{{ r.level }}</span> <span class="hs-chip hs-chip--muted">{{ r.status }}</span></li>{% endfor %}
+    </ul>
+    {% else %}
+    <p>No Sigma rule covers these techniques yet. When the hunt produces a reliable query, turn it into one: see <a href="{{ '/learn/detection-engineering/' | relative_url }}">Detection engineering</a> and the <a href="{{ '/research/sigma/' | relative_url }}">rule index</a>.</p>
+    {% endif %}
+    <p class="hs-pbfoot__more"><a href="{{ '/research/mitre-mapping/' | relative_url }}">Coverage map</a> · <a href="{{ '/research/sigma/' | relative_url }}">All rules</a></p>
+  </div>
+  <div class="hs-pbfoot__col">
+    <h3>Hypotheses that use this playbook</h3>
+    {% if meta and meta.hypotheses.size > 0 %}
+    <ul class="hs-pbfoot__chips">
+      {% for h in meta.hypotheses %}<li><a class="hs-chip hs-chip--green" href="{{ '/hunt/hypotheses/' | relative_url }}?q={{ h }}" title="Open {{ h }} in the hypothesis library">{{ h }}</a></li>{% endfor %}
+    </ul>
+    <p class="hs-pbfoot__more">Copy one into the <a href="{{ '/templates/' | relative_url }}#hunt-hypothesis-card">hypothesis card</a> before you start.</p>
+    {% else %}
+    <p>No library hypothesis points here yet; write your own in the <a href="{{ '/templates/' | relative_url }}#hunt-hypothesis-card">hypothesis card</a> and propose it via a pull request.</p>
+    {% endif %}
+    {% assign used = "" %}{% for pk in packs %}{% if pk.playbooks contains slug %}{% assign used = used | append: "x" %}{% endif %}{% endfor %}
+    {% if used != "" %}
+    <h3>Part of these hunt packs</h3>
+    <ul class="hs-pbfoot__list">
+      {% for pk in packs %}{% if pk.playbooks contains slug %}<li><a href="{{ pk.permalink | relative_url }}">{{ pk.title | remove_first: "Hunt Pack: " }}</a></li>{% endif %}{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</div>
+
+<details class="hs-runlist">
+  <summary>Run this hunt: the five-line checklist</summary>
+  <ol>
+    <li>Write the hypothesis on the <a href="{{ '/templates/' | relative_url }}#hunt-hypothesis-card">hypothesis card</a> with scope, success and failure criteria and the time-box above.</li>
+    <li>Confirm each telemetry source listed at the top is actually present for the window you care about (a query on a missing log is not a negative result).</li>
+    <li>Run the steps in order; stack first, then look at the long tail. Record every false positive you classify.</li>
+    <li>Triage with the table above; escalate using the criteria, hand IR the <a href="{{ '/templates/' | relative_url }}#incident-response-hand-off">hand-off template</a>.</li>
+    <li>Close with the <a href="{{ '/templates/' | relative_url }}#hunt-report">hunt report</a>: findings, gaps, tuning notes, and the detection or hardening ticket that makes this hunt unnecessary next time.</li>
+  </ol>
+</details>
+
+<nav class="hs-pager" aria-label="Playbook navigation">
+  {% assign prev = nil %}{% assign next = nil %}{% assign found = false %}
+  {% for p in playbooks %}
+    {% if found and next == nil %}{% assign next = p %}{% endif %}
+    {% if p.permalink == page.permalink %}{% assign found = true %}{% endif %}
+    {% unless found %}{% assign prev = p %}{% endunless %}
+  {% endfor %}
+  {% if prev %}<a class="hs-pager__link hs-pager__link--prev" href="{{ prev.permalink | relative_url }}"><small>Previous playbook</small>{{ prev.title | remove_first: "Playbook: " }}</a>{% else %}<span></span>{% endif %}
+  <a class="hs-pager__link hs-pager__link--up" href="{{ '/hunt/' | relative_url }}"><small>Library</small>All playbooks</a>
+  {% if next %}<a class="hs-pager__link hs-pager__link--next" href="{{ next.permalink | relative_url }}"><small>Next playbook</small>{{ next.title | remove_first: "Playbook: " }}</a>{% else %}<span></span>{% endif %}
+</nav>

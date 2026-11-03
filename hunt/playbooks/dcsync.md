@@ -9,13 +9,9 @@ timebox: "2 hours"
 data: [windows-security, zeek]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1003.006 (DCSync) |
-| **Tactic** | Credential Access |
-| **Data** | DC Security log: 4662 (operation on an AD object) with *Audit Directory Service Access*; network: DRSUAPI RPC (Zeek `dce_rpc.log`) |
-| **Time-box** | 2 hours |
-| **Difficulty** | ★★☆ |
+{% include playbook-meta.html %}
+
+**Data used:** DC Security log: 4662 (operation on an AD object) with *Audit Directory Service Access*; network: DRSUAPI RPC (Zeek `dce_rpc.log`)
 
 ## Background
 
@@ -102,3 +98,5 @@ Any non-DC, non-allow-listed source performs replication. This implies **Domain 
 - Emulate: `Invoke-AtomicTest T1003.006`
 - Detection: [DCSync replication from non-DC]({{ site.baseurl }}/research/sigma/T1003.006-dcsync-replication.yml)
 - Hardening: minimise replication rights; tiered admin model; monitor ACL changes on the domain root; protect/rotate `krbtgt` regularly.
+
+{% include playbook-footer.html %}

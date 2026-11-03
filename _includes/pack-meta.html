@@ -1,0 +1,18 @@
+{% comment %}Header card for hunt packs: duration, playbooks chained, technique count.{% endcomment %}
+{% assign playbooks = site.pages | where_exp: "p", "p.permalink contains '/hunt/playbooks/'" %}
+<div class="hs-pbmeta hs-pbmeta--pack hs-no-attack-links">
+  <div class="hs-pbmeta__grid">
+    <div class="hs-pbmeta__item"><span class="hs-pbmeta__label">Effort</span><span class="hs-pbmeta__value">{{ page.duration }}</span></div>
+    <div class="hs-pbmeta__item"><span class="hs-pbmeta__label">Playbooks chained</span><span class="hs-pbmeta__value">{{ page.playbooks | size }}</span></div>
+    <div class="hs-pbmeta__item"><span class="hs-pbmeta__label">Techniques</span><span class="hs-pbmeta__value">{{ page.attack | size }} on the <a href="{{ '/research/mitre-mapping/' | relative_url }}">coverage map</a></span></div>
+    <div class="hs-pbmeta__item"><span class="hs-pbmeta__label">Output</span><span class="hs-pbmeta__value"><a href="{{ '/templates/' | relative_url }}#hunt-report">Hunt report</a> + detections</span></div>
+  </div>
+  <div class="hs-pbmeta__row">
+    <span class="hs-pbmeta__label">Playbooks</span>
+    <ul class="hs-pbmeta__chips">
+      {% for slug in page.playbooks %}{% assign purl = "/hunt/playbooks/" | append: slug | append: "/" %}{% assign pb = playbooks | where: "permalink", purl | first %}
+      <li><a class="hs-chip hs-chip--data" href="{{ purl | relative_url }}">{{ pb.title | default: slug | remove_first: "Playbook: " }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

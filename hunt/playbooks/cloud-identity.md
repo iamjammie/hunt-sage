@@ -9,13 +9,9 @@ timebox: "1-2 days"
 data: [entra-id, aws-cloudtrail, email]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1078.004 (Cloud Accounts), T1110 (Brute Force / Password Spray), T1556 (Modify Auth Process), T1528 (Steal App Access Token), T1098.001/.003 (Additional creds / roles), T1114.003 (Email Forwarding Rule), T1566 (Phishing; AiTM), T1537 (Transfer to Cloud Account), T1530 (Data from Cloud Storage) |
-| **Tactics** | Initial Access, Persistence, Privilege Escalation, Credential Access, Exfiltration |
-| **Data** | Entra ID: SigninLogs, AADNonInteractiveUserSignInLogs, AuditLogs; M365 Unified Audit (OfficeActivity / CloudAppEvents); AWS CloudTrail (management + S3 data events), GuardDuty, VPC Flow Logs |
-| **Time-box** | 1-2 days |
-| **Difficulty** | ★★★ |
+{% include playbook-meta.html %}
+
+**Data used:** Entra ID: SigninLogs, AADNonInteractiveUserSignInLogs, AuditLogs; M365 Unified Audit (OfficeActivity / CloudAppEvents); AWS CloudTrail (management + S3 data events), GuardDuty, VPC Flow Logs
 
 Identity is the new perimeter. Most cloud intrusions begin with a **valid account**, not malware, and so the hunt is about *sessions, tokens, roles and consents*.
 
@@ -146,3 +142,5 @@ Risky sign-in followed by persistence (MFA method, consent, inbox rule, key, rol
 - Emulate with Atomic Red Team's cloud tests (`T1098.003`, `T1078.004`, AWS and Azure suites) or [Stratus Red Team](https://github.com/DataDog/stratus-red-team) in a **sandbox** account/tenant.
 - Detection: build analytics rules in Sentinel / CloudWatch / GuardDuty custom rules for the events above; many are one-line atomic rules.
 - Hardening: phishing-resistant MFA (FIDO2/passkeys), Conditional Access with compliant-device + token protection, block legacy auth, restrict user consent, PIM with approval for admin roles, IMDSv2, least-privilege IAM, SCPs preventing log tampering, CloudTrail to a separate log-archive account with object lock.
+
+{% include playbook-footer.html %}

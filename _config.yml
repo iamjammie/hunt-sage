@@ -71,6 +71,7 @@ defaults:
       layout: single
       toc: true
       toc_sticky: true
+      track_progress: true
       sidebar:
         nav: "learn"
   - scope:

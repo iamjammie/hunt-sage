@@ -1,0 +1,60 @@
+title: Suspicious Inbox Rule Hiding or Deleting Mail
+id: 43c15e47-03b2-4c9c-b1ad-13678049bb8a
+status: experimental
+description: |
+  Detects Exchange Online inbox rules that delete messages, mark them as read or move them to
+  folders users rarely open (RSS Feeds, Archive, Conversation History, Junk, Deleted Items), or that
+  key on payment and security-related subject words. Attackers who have taken over a mailbox for
+  business email compromise create such rules to hide replies from the real owner.
+references:
+  - https://attack.mitre.org/techniques/T1564/008/
+  - https://learn.microsoft.com/en-us/microsoft-365/security/office-365-security/detect-and-remediate-outlook-rules-forms-attack
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.defense_evasion
+  - attack.t1564.008
+  - attack.collection
+  - attack.t1114
+logsource:
+  product: m365
+  service: exchange
+detection:
+  selection_operation:
+    eventSource: 'Exchange'
+    eventName:
+      - 'New-InboxRule'
+      - 'Set-InboxRule'
+      - 'UpdateInboxRules'
+  selection_hide:
+    Parameters|contains:
+      - 'DeleteMessage'
+      - 'MarkAsRead'
+      - 'SoftDeleteMessage'
+      - 'StopProcessingRules'
+  selection_folder:
+    Parameters|contains:
+      - 'RSS Feeds'
+      - 'RSS Subscriptions'
+      - 'Conversation History'
+      - 'Archive'
+      - 'Junk Email'
+      - 'Deleted Items'
+      - 'Notes'
+  selection_keywords:
+    Parameters|contains:
+      - 'invoice'
+      - 'payment'
+      - 'wire'
+      - 'bank'
+      - 'remit'
+      - 'password'
+      - 'hacked'
+      - 'suspicious'
+      - 'phish'
+  condition: selection_operation and (selection_hide or selection_folder or selection_keywords)
+falsepositives:
+  - Users who genuinely file newsletters to RSS or Archive folders (rare, and the rule name is usually descriptive)
+  - Help-desk staff cleaning up mailboxes after a phishing wave
+  - Mailbox migration tooling that rewrites existing rules (UpdateInboxRules bursts from a service account)
+level: medium

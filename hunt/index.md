@@ -1,7 +1,7 @@
 ---
 title: "Hunt Playbook Library"
 permalink: /hunt/
-excerpt: "Twenty field-ready hunt playbooks: hypothesis, data, queries (KQL + SPL), triage, false positives, escalation, validation and hardening."
+excerpt: "Twenty-five field-ready hunt playbooks: hypothesis, data, queries (KQL + SPL), triage, false positives, escalation, validation and hardening. Plus hunt packs that chain them and a finder that matches them to your telemetry."
 classes: wide
 toc: false
 ---
@@ -18,7 +18,11 @@ Each playbook is a self-contained, repeatable hunt. They follow the same structu
 
 > **Before you start:** confirm the [data is actually being collected]({{ site.baseurl }}/learn/data-and-telemetry/). A query that returns nothing on a missing log source is not a negative result. Query field names vary by platform, parser and add-on version, so treat the queries as well-tested starting points and adapt them to your schema.
 
-Need a hypothesis first? Pick one from the [hypothesis library]({{ site.baseurl }}/hunt/hypotheses/). Need a query pattern rather than a full hunt? Use the [query index]({{ site.baseurl }}/hunt/query-index/).
+<div class="hs-cards hs-cards--3 hs-no-attack-links">
+  <article class="hs-card"><h3><a href="{{ '/hunt/finder/' | relative_url }}">Playbook finder</a></h3><p class="hs-card__excerpt">Tick the telemetry you collect; see which playbooks you can run today and which log source would unlock the most hunts.</p></article>
+  <article class="hs-card"><h3><a href="{{ '/hunt/packs/' | relative_url }}">Hunt packs</a></h3><p class="hs-card__excerpt">{{ site.data.coverage.summary.packs }} scenario campaigns (ransomware, AD dominance, BEC, web compromise, insider theft, Linux intrusion) that chain the playbooks into a one-week plan.</p></article>
+  <article class="hs-card"><h3><a href="{{ '/hunt/hypotheses/' | relative_url }}">Hypothesis library</a></h3><p class="hs-card__excerpt">{{ site.data.coverage.summary.hypotheses }} numbered hypotheses mapped to ATT&CK, data and playbook, with a live filter. Query patterns live in the <a href="{{ '/hunt/query-index/' | relative_url }}">query index</a>.</p></article>
+</div>
 
 ## Playbooks by tactic
 
@@ -35,18 +39,16 @@ Difficulty reflects analytical complexity and required data, not importance. Pla
 
 ### Data source keys
 
-| Key | Meaning |
-|---|---|
-| `windows-security` | Windows Security / System event logs (4624, 4688, 4769, 7045, ...) |
-| `sysmon` | Sysmon (1, 3, 7, 8, 10, 11, 12/13, 22) |
-| `edr` | Any EDR with process, file, registry and network telemetry (Defender tables used as the example) |
-| `powershell` | PowerShell script block / module logging (4104, 4103) |
-| `dns`, `proxy`, `firewall`, `zeek` | Network telemetry |
-| `linux-auditd` | auditd, journald, auth logs |
-| `entra-id`, `aws-cloudtrail`, `email` | Identity, cloud and mail telemetry |
-| `adcs`, `iis` | Certificate Services and web-server logs |
+The `Data` column uses the keys below; the same keys drive the [playbook finder]({{ site.baseurl }}/hunt/finder/).
+
+| Key | Source | What it covers |
+|---|---|---|
+{% for ds in site.data.datasources %}| `{{ ds.key }}` | [{{ ds.label }}]({{ ds.how | relative_url }}) | {{ ds.description }} |
+{% endfor %}
 
 ## Suggested first five hunts
+
+New to the library? Run these in order; each one teaches a technique the next one relies on. If you are not sure your logs support them, the [finder]({{ site.baseurl }}/hunt/finder/) will tell you.
 
 1. [PowerShell abuse]({{ site.baseurl }}/hunt/playbooks/powershell-abuse/): high-yield, simple data.
 2. [Persistence]({{ site.baseurl }}/hunt/playbooks/persistence/): stacking is easy and instructive.
@@ -54,7 +56,7 @@ Difficulty reflects analytical complexity and required data, not importance. Pla
 4. [LSASS credential dumping]({{ site.baseurl }}/hunt/playbooks/lsass-credential-dumping/): learn about access masks.
 5. [Lateral movement]({{ site.baseurl }}/hunt/playbooks/lateral-movement/): ties it all together.
 
-Then go deeper: [AD discovery & BloodHound]({{ site.baseurl }}/hunt/playbooks/ad-discovery-bloodhound/) to catch the recon that precedes all of the above, and [AD CS abuse]({{ site.baseurl }}/hunt/playbooks/adcs-abuse/) for the privilege-escalation path most environments have never audited.
+Then go deeper: [AD discovery & BloodHound]({{ site.baseurl }}/hunt/playbooks/ad-discovery-bloodhound/) to catch the recon that precedes all of the above, [AD CS abuse]({{ site.baseurl }}/hunt/playbooks/adcs-abuse/) for the privilege-escalation path most environments have never audited, and [business email compromise]({{ site.baseurl }}/hunt/playbooks/business-email-compromise/) for the intrusion that never touches an endpoint. When you are ready for a campaign, pick a [hunt pack]({{ site.baseurl }}/hunt/packs/).
 
 ## Run a hunt in 60 minutes
 
@@ -70,7 +72,7 @@ When you only have an hour, use this cut-down loop:
 
 ## Related
 
-- [Hypothesis library]({{ site.baseurl }}/hunt/hypotheses/) and [query index]({{ site.baseurl }}/hunt/query-index/)
+- [Hunt packs]({{ site.baseurl }}/hunt/packs/), the [playbook finder]({{ site.baseurl }}/hunt/finder/), the [hypothesis library]({{ site.baseurl }}/hunt/hypotheses/) and the [query index]({{ site.baseurl }}/hunt/query-index/)
 - [Sigma rules]({{ site.baseurl }}/research/sigma/) that productionise these hunts
 - [Cheat sheets]({{ site.baseurl }}/cheatsheets/) for event IDs and query syntax
 - [Hunt report template]({{ site.baseurl }}/templates/#hunt-report)

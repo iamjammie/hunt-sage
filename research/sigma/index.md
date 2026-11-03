@@ -15,6 +15,8 @@ All rules follow the [Sigma specification](https://sigmahq.io/docs/basics/rules.
 
 ## All rules
 
+<div class="hs-filter" data-hs-filter data-placeholder="Filter rules: technique id, log source, level, keyword..."></div>
+
 {% include sigma-rules-table.html %}
 
 ## How to use these rules

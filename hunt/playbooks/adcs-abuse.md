@@ -9,13 +9,9 @@ timebox: "1-2 days"
 data: [windows-security, adcs, edr]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1649 (Steal or Forge Authentication Certificates), T1557.001 (LLMNR/NBT-NS Poisoning and SMB Relay, used for ESC8), T1550 (Use Alternate Authentication Material) |
-| **Tactic** | Credential Access / Privilege Escalation / Persistence |
-| **Data** | CA Security log 4886-4889 (requests), 4898-4900 (templates), 4876/4877 (CA backup); DC Security log 4768 (PKINIT), 4624; IIS logs on the CA for `/certsrv/`; client `Microsoft-Windows-CertificateServicesClient-Lifecycle-System`; EDR process creation |
-| **Time-box** | 1-2 days |
-| **Difficulty** | ★★★ |
+{% include playbook-meta.html %}
+
+**Data used:** CA Security log 4886-4889 (requests), 4898-4900 (templates), 4876/4877 (CA backup); DC Security log 4768 (PKINIT), 4624; IIS logs on the CA for `/certsrv/`; client `Microsoft-Windows-CertificateServicesClient-Lifecycle-System`; EDR process creation
 
 ## Background
 
@@ -205,4 +201,6 @@ Any 4886/4887 whose SAN names a privileged account or DC and whose requester is 
 - Detection: [Certificate request with requester-supplied SAN]({{ site.baseurl }}/research/sigma/T1649-certificate-request-with-san-esc1.yml), [AD CS enumeration or abuse tooling]({{ site.baseurl }}/research/sigma/T1649-adcs-enumeration-tooling.yml); pair with [Pass-the-hash]({{ site.baseurl }}/research/sigma/T1550.002-pass-the-hash.yml) for post-`/getcredentials` NTLM use.
 - Hardening: remove `ENROLLEE_SUPPLIES_SUBJECT` from every template with a client-auth EKU or require **CA certificate manager approval**; clear `EDITF_ATTRIBUTESUBJECTALTNAME2`; disable NTLM on web enrolment and CES, enable **Extended Protection for Authentication** with HTTPS only, or remove the web enrolment role; restrict enrolment permissions; enable **strong certificate mapping** (`StrongCertificateBindingEnforcement = 2`, KB5014754) so certificates without the SID extension fail; audit with Locksmith / PSPKIAudit on a schedule and treat the CA as tier 0.
 
-See also: [Kerberoasting]({{ site.baseurl }}/hunt/playbooks/kerberoasting/) for other ticket-based credential access, [DCSync]({{ site.baseurl }}/hunt/playbooks/dcsync/), [Lateral movement]({{ site.baseurl }}/hunt/playbooks/lateral-movement/) for NTLM relay precursors, and the [Active Directory attacks cheat sheet]({{ site.baseurl }}/cheatsheets/active-directory-attacks.pdf).
+See also: [Kerberoasting]({{ site.baseurl }}/hunt/playbooks/kerberoasting/) for other ticket-based credential access, [DCSync]({{ site.baseurl }}/hunt/playbooks/dcsync/), [Lateral movement]({{ site.baseurl }}/hunt/playbooks/lateral-movement/) for NTLM relay precursors, and the [Active Directory attacks cheat sheet]({{ site.baseurl }}/cheatsheets/active-directory-attacks/).
+
+{% include playbook-footer.html %}

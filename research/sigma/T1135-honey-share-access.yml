@@ -1,0 +1,34 @@
+title: Access to a Decoy or Honey Share
+id: a9d3b5e7-1c62-4f08-8b4a-6e2f9c7d0a15
+status: experimental
+description: |
+  Detects any access to a network share designated as a decoy (honey share). No business
+  process should ever touch it, so any 5140 (network share) or 5145 (detailed file share)
+  event naming it is a high-fidelity Discovery/Collection signal. Replace the share names
+  below with the decoy names deployed in your environment before use.
+references:
+  - https://attack.mitre.org/techniques/T1135/
+  - https://attack.mitre.org/techniques/T1039/
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.discovery
+  - attack.t1135
+  - attack.t1039
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID:
+      - 5140
+      - 5145
+    ShareName|contains:
+      - '\HONEY'
+      - 'Finance_Backup'
+      - 'Decoy'
+  condition: selection
+falsepositives:
+  - Backup or audit tooling misconfigured to crawl the decoy share
+  - Security team validation of the decoy (expected, document it)
+level: high

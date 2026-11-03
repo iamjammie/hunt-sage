@@ -9,13 +9,9 @@ timebox: "3-6 hours"
 data: [sysmon, windows-security, edr]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1547.001 (Run keys/Startup), T1053.005 (Scheduled Task), T1543.003 (Windows Service), T1546.003 (WMI subscription), T1546.* (event-triggered execution), T1136 (Create Account), T1574 (hijack execution flow) |
-| **Tactic** | Persistence (and Privilege Escalation) |
-| **Data** | Sysmon 12/13/14 (registry), 11 (file create), 19/20/21 (WMI), 1; Security 4698/4699/4702, 4697/7045, 4720/4732; EDR autoruns inventory |
-| **Time-box** | 3-6 hours |
-| **Difficulty** | ★★☆ |
+{% include playbook-meta.html %}
+
+**Data used:** Sysmon 12/13/14 (registry), 11 (file create), 19/20/21 (WMI), 1; Security 4698/4699/4702, 4697/7045, 4720/4732; EDR autoruns inventory
 
 ## Hypothesis
 
@@ -143,3 +139,5 @@ Persistence points to an unsigned/unknown binary or interpreter script in a user
 - Emulate: `Invoke-AtomicTest T1547.001`, `T1053.005`, `T1543.003`, `T1546.003`
 - Detection: [Run key]({{ site.baseurl }}/research/sigma/T1547.001-run-key-suspicious-value.yml), [Scheduled task]({{ site.baseurl }}/research/sigma/T1053.005-schtasks-suspicious-create.yml), [Service install]({{ site.baseurl }}/research/sigma/T1543.003-suspicious-service-install.yml), [WMI subscription]({{ site.baseurl }}/research/sigma/T1546.003-wmi-event-subscription.yml)
 - Hardening: application control (WDAC/AppLocker); restrict who can create services/tasks remotely; scheduled autoruns baseline (Sysinternals `autorunsc -a * -c -h -s -m`) compared fleet-wide (Velociraptor `Windows.Sys.StartupItems`, osquery `startup_items`, `scheduled_tasks`, `services`).
+
+{% include playbook-footer.html %}
