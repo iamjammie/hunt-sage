@@ -1,0 +1,55 @@
+name: Preview screenshots
+
+# Manual tool: builds the site from a branch, screenshots key pages (desktop, mobile, light theme)
+# and pushes the PNGs to the `preview-screenshots` branch so they can be reviewed without
+# deploying. Useful for design PRs.
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch or commit to screenshot"
+        required: true
+        default: "main"
+
+permissions:
+  contents: write
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - name: Build site
+        run: bundle exec jekyll build
+        env:
+          JEKYLL_ENV: production
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Playwright
+        run: npm i -g playwright@1.47.0 && npx playwright@1.47.0 install --with-deps chromium
+      - name: Serve and screenshot
+        run: |
+          mkdir -p serve/hunt-sage && cp -r _site/. serve/hunt-sage/
+          (cd serve && python3 -m http.server 4173 >/dev/null 2>&1 &)
+          sleep 2
+          mkdir -p shots
+          NODE_PATH=$(npm root -g) node scripts/preview_screenshots.js shots
+      - name: Push screenshots to the preview-screenshots branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          sha=$(git rev-parse --short HEAD)
+          git checkout --orphan preview-screenshots
+          git rm -rfq --cached . && git clean -fdxq -e shots
+          mv shots/* . && rmdir shots
+          echo "Screenshots of ${{ inputs.ref }} @ $sha" > README.md
+          git add -A && git commit -qm "Preview screenshots of ${{ inputs.ref }} @ $sha"
+          git push -f origin preview-screenshots
