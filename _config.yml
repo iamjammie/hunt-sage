@@ -3,6 +3,8 @@ name: "Hunt-Sage"
 description: "One-stop threat hunting hub: theory, hunt playbooks, cheat sheets, labs and detection content"
 url: "https://iamjammie.github.io"
 baseurl: "/hunt-sage"
+repository: "iamjammie/hunt-sage"
+og_image: "/assets/images/social-card.png"
 
 remote_theme: "mmistakes/minimal-mistakes"
 
@@ -17,7 +19,7 @@ search_provider: "lunr"
 author:
   name: "iamjammie"
   avatar: "/assets/images/avatar.png"
-  bio: "Cybersecurity Strategist | Threat hunter | Redefining Detection"
+  bio: "Cybersecurity strategist · threat hunter · detection engineering"
   location: "India"
   links:
     - label: "GitHub"
@@ -31,6 +33,7 @@ author:
       url: "mailto:hunt-sage@gov.in"
 
 plugins:
+  - jekyll-remote-theme
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
@@ -127,6 +130,19 @@ exclude:
   - node_modules
   - vendor
 
-# Sections below get their own sidebar nav (see _data/navigation.yml)
+logo: "/assets/images/logo-mark.png"
+masthead_title: "Hunt-Sage"
 
-logo: "/assets/images/hunt-sage-banner.png"
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/iamjammie/hunt-sage"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/ashok-kumar-5b62819b"
+    - label: "RSS"
+      icon: "fas fa-fw fa-rss"
+      url: "/hunt-sage/feed.xml"
+
+# Sidebar navs are defined in _data/navigation.yml; page scopes above map sections to them.

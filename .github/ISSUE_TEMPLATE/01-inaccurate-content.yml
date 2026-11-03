@@ -1,0 +1,24 @@
+name: "Inaccurate detection guidance"
+description: "A query, event ID, field name, threshold or claim is wrong or misleading."
+title: "[fix] "
+labels: ["bug", "content"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page or file
+      placeholder: "hunt/playbooks/kerberoasting.md, step 2"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      description: Quote the line and say what the correct behaviour/value is, with a source if you have one.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Documentation link, lab output, vendor schema, or the event you observed.

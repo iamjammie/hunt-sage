@@ -13,6 +13,7 @@ skills_tested:
   - EDR log investigation
   - Timeline reconstruction
   - Sigma/KQL query writing
+attack: [T1566.001, T1140, T1087.002, T1039, T1560, T1041]
 ---
 
 > **Difficulty**: Beginner–Intermediate  

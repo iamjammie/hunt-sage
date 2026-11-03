@@ -2,6 +2,11 @@
 title: "Playbook: LSASS Credential Dumping"
 permalink: /hunt/playbooks/lsass-credential-dumping/
 excerpt: "Detect processes reading LSASS memory, MiniDump abuse, and dump files on disk."
+tactic: "Credential Access"
+attack: [T1003.001, T1003.002, T1003.003, T1003.004]
+difficulty: 2
+timebox: "3-4 hours"
+data: [sysmon, edr, windows-security]
 ---
 
 | Field | Detail |

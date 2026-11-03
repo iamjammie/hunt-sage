@@ -2,6 +2,11 @@
 title: "Playbook: Cloud & Identity (Entra ID, M365, AWS)"
 permalink: /hunt/playbooks/cloud-identity/
 excerpt: "Hunt token theft, risky sign-ins, illicit consent grants, mailbox rules, privileged role changes and AWS credential abuse."
+tactic: "Initial Access"
+attack: [T1078.004, T1110, T1556, T1528, T1098.001, T1098.003, T1114.003, T1566]
+difficulty: 3
+timebox: "1-2 days"
+data: [entra-id, aws-cloudtrail, email]
 ---
 
 | Field | Detail |

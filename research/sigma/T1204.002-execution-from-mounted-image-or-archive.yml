@@ -1,0 +1,77 @@
+title: Execution from Extracted Archive, Disk Image Contents or Outlook Attachment Cache
+id: ce139f5b-fdd9-4959-a9e7-65edf44e0806
+status: experimental
+description: |
+  Detects a process whose image lives inside, or whose working directory is, a container that a
+  phished user has just opened: an archive extracted by Explorer, 7-Zip or WinRAR (Temp1_*.zip,
+  \Temp\7z*, \Temp\Rar$*), the contents of an .iso/.img/.vhd/.vhdx file extracted rather than
+  mounted, or the Outlook attachment cache (\Content.Outlook\). Any executable launched from these
+  locations, or a script interpreter / LOLBin started with such a working directory, is a strong
+  delivery artefact. Images that are mounted (not extracted) get a new drive letter and cannot be
+  expressed reliably in Sigma; hunt those with the non-C: drive query in the phishing playbook.
+references:
+  - https://attack.mitre.org/techniques/T1204/002/
+  - https://attack.mitre.org/techniques/T1566/001/
+  - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.execution
+  - attack.initial_access
+  - attack.t1204.002
+  - attack.t1566.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_image_in_container:
+    Image|contains:
+      - '.iso\'
+      - '.img\'
+      - '.vhd\'
+      - '.vhdx\'
+      - '.zip\'
+      - '\Temp\7z'
+      - '\Temp\Rar$'
+      - '\Content.Outlook\'
+  selection_cwd_in_container:
+    CurrentDirectory|contains:
+      - '.iso\'
+      - '.img\'
+      - '.vhd\'
+      - '.vhdx\'
+      - '.zip\'
+      - '\Temp\7z'
+      - '\Temp\Rar$'
+      - '\Content.Outlook\'
+  selection_interpreter:
+    Image|endswith:
+      - '\cmd.exe'
+      - '\powershell.exe'
+      - '\pwsh.exe'
+      - '\wscript.exe'
+      - '\cscript.exe'
+      - '\mshta.exe'
+      - '\rundll32.exe'
+      - '\regsvr32.exe'
+      - '\msiexec.exe'
+      - '\certutil.exe'
+      - '\bitsadmin.exe'
+      - '\curl.exe'
+  filter_installers:
+    Image|endswith:
+      - '\setup.exe'
+      - '\install.exe'
+    ParentImage|endswith: '\explorer.exe'
+    CommandLine|contains: '\Temp\7z'
+  filter_archiver_helpers:
+    Image|endswith:
+      - '\7zG.exe'
+      - '\7zFM.exe'
+      - '\WinRAR.exe'
+  condition: (selection_image_in_container or (selection_cwd_in_container and selection_interpreter)) and not 1 of filter_*
+falsepositives:
+  - Users extracting a legitimate software ZIP and running its installer from the temp folder (the installer filter covers the common names only)
+  - Developers running build scripts from an extracted source archive
+  - Outlook previewing attachments that legitimately spawn helper executables; add the exact image path
+level: medium

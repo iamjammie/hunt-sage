@@ -19,7 +19,7 @@ I'm **Ashok Kumar**, an Air Force veteran and cybersecurity practitioner focused
 Hunt-Sage aims to be a **one-stop threat hunting reference**: the theory you need to think like a hunter, and the practical playbooks, queries, cheat sheets, labs and detection content you need to act like one.
 
 - 📘 [Learn]({{ site.baseurl }}/learn/): theory, frameworks and methodology
-- 🎯 [Hunt]({{ site.baseurl }}/hunt/): 14 field-ready playbooks with KQL and SPL
+- 🎯 [Hunt]({{ site.baseurl }}/hunt/): 20 field-ready playbooks with KQL and SPL, a hypothesis library and a query index
 - 🧾 [Cheat sheets]({{ site.baseurl }}/cheatsheets/), 🧪 [Labs]({{ site.baseurl }}/labs/), 🧬 [Research]({{ site.baseurl }}/research/)
 - 📝 [Blog]({{ site.baseurl }}/blog/) and 🚩 [CTF]({{ site.baseurl }}/ctf/): battle-tested detection patterns and realistic challenges
 

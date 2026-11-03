@@ -1,0 +1,85 @@
+title: Well-Known Hijackable System DLL Loaded from Unusual Path
+id: 774ec6eb-2cd3-4ab3-a02c-4932b25ae2a5
+status: experimental
+description: |
+  Detects an image load of a DLL whose name belongs to Windows (version.dll, wtsapi32.dll,
+  dbghelp.dll, cryptsp.dll, userenv.dll and other names frequently proxied in search-order
+  hijacks and sideloads) from a location other than System32, SysWOW64 or WinSxS. Also catches
+  phantom DLLs (WptsExtensions.dll, wlbsctrl.dll, TSMSISrv.dll, TSVIPSrv.dll) that do not exist
+  on a default install and are loaded by SYSTEM services when planted. Requires Sysmon event 7
+  or equivalent module-load telemetry. Tune by hash and signer for vendors that ship private
+  copies of dbghelp.dll or msimg32.dll.
+references:
+  - https://attack.mitre.org/techniques/T1574/001/
+  - https://hijacklibs.net
+  - https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-search-order
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.persistence
+  - attack.privilege_escalation
+  - attack.defense_evasion
+  - attack.t1574.001
+  - attack.t1574.002
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection:
+    ImageLoaded|endswith:
+      - '\version.dll'
+      - '\wtsapi32.dll'
+      - '\dbghelp.dll'
+      - '\dbgcore.dll'
+      - '\cryptsp.dll'
+      - '\cryptbase.dll'
+      - '\userenv.dll'
+      - '\profapi.dll'
+      - '\winmm.dll'
+      - '\wininet.dll'
+      - '\winhttp.dll'
+      - '\secur32.dll'
+      - '\sspicli.dll'
+      - '\dwmapi.dll'
+      - '\uxtheme.dll'
+      - '\propsys.dll'
+      - '\iphlpapi.dll'
+      - '\netapi32.dll'
+      - '\mpr.dll'
+      - '\msimg32.dll'
+      - '\oleacc.dll'
+      - '\cscapi.dll'
+      - '\dnsapi.dll'
+      - '\edputil.dll'
+      - '\wow64log.dll'
+      - '\wlbsctrl.dll'
+      - '\WptsExtensions.dll'
+      - '\TSMSISrv.dll'
+      - '\TSVIPSrv.dll'
+  filter_windows_dirs:
+    ImageLoaded|startswith:
+      - 'C:\Windows\System32\'
+      - 'C:\Windows\SysWOW64\'
+      - 'C:\Windows\WinSxS\'
+      - 'C:\Windows\SystemTemp\'
+  filter_program_files_signed:
+    ImageLoaded|startswith:
+      - 'C:\Program Files\'
+      - 'C:\Program Files (x86)\'
+    Signed: 'true'
+    SignatureStatus: 'Valid'
+  filter_known_vendor_private_copies:
+    ImageLoaded|contains:
+      - '\Steam\'
+      - '\Windows Kits\'
+      - '\Microsoft Visual Studio\'
+      - '\Microsoft SDKs\'
+      - '\WindowsApps\'
+      - '\Common Files\microsoft shared\'
+    Signed: 'true'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - Software that ships a private, signed copy of dbghelp.dll, msimg32.dll, winmm.dll or version.dll in its install directory (debuggers, games, graphics tools); add exact path and hash exclusions
+  - Developer workstations with Windows SDK or Visual Studio redistributables in non-default paths
+  - Portable applications run from removable media or user profiles; review but expect some volume on developer hosts
+level: medium

@@ -2,6 +2,11 @@
 title: "Playbook: PowerShell Abuse"
 permalink: /hunt/playbooks/powershell-abuse/
 excerpt: "Encoded commands, download cradles, unusual parents and script-block content: the highest-yield first hunt."
+tactic: "Execution"
+attack: [T1059.001, T1027, T1105, T1562.001]
+difficulty: 1
+timebox: "2-4 hours"
+data: [sysmon, windows-security, edr, powershell]
 ---
 
 | Field | Detail |

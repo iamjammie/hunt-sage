@@ -2,6 +2,11 @@
 title: "Playbook: Web Shells"
 permalink: /hunt/playbooks/web-shells/
 excerpt: "Find persistence and command execution via web servers: process lineage, new script files, and access-log anomalies."
+tactic: "Persistence"
+attack: [T1505.003, T1190, T1059.003]
+difficulty: 2
+timebox: "3-5 hours"
+data: [edr, sysmon, iis, zeek]
 ---
 
 | Field | Detail |

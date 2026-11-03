@@ -19,6 +19,7 @@ This is the theory half of Hunt-Sage. Each chapter is short, practical and ends 
 | 6 | [Adversary tradecraft]({{ site.baseurl }}/learn/adversary-tradecraft/) | Think in kill chains and ATT&CK; know what attackers do after they land |
 | 7 | [Detection engineering]({{ site.baseurl }}/learn/detection-engineering/) | Turn a finished hunt into a tested, tuned, versioned detection |
 | 8 | [Building a hunt program]({{ site.baseurl }}/learn/building-a-hunt-program/) | Staff, measure and mature hunting in your organisation |
+| 9 | [Careers & interview prep]({{ site.baseurl }}/learn/career-and-interviews/) | Plan a path into hunting, build a portfolio, and answer the 40 questions interviewers ask |
 | - | [Glossary]({{ site.baseurl }}/learn/glossary/) | Decode the jargon |
 
 ## Suggested tracks
@@ -34,7 +35,11 @@ This is the theory half of Hunt-Sage. Each chapter is short, practical and ends 
 
 **Hunt lead track**
 1. Chapters 1, 2, 6, 8.
-2. Adopt the [hunt templates]({{ site.baseurl }}/templates/) and start a hunt backlog from the [ATT&CK coverage map]({{ site.baseurl }}/research/mitre-mapping/).
+2. Adopt the [hunt templates]({{ site.baseurl }}/templates/) and start a hunt backlog from the [hypothesis library]({{ site.baseurl }}/hunt/hypotheses/) and the [ATT&CK coverage map]({{ site.baseurl }}/research/mitre-mapping/).
+
+**Job-seeker track**
+1. Chapters 1-5, then the [careers chapter]({{ site.baseurl }}/learn/career-and-interviews/) and its 90-day plan.
+2. Publish one hunt report from the [lab]({{ site.baseurl }}/labs/) and one Sigma rule PR as your portfolio.
 
 ## How to use this material responsibly
 

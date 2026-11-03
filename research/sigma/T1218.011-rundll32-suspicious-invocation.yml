@@ -1,0 +1,87 @@
+title: Rundll32 Suspicious Invocation
+id: 8fcbe02d-bf63-46d0-8137-cc6e156c8a09
+status: experimental
+description: |
+  Detects rundll32.exe used in ways that legitimate software rarely needs: started with no
+  arguments (a common injection host for Cobalt Strike and similar frameworks), executing inline
+  script through the javascript: protocol handler, loading a DLL from a user-writable location
+  (Temp, AppData, Users\Public, ProgramData), calling an export by ordinal (#1), or running as a
+  renamed copy where the PE OriginalFileName is RUNDLL32.EXE but the image name is not. Well-known
+  shell handlers (Control Panel, printer UI, Edge and Office helpers) are filtered.
+references:
+  - https://attack.mitre.org/techniques/T1218/011/
+  - https://lolbas-project.github.io/lolbas/Binaries/Rundll32/
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.defense_evasion
+  - attack.execution
+  - attack.t1218.011
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_rundll32:
+    - Image|endswith: '\rundll32.exe'
+    - OriginalFileName: 'RUNDLL32.EXE'
+  selection_no_args:
+    CommandLine|endswith:
+      - '\rundll32.exe'
+      - '\rundll32.exe"'
+      - 'rundll32'
+  selection_javascript:
+    CommandLine|contains:
+      - 'javascript:'
+      - 'vbscript:'
+      - 'RunHTMLApplication'
+  selection_user_writable_dll:
+    CommandLine|contains:
+      - '\Temp\'
+      - '\AppData\'
+      - '\Users\Public\'
+      - '\ProgramData\'
+      - '\Downloads\'
+      - '\Desktop\'
+  selection_ordinal:
+    CommandLine|re: '\.dll[", ]+#\d+'
+  selection_renamed:
+    OriginalFileName: 'RUNDLL32.EXE'
+  image_is_rundll32:
+    Image|endswith: '\rundll32.exe'
+  filter_known_good_handlers:
+    CommandLine|contains:
+      - 'shell32.dll,Control_RunDLL'
+      - 'shell32.dll,OpenAs_RunDLL'
+      - 'shell32.dll,SHCreateLocalServerRunDll'
+      - 'printui.dll,PrintUIEntry'
+      - 'url.dll,FileProtocolHandler'
+      - 'devclient.dll,'
+      - 'inetcpl.cpl'
+      - 'cryptext.dll,CryptExtOpen'
+      - 'AppXDeploymentClient.dll'
+      - 'PhotoViewer.dll'
+  filter_edge_and_office:
+    CommandLine|contains:
+      - '\Microsoft\Edge\Application\'
+      - '\Microsoft\EdgeUpdate\'
+      - '\Microsoft\EdgeWebView\'
+      - '\Microsoft Office\root\'
+      - '\Microsoft\Teams\'
+      - '\Microsoft\OneDrive\'
+      - 'ieframe.dll'
+  filter_defender_and_updates:
+    CommandLine|contains:
+      - '\Windows Defender\'
+      - '\Microsoft\Windows Defender\'
+      - '\Program Files\WindowsApps\'
+      - '\Windows\Installer\'
+  condition: >
+    selection_rundll32
+    and (selection_no_args or selection_javascript or selection_user_writable_dll or selection_ordinal
+         or (selection_renamed and not image_is_rundll32))
+    and not 1 of filter_*
+falsepositives:
+  - Installers and application updaters that stage a DLL in Temp or AppData and register it with rundll32 (OneDrive, Teams and Edge are filtered; add others by exact path)
+  - Legitimate rundll32 with an ordinal export in a few vendor products
+  - Control Panel applets not covered by the handler filter
+level: high

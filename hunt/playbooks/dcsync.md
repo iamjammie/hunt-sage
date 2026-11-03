@@ -2,6 +2,11 @@
 title: "Playbook: DCSync"
 permalink: /hunt/playbooks/dcsync/
 excerpt: "Catch directory replication requests from non-domain-controller accounts."
+tactic: "Credential Access"
+attack: [T1003.006]
+difficulty: 2
+timebox: "2 hours"
+data: [windows-security, zeek]
 ---
 
 | Field | Detail |

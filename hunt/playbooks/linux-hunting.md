@@ -2,6 +2,11 @@
 title: "Playbook: Linux Hunting"
 permalink: /hunt/playbooks/linux-hunting/
 excerpt: "SSH abuse, reverse shells, cron/systemd/SSH-key persistence, LD_PRELOAD, and suspicious execution on Linux servers."
+tactic: "Execution"
+attack: [T1059.004, T1053.003, T1543.002, T1098.004, T1574.006, T1136.001, T1021.004, T1070.003, T1070.004, T1611]
+difficulty: 2
+timebox: "3-6 hours"
+data: [linux-auditd, zeek, edr]
 ---
 
 | Field | Detail |

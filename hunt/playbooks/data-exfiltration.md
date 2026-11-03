@@ -2,6 +2,11 @@
 title: "Playbook: Data Exfiltration"
 permalink: /hunt/playbooks/data-exfiltration/
 excerpt: "Staging, archiving and egress: rclone/MEGA/WinSCP, cloud-storage uploads, unusual volume and protocol abuse."
+tactic: "Exfiltration"
+attack: [T1074, T1560, T1041, T1048, T1567.002, T1537]
+difficulty: 3
+timebox: "1-2 days"
+data: [edr, proxy, firewall, dns, zeek]
 ---
 
 | Field | Detail |

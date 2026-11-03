@@ -6,7 +6,7 @@ Checks (offline, no network needed):
   * required metadata is present and ids are unique UUIDs
   * ATT&CK tags are well formed and the filename technique matches a tag
   * the rule converts with the Splunk and Kusto backends (when installed)
-  * every rule file is listed in research/sigma/index.md
+  * every rule file appears in the generated index (_includes/sigma-rules-table.html; run scripts/build_coverage.py)
 
 Usage: python scripts/validate_rules.py
 """
@@ -50,7 +50,8 @@ def backends():
 def main() -> int:
     errors: list[str] = []
     ids: dict[str, str] = {}
-    index_text = (RULE_DIR / "index.md").read_text(encoding="utf-8")
+    index_file = ROOT / "_includes" / "sigma-rules-table.html"
+    index_text = index_file.read_text(encoding="utf-8") if index_file.exists() else ""
     conv = backends()
     files = sorted(RULE_DIR.glob("*.yml"))
     if not files:
@@ -114,7 +115,7 @@ def main() -> int:
             errors.append(f"{name}: pySigma rejected rule: {type(exc).__name__}: {str(exc)[:160]}")
 
         if name not in index_text:
-            errors.append(f"{name}: not listed in research/sigma/index.md")
+            errors.append(f"{name}: not in the generated rule index (run `python scripts/build_coverage.py`)")
 
     if errors:
         print(f"FAILED: {len(errors)} problem(s)")

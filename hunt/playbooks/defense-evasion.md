@@ -2,6 +2,11 @@
 title: "Playbook: Defense Evasion"
 permalink: /hunt/playbooks/defense-evasion/
 excerpt: "Log clearing, security-tool tampering, masquerading, process injection and timestomping."
+tactic: "Defense Evasion"
+attack: [T1070.001, T1562.001, T1562.002, T1036, T1055, T1070.006]
+difficulty: 2
+timebox: "3-4 hours"
+data: [windows-security, sysmon, powershell, edr]
 ---
 
 | Field | Detail |
