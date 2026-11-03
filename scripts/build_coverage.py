@@ -100,7 +100,7 @@ def collect() -> tuple[dict, dict, list[str]]:
             if check(tid, r.name):
                 cov[tid]["rules"].append({"title": data["title"], "url": f"/research/sigma/{r.name}", "level": data.get("level"), "status": data.get("status")})
 
-    for p in sorted(list((ROOT / "_posts").glob("*.md")) + list((ROOT / "_ctf").glob("*.md")) + list((ROOT / "hunt" / "packs").glob("*.md"))):
+    for p in sorted(list((ROOT / "_posts").glob("*.md")) + list((ROOT / "_ctf").glob("*.md")) + [x for x in (ROOT / "hunt" / "packs").glob("*.md") if x.stem != "index"]):
         fm = front_matter(p)
         ids = norm_ids(fm.get("attack"))
         if not ids:
@@ -209,7 +209,7 @@ def build() -> tuple[dict, str, dict, list[str]]:
     data = {
         "generated_by": "scripts/build_coverage.py (do not edit by hand)",
         "summary": {"techniques": len(seen_ids), "rules": len(RULES), "playbooks": len(pb_rows),
-                    "packs": len(list((ROOT / "hunt" / "packs").glob("*.md"))), "hypotheses": hyp_count,
+                    "packs": len([x for x in (ROOT / "hunt" / "packs").glob("*.md") if x.stem != "index"]), "hypotheses": hyp_count,
                     "cheatsheets": len(list((ROOT / "scripts" / "cheatsheets").glob("*.md"))), **summary},
         "tactics": [
             {"id": t["id"], "name": t["name"], "key": t["key"], "techniques": rows_by_tactic[t["key"]]}
