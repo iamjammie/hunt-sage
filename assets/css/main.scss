@@ -115,6 +115,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .page__inner-wrap { max-width: 50rem; }
 body.wide .page__inner-wrap { max-width: none; }
 .page__title { font-size: 1.85rem; font-weight: 650; color: var(--hs-text) !important; letter-spacing: -0.02em; line-height: 1.15; margin: 0.4em 0 0.3em; }
+.page__title a, .page__title a:visited, .page__title a:hover { color: inherit !important; text-decoration: none; }
 .page__title::after { content: ""; display: block; width: 3rem; height: 3px; background: var(--hs-green); border-radius: 2px; margin-top: 0.55em; }
 .page__meta, .page__date, .archive__item-excerpt { color: var(--hs-text-muted); }
 .page__content { color: var(--hs-text); font-size: 1rem; }
