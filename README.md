@@ -156,8 +156,8 @@ Contributions are welcome: playbooks, Sigma rules, hypotheses, corrections, new 
 
 ## Contact
 
-- 📧 hunt-sage@gov.in
-- 🔗 https://www.linkedin.com/in/ashok-kumar-5b62819b
+- 🐛 Problems or ideas: [open an issue](https://github.com/iamjammie/hunt-sage/issues) (templates for inaccurate content, new playbooks and new Sigma rules)
+- 💬 Questions: open an issue with the "question" label
 - 🐙 https://github.com/iamjammie
 
 ## Responsible use
