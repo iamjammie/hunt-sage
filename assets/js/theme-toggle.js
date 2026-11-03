@@ -33,7 +33,10 @@
     btn.addEventListener("click", function () {
       var next = root.classList.contains("hs-theme-light") ? "dark" : "light";
       try { localStorage.setItem(KEY, next); } catch (e) { /* ignore */ }
+      // brief, deliberate cross-fade on the big surfaces only while switching
+      root.classList.add("hs-switching");
       apply(next);
+      window.setTimeout(function () { root.classList.remove("hs-switching"); }, 360);
     });
   });
 })();
