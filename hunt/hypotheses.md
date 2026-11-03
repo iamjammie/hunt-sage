@@ -2,6 +2,7 @@
 title: "Hunt Hypothesis Library"
 permalink: /hunt/hypotheses/
 excerpt: "A ready-to-use backlog of 101 testable hunt hypotheses, grouped by ATT&CK tactic, each with the data it needs, the analytical technique and the playbook that runs it."
+classes: wide
 toc: true
 toc_sticky: true
 ---

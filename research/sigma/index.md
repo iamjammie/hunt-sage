@@ -2,6 +2,7 @@
 title: "Sigma Detection Rules"
 permalink: /research/sigma/
 layout: single
+classes: wide
 toc: true
 toc_label: "On this page"
 toc_sticky: true

@@ -2,9 +2,8 @@
 title: "Hunt Playbook Library"
 permalink: /hunt/
 excerpt: "Twenty field-ready hunt playbooks: hypothesis, data, queries (KQL + SPL), triage, false positives, escalation, validation and hardening."
-toc: true
-toc_label: "On this page"
-toc_sticky: true
+classes: wide
+toc: false
 ---
 
 Each playbook is a self-contained, repeatable hunt. They follow the same structure so you can run them quickly and compare results:
@@ -27,9 +26,9 @@ Need a hypothesis first? Pick one from the [hypothesis library]({{ site.baseurl 
 {% for tactic in site.data.attack.tactics %}{% assign rows = playbooks | where: "tactic", tactic.name %}{% if rows.size > 0 %}
 ### {{ tactic.name }}
 
-| Playbook | ATT&CK | Data | Difficulty | Time-box |
-|---|---|---|---|---|
-{% for p in rows %}| [{{ p.title | remove_first: "Playbook: " }}]({{ site.baseurl }}{{ p.permalink }}) | {{ p.attack | join: ", " }} | {{ p.data | join: ", " }} | {% if p.difficulty == 1 %}★☆☆{% elsif p.difficulty == 2 %}★★☆{% else %}★★★{% endif %} | {{ p.timebox }} |
+| Playbook | Hunts for | ATT&CK | Data | Difficulty | Time-box |
+|---|---|---|---|---|---|
+{% for p in rows %}{% assign ids = p.attack | slice: 0, 4 %}| [{{ p.title | remove_first: "Playbook: " }}]({{ site.baseurl }}{{ p.permalink }}) | {{ p.excerpt }} | {{ ids | join: ", " }}{% if p.attack.size > 4 %} +{{ p.attack.size | minus: 4 }}{% endif %} | {{ p.data | join: ", " }} | {% if p.difficulty == 1 %}★☆☆{% elsif p.difficulty == 2 %}★★☆{% else %}★★★{% endif %} | {{ p.timebox }} |
 {% endfor %}{% endif %}{% endfor %}
 
 Difficulty reflects analytical complexity and required data, not importance. Playbooks are grouped by their primary tactic; the techniques they cover often span several, see the [ATT&CK coverage map]({{ site.baseurl }}/research/mitre-mapping/).
