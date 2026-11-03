@@ -1,0 +1,71 @@
+title: Remote Thread Created in Sensitive or Commonly Injected Process
+id: a93c3722-1589-4bb8-a625-8795beac0f5b
+status: experimental
+description: |
+  Detects a process creating a thread inside another process (Sysmon event 8, CreateRemoteThread)
+  where the target is a security-critical system process (lsass, winlogon, csrss, services) or a
+  long-lived, network-capable process that malware favours as an injection host (explorer, svchost,
+  RuntimeBroker, browsers). Remote thread creation is the classic final step of DLL injection
+  (T1055.001), portable-executable injection (T1055.002) and many process-hollowing loaders.
+  Known Windows components that legitimately create remote threads (csrss, svchost, wininit) and
+  common security products are excluded. Review StartModule and StartFunction: an empty StartModule
+  (thread starts in unbacked memory) or StartFunction of LoadLibraryA/LoadLibraryW is a strong
+  indicator; a page-aligned StartAddress ending in 0000 often marks freshly allocated shellcode.
+references:
+  - https://attack.mitre.org/techniques/T1055/
+  - https://attack.mitre.org/techniques/T1055/001/
+  - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.defense_evasion
+  - attack.privilege_escalation
+  - attack.t1055
+  - attack.t1055.001
+  - attack.t1055.002
+logsource:
+  category: create_remote_thread
+  product: windows
+detection:
+  selection:
+    TargetImage|endswith:
+      - '\lsass.exe'
+      - '\winlogon.exe'
+      - '\csrss.exe'
+      - '\services.exe'
+      - '\explorer.exe'
+      - '\svchost.exe'
+      - '\RuntimeBroker.exe'
+      - '\chrome.exe'
+      - '\msedge.exe'
+      - '\firefox.exe'
+      - '\iexplore.exe'
+  filter_core_system:
+    SourceImage:
+      - 'C:\Windows\System32\csrss.exe'
+      - 'C:\Windows\System32\svchost.exe'
+      - 'C:\Windows\System32\wininit.exe'
+      - 'C:\Windows\System32\wbem\WmiPrvSE.exe'
+  filter_defender:
+    SourceImage|startswith:
+      - 'C:\ProgramData\Microsoft\Windows Defender\'
+      - 'C:\Program Files\Windows Defender\'
+      - 'C:\Program Files\Windows Defender Advanced Threat Protection\'
+  filter_msmpeng:
+    SourceImage|endswith: '\MsMpEng.exe'
+  filter_browser_self:
+    SourceImage|endswith:
+      - '\chrome.exe'
+      - '\msedge.exe'
+      - '\firefox.exe'
+    TargetImage|endswith:
+      - '\chrome.exe'
+      - '\msedge.exe'
+      - '\firefox.exe'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - EDR, AV, DLP and application-control agents not covered by the filters; add them by exact path and verify the signer
+  - Accessibility tools, screen readers and input-method editors hooking explorer or browsers
+  - Debuggers and profiling tools used by developers (WinDbg, Visual Studio, dotnet-dump)
+  - Legitimate software injecting into explorer.exe for shell extensions or overlay icons
+level: high

@@ -2,6 +2,11 @@
 title: "Playbook: Ransomware Precursors"
 permalink: /hunt/playbooks/ransomware-precursors/
 excerpt: "Catch backup destruction, security-tool disabling, mass staging and encryption behaviours before they scale."
+tactic: "Impact"
+attack: [T1490, T1486, T1489, T1562.001, T1021.002, T1484.001, T1569.002]
+difficulty: 2
+timebox: "3-5 hours"
+data: [edr, sysmon, windows-security]
 ---
 
 | Field | Detail |

@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   validate:
+    name: Sigma rules, links, coverage data
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,3 +24,23 @@ jobs:
         run: python scripts/validate_rules.py
       - name: Check site links and front matter
         run: python scripts/check_links.py
+      - name: Check ATT&CK coverage data is up to date
+        run: python scripts/build_coverage.py --check
+
+  build:
+    name: Jekyll build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - name: Build site
+        run: bundle exec jekyll build --strict_front_matter
+        env:
+          JEKYLL_ENV: production
+      - name: Check the built site for unresolved Liquid or broken includes
+        run: |
+          test -f _site/index.html
+          ! grep -rl "Liquid Exception" _site/ || (echo "Liquid errors in output" && exit 1)

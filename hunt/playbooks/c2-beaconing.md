@@ -2,6 +2,11 @@
 title: "Playbook: C2 Beaconing & DNS Tunneling"
 permalink: /hunt/playbooks/c2-beaconing/
 excerpt: "Find regular check-ins, rare destinations, odd TLS/HTTP fingerprints and DNS abuse using timing and frequency analysis."
+tactic: "Command and Control"
+attack: [T1071.001, T1071.004, T1573, T1568, T1572, T1090, T1102]
+difficulty: 3
+timebox: "1-2 days"
+data: [proxy, dns, firewall, zeek, edr]
 ---
 
 | Field | Detail |

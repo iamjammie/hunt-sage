@@ -2,6 +2,11 @@
 title: "Playbook: Persistence"
 permalink: /hunt/playbooks/persistence/
 excerpt: "Stack and diff autoruns, scheduled tasks, services and WMI subscriptions to find what survives a reboot."
+tactic: "Persistence"
+attack: [T1547.001, T1053.005, T1543.003, T1546.003, T1136.001, T1574]
+difficulty: 2
+timebox: "3-6 hours"
+data: [sysmon, windows-security, edr]
 ---
 
 | Field | Detail |

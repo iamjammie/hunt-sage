@@ -7,8 +7,8 @@ toc: false
 
 | Resource | What it is |
 |---|---|
-| [ATT&CK coverage map]({{ site.baseurl }}/research/mitre-mapping/) | Every technique this site covers, with its playbook, Sigma rule and blog post |
-| [Sigma rules]({{ site.baseurl }}/research/sigma/) | 20 vendor-neutral detection rules with false positives and tuning notes |
+| [ATT&CK coverage map]({{ site.baseurl }}/research/mitre-mapping/) | {{ site.data.coverage.summary.techniques }} techniques with their playbook, Sigma rule and write-ups, plus a downloadable ATT&CK Navigator layer |
+| [Sigma rules]({{ site.baseurl }}/research/sigma/) | {{ site.data.coverage.summary.rules }} vendor-neutral detection rules with false positives and tuning notes, validated by CI |
 | [Detection engineering notes]({{ site.baseurl }}/research/mitre-detection-engineering/) | Technique → telemetry → detection → test mappings; working notebook |
 
 ## How research feeds the rest of the site
@@ -23,4 +23,4 @@ toc: false
 
 ## Contributing a rule
 
-Open a pull request adding a Sigma file to `research/sigma/` and a row to the coverage map. Rules are validated by CI (`scripts/validate_rules.py`): see [CONTRIBUTING](https://github.com/iamjammie/hunt-sage/blob/main/CONTRIBUTING.md).
+Open a pull request adding a Sigma file to `research/sigma/`, then run `python scripts/build_coverage.py` to regenerate the rule index and coverage map. Rules are validated by CI (`scripts/validate_rules.py`): see [CONTRIBUTING](https://github.com/iamjammie/hunt-sage/blob/main/CONTRIBUTING.md).

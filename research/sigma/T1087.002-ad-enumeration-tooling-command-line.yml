@@ -1,0 +1,89 @@
+title: Active Directory Enumeration Tooling on the Command Line
+id: 5b803279-daf1-4cd4-a1e9-9279e83b80a6
+status: experimental
+description: |
+  Detects command lines and original file names associated with bulk Active Directory discovery:
+  SharpHound / BloodHound collection switches, AzureHound, AdFind filters, ldapdomaindump,
+  PowerView cmdlets, bulk dsquery, and the built-in net / nltest commands that enumerate
+  privileged groups, domain controllers and trusts. Built-in commands are legitimate from admin
+  consoles, so weight by parent process and account; the third-party tool names are high fidelity.
+  Renamed binaries are caught through OriginalFileName where the attacker has not rebuilt the tool.
+references:
+  - https://attack.mitre.org/techniques/T1087/002/
+  - https://attack.mitre.org/techniques/T1069/002/
+  - https://attack.mitre.org/techniques/T1482/
+  - https://bloodhound.specterops.io/collect-data/ce-collection/sharphound-flags
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.discovery
+  - attack.t1087.002
+  - attack.t1069.002
+  - attack.t1482
+  - attack.t1018
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_tool_cmdline:
+    CommandLine|contains:
+      - ' -c All'
+      - '--CollectionMethods'
+      - 'SharpHound'
+      - 'Invoke-BloodHound'
+      - 'AzureHound'
+      - 'SOAPHound'
+      - 'ldapdomaindump'
+      - 'Get-DomainUser'
+      - 'Get-DomainComputer'
+      - 'Get-DomainGroupMember'
+      - 'Get-DomainTrust'
+      - 'Get-NetComputer'
+      - 'Get-NetUser'
+      - 'Get-NetGroupMember'
+      - 'Find-LocalAdminAccess'
+      - 'Invoke-UserHunter'
+      - 'dsquery * -limit'
+      - 'nltest /domain_trusts'
+      - 'nltest /dclist'
+      - 'nltest.exe /domain_trusts'
+      - 'nltest.exe /dclist'
+  selection_adfind:
+    Image|endswith: '\adfind.exe'
+    CommandLine|contains:
+      - ' -f '
+      - ' -sc '
+      - 'objectcategory='
+      - 'objectclass='
+  selection_net_group:
+    Image|endswith:
+      - '\net.exe'
+      - '\net1.exe'
+    CommandLine|contains|all:
+      - 'group'
+      - '/domain'
+    CommandLine|contains:
+      - 'domain admins'
+      - 'enterprise admins'
+      - 'schema admins'
+      - 'administrators'
+      - 'domain controllers'
+  selection_originalfilename:
+    OriginalFileName:
+      - 'SharpHound.exe'
+      - 'AdFind.exe'
+      - 'AzureHound.exe'
+      - 'SOAPHound.exe'
+      - 'ADExplorer.exe'
+  filter_security_scanners:
+    ParentImage|contains:
+      - '\PingCastle'
+      - '\PurpleKnight'
+      - '\Lansweeper'
+      - '\Nessus'
+  condition: 1 of selection_* and not 1 of filter_*
+falsepositives:
+  - Administrators and helpdesk running net group or nltest interactively from jump hosts
+  - Authorised security assessments and AD health tools (add their service accounts and hosts to the filter)
+  - Inventory and compliance products using dsquery or AdFind under a known service account
+level: medium

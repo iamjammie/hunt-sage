@@ -2,6 +2,11 @@
 title: "Playbook: LOLBin Proxy Execution"
 permalink: /hunt/playbooks/lolbin-proxy-execution/
 excerpt: "Signed Windows binaries abused to download, decode and execute: certutil, mshta, rundll32, regsvr32, bitsadmin and friends."
+tactic: "Defense Evasion"
+attack: [T1218, T1218.005, T1218.010, T1218.011, T1140, T1105, T1197]
+difficulty: 2
+timebox: "3-5 hours"
+data: [sysmon, edr, windows-security]
 ---
 
 | Field | Detail |
@@ -101,5 +106,5 @@ A LOLBin retrieves remote content and a new executable/script then runs or persi
 ## Validate and operationalise
 
 - Emulate: `Invoke-AtomicTest T1218.005` (mshta), `T1218.010` (regsvr32), `T1218.011` (rundll32), `T1140` (certutil), `T1197` (BITS).
-- Detection: [CertUtil abuse]({{ site.baseurl }}/research/sigma/T1140-certutil-encode-lolbin.yml), [Mshta]({{ site.baseurl }}/research/sigma/T1218.005-mshta-remote-or-script.yml), [BITSAdmin]({{ site.baseurl }}/research/sigma/T1197-bitsadmin-transfer.yml)
+- Detection: [CertUtil abuse]({{ site.baseurl }}/research/sigma/T1140-certutil-encode-lolbin.yml), [Mshta]({{ site.baseurl }}/research/sigma/T1218.005-mshta-remote-or-script.yml), [Rundll32 suspicious invocation]({{ site.baseurl }}/research/sigma/T1218.011-rundll32-suspicious-invocation.yml), [BITSAdmin]({{ site.baseurl }}/research/sigma/T1197-bitsadmin-transfer.yml)
 - Hardening: WDAC/AppLocker block lists (Microsoft recommended block rules), ASR rules (block Office child processes, block executable content from email), egress filtering for server subnets.

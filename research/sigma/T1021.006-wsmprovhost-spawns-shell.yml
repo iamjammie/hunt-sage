@@ -1,0 +1,55 @@
+title: WinRM Host Process Spawning Shell or LOLBin
+id: de9bcd3e-1105-4424-87d8-8dd9d8b19cde
+status: experimental
+description: |
+  Detects wsmprovhost.exe (the WinRM plug-in host that runs remote PowerShell sessions) spawning
+  a command shell, script interpreter or proxy-execution binary. Every command an attacker runs
+  through Enter-PSSession, Invoke-Command or Evil-WinRM on the destination host is a child of
+  wsmprovhost.exe. Legitimate configuration management also produces these children, so
+  correlate with the account, source host (4624 LogonType 3 seconds earlier) and command line.
+references:
+  - https://attack.mitre.org/techniques/T1021/006/
+  - https://learn.microsoft.com/en-us/windows/win32/winrm/portal
+  - https://github.com/Hackplayers/evil-winrm
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.lateral_movement
+  - attack.execution
+  - attack.t1021.006
+  - attack.t1059.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    ParentImage|endswith: '\wsmprovhost.exe'
+    Image|endswith:
+      - '\cmd.exe'
+      - '\powershell.exe'
+      - '\pwsh.exe'
+      - '\wscript.exe'
+      - '\cscript.exe'
+      - '\rundll32.exe'
+      - '\regsvr32.exe'
+      - '\mshta.exe'
+      - '\certutil.exe'
+      - '\bitsadmin.exe'
+      - '\msiexec.exe'
+      - '\whoami.exe'
+      - '\net.exe'
+      - '\net1.exe'
+      - '\nltest.exe'
+      - '\schtasks.exe'
+      - '\sc.exe'
+      - '\wmic.exe'
+  filter_sccm_scripts:
+    CommandLine|contains:
+      - '\Windows\CCM\'
+      - '\ccmcache\'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - Administrators and configuration-management tools (Ansible, Chef, DSC, SCCM run scripts) executing commands over PowerShell remoting; allow-list by account and source host rather than by child image
+  - Monitoring and inventory agents that use WinRM to run cmd or PowerShell on schedule
+  - Jump-host and automation service accounts; add them as explicit filters once baselined
+level: medium

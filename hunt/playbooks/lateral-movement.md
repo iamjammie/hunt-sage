@@ -2,6 +2,11 @@
 title: "Playbook: Lateral Movement"
 permalink: /hunt/playbooks/lateral-movement/
 excerpt: "Hunt SMB/PsExec, RDP, WinRM, WMI and pass-the-hash/ticket movement using logon graphs and fan-out analysis."
+tactic: "Lateral Movement"
+attack: [T1021.001, T1021.002, T1021.006, T1047, T1569.002, T1550.002, T1550.003]
+difficulty: 3
+timebox: "1-2 days"
+data: [windows-security, sysmon, edr, zeek]
 ---
 
 | Field | Detail |

@@ -2,6 +2,11 @@
 title: "Playbook: Kerberoasting & AS-REP Roasting"
 permalink: /hunt/playbooks/kerberoasting/
 excerpt: "Spot offline-crackable Kerberos ticket requests on the domain controller."
+tactic: "Credential Access"
+attack: [T1558.003, T1558.004]
+difficulty: 2
+timebox: "2-3 hours"
+data: [windows-security, edr]
 ---
 
 | Field | Detail |

@@ -1,0 +1,84 @@
+title: AD CS Enumeration or Abuse Tooling Command Line
+id: 70f3222c-adfc-4658-a15a-0ecae16f345a
+status: experimental
+description: |
+  Detects process creation consistent with Active Directory Certificate Services reconnaissance
+  or abuse tooling: Certify and Certipy (template and CA enumeration, vulnerable-template search,
+  requests with alternative names), ForgeCert, Rubeus certificate-based ticket requests, and
+  native binaries driven in the same way (certutil dumping templates verbosely, certreq submitting
+  a request with SAN attributes). Matches on OriginalFileName as well as command line so renamed
+  binaries are still caught. Administrators run certutil template dumps during PKI troubleshooting,
+  so stack by user and host before alerting and pair with CA events 4886/4887.
+references:
+  - https://attack.mitre.org/techniques/T1649/
+  - https://posts.specterops.io/certified-pre-owned-d95910965cd2
+  - https://github.com/GhostPack/Certify
+  - https://github.com/ly4k/Certipy
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.credential_access
+  - attack.discovery
+  - attack.t1649
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_tool_names:
+    - OriginalFileName:
+        - 'Certify.exe'
+        - 'Certipy.exe'
+        - 'ForgeCert.exe'
+    - Image|endswith:
+        - '\Certify.exe'
+        - '\certipy.exe'
+        - '\certipy-ad.exe'
+        - '\ForgeCert.exe'
+  selection_certify_cmd:
+    CommandLine|contains:
+      - 'find /vulnerable'
+      - 'find /enrolleeSuppliesSubject'
+      - 'find /clientauth'
+      - 'find /currentuser'
+      - '/altname:'
+      - 'request /ca:'
+      - ' cas /domain'
+  selection_certipy_cmd:
+    CommandLine|contains:
+      - 'certipy find'
+      - 'certipy req'
+      - 'certipy auth'
+      - 'certipy shadow'
+      - 'certipy relay'
+      - 'certipy forge'
+      - 'certipy-ad '
+      - ' -vulnerable'
+      - ' -enabled -stdout'
+      - ' -upn '
+  selection_rubeus_cert:
+    CommandLine|contains|all:
+      - 'asktgt'
+      - '/certificate:'
+  selection_rubeus_getcreds:
+    CommandLine|contains|all:
+      - 'asktgt'
+      - '/getcredentials'
+  selection_certutil_templates:
+    Image|endswith: '\certutil.exe'
+    CommandLine|contains:
+      - '-v -dstemplate'
+      - '-v -template'
+      - '-catemplates'
+      - '-dstemplate'
+  selection_certreq_san:
+    Image|endswith: '\certreq.exe'
+    CommandLine|contains|all:
+      - '-submit'
+      - '-attrib'
+      - 'SAN:'
+  condition: 1 of selection_*
+falsepositives:
+  - PKI administrators running certutil -dstemplate or -catemplates during troubleshooting or template audits; allow-list PKI admin accounts and tier-0 management hosts
+  - Authorised assessments with Certify, Certipy or Locksmith-style audits; confirm with the owning team and the change calendar
+  - Legitimate certreq -submit with a SAN attribute for server certificates, typically from a PKI admin account for a host name rather than a user UPN
+level: high

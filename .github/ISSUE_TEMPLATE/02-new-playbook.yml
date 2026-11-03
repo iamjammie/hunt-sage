@@ -1,0 +1,30 @@
+name: "Propose a hunt playbook"
+description: "Suggest a new hunt playbook or an extension to an existing one."
+title: "[playbook] "
+labels: ["enhancement", "playbook"]
+body:
+  - type: input
+    id: technique
+    attributes:
+      label: ATT&CK technique(s)
+      placeholder: "T1548.002"
+    validations:
+      required: true
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis
+      description: "If <adversary behaviour>, then we would see <observable> in <data source>."
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Data sources and the queries you already have
+      description: KQL, SPL or any other language is welcome; mark field names you are unsure of.
+  - type: checkboxes
+    id: offer
+    attributes:
+      label: Contribution
+      options:
+        - label: I can write this playbook as a pull request following CONTRIBUTING.md
