@@ -8,7 +8,7 @@ Copy these into your wiki, ticketing system or Git repo. Keep them short: a temp
 
 ## Hunt hypothesis card
 
-One card per hunt idea. These make up your backlog.
+One card per hunt idea. These make up your backlog. Short of ideas? Pull a numbered hypothesis from the [hypothesis library]({{ site.baseurl }}/hunt/hypotheses/) and quote its id (for example `H-046`) in the Trigger field.
 
 ```markdown
 # HUNT-YYYY-NNN: <short title>

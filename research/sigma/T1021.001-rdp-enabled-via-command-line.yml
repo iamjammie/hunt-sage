@@ -1,0 +1,72 @@
+title: Remote Desktop Enabled via Command Line or PowerShell
+id: 01417fd9-e424-42f5-a681-e7fe70243998
+status: experimental
+description: |
+  Detects RDP being switched on from a shell: reg.exe setting fDenyTSConnections to 0, netsh
+  enabling the "Remote Desktop" firewall group or opening TCP 3389, or PowerShell doing the
+  same with Set-ItemProperty / New-NetFirewallRule / Enable-NetFirewallRule. Attackers who land
+  on a host with RDP disabled enable it to establish an interactive foothold; Group Policy does
+  this through svchost.exe, not through a command line, so interactive enabling is rare.
+references:
+  - https://attack.mitre.org/techniques/T1021/001/
+  - https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/clients/remote-desktop-allow-access
+  - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1021.001/T1021.001.md
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.lateral_movement
+  - attack.persistence
+  - attack.t1021.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_reg:
+    Image|endswith: '\reg.exe'
+    CommandLine|contains|all:
+      - 'fDenyTSConnections'
+      - 'Terminal Server'
+    CommandLine|contains:
+      - '/d 0'
+      - '/d 0x0'
+      - '/d 00000000'
+  selection_netsh_group:
+    Image|endswith: '\netsh.exe'
+    CommandLine|contains|all:
+      - 'remote desktop'
+      - 'enable'
+  selection_netsh_port:
+    Image|endswith: '\netsh.exe'
+    CommandLine|contains|all:
+      - 'advfirewall'
+      - '3389'
+      - 'allow'
+  selection_powershell_registry:
+    CommandLine|contains|all:
+      - 'fDenyTSConnections'
+      - 'Terminal Server'
+    CommandLine|re: '(?i)(Set-ItemProperty|New-ItemProperty|SetValue|sp ).*(-Value\s+0\b|-Value\s+\$false|,\s*0\s*\))'
+  selection_powershell_firewall:
+    CommandLine|contains:
+      - 'Enable-NetFirewallRule'
+      - 'New-NetFirewallRule'
+      - 'Set-NetFirewallRule'
+    CommandLine|re: '(?i)(Remote ?Desktop|3389)'
+  filter_disable:
+    CommandLine|contains:
+      - 'fDenyTSConnections /t REG_DWORD /d 1'
+      - '-Value 1'
+      - 'disable'
+      - 'action=block'
+  filter_gpo_and_build_tools:
+    ParentImage|endswith:
+      - '\gpscript.exe'
+      - '\ccmexec.exe'
+      - '\SystemPropertiesRemote.exe'
+      - '\Sysprep.exe'
+  condition: 1 of selection_* and not 1 of filter_*
+falsepositives:
+  - Imaging, provisioning and onboarding scripts that enable RDP on new builds (MDT, Autopilot, Intune scripts, Ansible); allow-list by parent process or deployment account
+  - Administrators enabling RDP on a server during legitimate troubleshooting; verify a change record and the account's role
+  - Lab, Hyper-V and VDI automation that toggles RDP on template images
+level: medium

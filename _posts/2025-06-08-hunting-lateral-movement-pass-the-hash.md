@@ -14,6 +14,7 @@ toc_label: "Contents"
 header:
   teaser: /assets/images/posts/lateral-movement.png
 excerpt: "Pass-the-Hash is one of the most common post-exploitation moves. It leaves specific, findable traces — if you know where to look."
+attack: [T1550.002, T1003.001]
 ---
 
 ## Why Lateral Movement Matters

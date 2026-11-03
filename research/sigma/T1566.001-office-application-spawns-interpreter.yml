@@ -1,0 +1,85 @@
+title: Office or Document Reader Application Spawns Script Interpreter or LOLBin
+id: fdc25f96-6385-4599-af80-b6570b7a7ca6
+status: experimental
+description: |
+  Detects Microsoft Office applications (Word, Excel, PowerPoint, Outlook, Access, OneNote) and
+  Adobe PDF readers spawning a command shell, script interpreter or a signed proxy-execution
+  binary. These parents almost never need such children; the pattern is the first execution step
+  of attachment-based phishing (macro, OLE package, OneNote embedded script, remote template,
+  PDF launch action). Pivot on the child command line and the file the parent had open.
+references:
+  - https://attack.mitre.org/techniques/T1566/001/
+  - https://attack.mitre.org/techniques/T1204/002/
+  - https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.initial_access
+  - attack.execution
+  - attack.t1566.001
+  - attack.t1204.002
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_parent:
+    ParentImage|endswith:
+      - '\WINWORD.EXE'
+      - '\EXCEL.EXE'
+      - '\POWERPNT.EXE'
+      - '\OUTLOOK.EXE'
+      - '\MSACCESS.EXE'
+      - '\ONENOTE.EXE'
+      - '\AcroRd32.exe'
+      - '\Acrobat.exe'
+  selection_child:
+    - Image|endswith:
+        - '\cmd.exe'
+        - '\powershell.exe'
+        - '\pwsh.exe'
+        - '\wscript.exe'
+        - '\cscript.exe'
+        - '\mshta.exe'
+        - '\rundll32.exe'
+        - '\regsvr32.exe'
+        - '\certutil.exe'
+        - '\bitsadmin.exe'
+        - '\msiexec.exe'
+        - '\schtasks.exe'
+        - '\curl.exe'
+    - OriginalFileName:
+        - 'Cmd.Exe'
+        - 'PowerShell.EXE'
+        - 'pwsh.dll'
+        - 'wscript.exe'
+        - 'cscript.exe'
+        - 'MSHTA.EXE'
+        - 'RUNDLL32.EXE'
+        - 'REGSVR32.EXE'
+        - 'CertUtil.exe'
+        - 'bitsadmin.exe'
+        - 'msiexec.exe'
+        - 'schtasks.exe'
+        - 'curl.exe'
+  filter_office_updater:
+    CommandLine|contains:
+      - '\OfficeClickToRun.exe'
+      - '\OfficeC2RClient.exe'
+      - '\Microsoft Office\root\Office'
+      - '\Common Files\microsoft shared\ClickToRun\'
+  filter_outlook_rundll32_shell:
+    Image|endswith: '\rundll32.exe'
+    CommandLine|contains:
+      - 'shell32.dll,Control_RunDLL'
+      - 'shell32.dll,OpenAs_RunDLL'
+      - 'url.dll,FileProtocolHandler'
+  filter_adobe_updater:
+    CommandLine|contains:
+      - '\Adobe\ARM\'
+      - 'AdobeARM.exe'
+  condition: selection_parent and selection_child and not 1 of filter_*
+falsepositives:
+  - Line-of-business Office add-ins or signed internal macros that call cmd or PowerShell; exclude by exact command line
+  - Outlook opening attachments through rundll32 shell handlers (partly covered by the filter)
+  - Access applications that launch helper scripts in some legacy environments
+level: high

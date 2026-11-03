@@ -1,0 +1,67 @@
+title: Network Connection from Benign GUI Binary Commonly Used as Injection Host
+id: 164bac71-4a04-4cc0-a6ab-c079e977b3ae
+status: experimental
+description: |
+  Detects outbound network connections initiated by Windows accessory binaries that have no
+  legitimate reason to talk to the network (notepad, calc, mspaint, write, charmap, magnify,
+  dllhost spawned bare, and similar). Loaders and C2 frameworks start one of these processes
+  suspended, replace its memory with their payload (process hollowing, T1055.012) or inject a
+  beacon into it (T1055), and let the trusted image name carry the traffic. The image on disk is
+  clean, so this rule keys on behaviour rather than hashes. Requires Sysmon event 3 with the
+  configuration logging connections for these images, or EDR network telemetry
+  (DeviceNetworkEvents). Connections to RFC1918 ranges and loopback are excluded by default to
+  cut noise from internal file shares; remove that filter when hunting internal pivoting.
+references:
+  - https://attack.mitre.org/techniques/T1055/012/
+  - https://attack.mitre.org/techniques/T1055/
+  - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.defense_evasion
+  - attack.privilege_escalation
+  - attack.command_and_control
+  - attack.t1055
+  - attack.t1055.012
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - '\notepad.exe'
+      - '\calc.exe'
+      - '\calculator.exe'
+      - '\mspaint.exe'
+      - '\write.exe'
+      - '\wordpad.exe'
+      - '\charmap.exe'
+      - '\magnify.exe'
+      - '\osk.exe'
+      - '\narrator.exe'
+      - '\snippingtool.exe'
+      - '\mobsync.exe'
+      - '\fontview.exe'
+      - '\eudcedit.exe'
+    Initiated: 'true'
+  filter_private_ranges:
+    DestinationIp|cidr:
+      - '10.0.0.0/8'
+      - '172.16.0.0/12'
+      - '192.168.0.0/16'
+      - '127.0.0.0/8'
+      - '169.254.0.0/16'
+      - '::1/128'
+      - 'fe80::/10'
+      - 'fc00::/7'
+  filter_multicast:
+    DestinationIp|startswith:
+      - '224.'
+      - '239.'
+      - 'ff'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - Notepad or WordPad opening a file from a UNC path or WebDAV share (destination is normally internal and filtered)
+  - The Microsoft Store Calculator and Notepad apps fetching updates or telemetry; filter by the full Image path under WindowsApps if observed
+  - Printing from these applications to a networked printer (ports 9100/631); add a destination-port filter if noisy
+level: high

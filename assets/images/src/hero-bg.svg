@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="640" viewBox="0 0 1800 640">
+
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0A0F1F"/>
+    <stop offset="1" stop-color="#111A2E"/>
+  </linearGradient>
+  <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#6AFB73" stop-opacity="0"/>
+    <stop offset="1" stop-color="#6AFB73" stop-opacity="0.9"/>
+  </linearGradient>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M40 0H0V40" fill="none" stroke="#6AFB73" stroke-opacity="0.07" stroke-width="1"/>
+  </pattern>
+</defs>
+<rect width="1800" height="640" fill="url(#bg)"/>
+<rect width="1800" height="640" fill="url(#grid)"/>
+<g opacity="0.55"><circle cx="1470" cy="320.0" r="230" fill="none" stroke="#6AFB73" stroke-width="6" opacity="0.95"/>
+<circle cx="1470" cy="320.0" r="142.6" fill="none" stroke="#6AFB73" stroke-width="4.199999999999999" opacity="0.7"/>
+<circle cx="1470" cy="320.0" r="64.4" fill="none" stroke="#6AFB73" stroke-width="4.199999999999999" opacity="0.7"/>
+<line x1="1198.6" y1="320.0" x2="1442.4" y2="320.0" stroke="#6AFB73" stroke-width="6"/>
+<line x1="1497.6" y1="320.0" x2="1741.4" y2="320.0" stroke="#6AFB73" stroke-width="6"/>
+<line x1="1470" y1="48.60000000000002" x2="1470" y2="292.4" stroke="#6AFB73" stroke-width="6"/>
+<line x1="1470" y1="347.6" x2="1470" y2="591.4" stroke="#6AFB73" stroke-width="6"/>
+<circle cx="1470" cy="320.0" r="7.199999999999999" fill="#6AFB73"/>
+<path d="M1470,320.0 L1700,320.0 A230,230 0 0 0 1539.0,100.58000000000001 Z" fill="url(#sweep)" opacity="0.55"/>
+<circle cx="1573.5" cy="239.5" r="8.399999999999999" fill="#6AFB73"/>
+<circle cx="1355.0" cy="412.0" r="6.6000000000000005" fill="#E63946"/></g>
+<g opacity="0.18"><circle cx="220" cy="680" r="140" fill="none" stroke="#6AFB73" stroke-width="4" opacity="0.95"/>
+<circle cx="220" cy="680" r="86.8" fill="none" stroke="#6AFB73" stroke-width="2.8" opacity="0.7"/>
+<circle cx="220" cy="680" r="39.2" fill="none" stroke="#6AFB73" stroke-width="2.8" opacity="0.7"/>
+<line x1="54.80000000000001" y1="680" x2="203.2" y2="680" stroke="#6AFB73" stroke-width="4"/>
+<line x1="236.8" y1="680" x2="385.2" y2="680" stroke="#6AFB73" stroke-width="4"/>
+<line x1="220" y1="514.8" x2="220" y2="663.2" stroke="#6AFB73" stroke-width="4"/>
+<line x1="220" y1="696.8" x2="220" y2="845.2" stroke="#6AFB73" stroke-width="4"/>
+<circle cx="220" cy="680" r="4.8" fill="#6AFB73"/></g>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0A0F1F"/>
+    <stop offset="1" stop-color="#111A2E"/>
+  </linearGradient>
+  <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#6AFB73" stop-opacity="0"/>
+    <stop offset="1" stop-color="#6AFB73" stop-opacity="0.9"/>
+  </linearGradient>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M40 0H0V40" fill="none" stroke="#6AFB73" stroke-opacity="0.07" stroke-width="1"/>
+  </pattern>
+</defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<rect width="1200" height="630" fill="url(#grid)"/>
+<circle cx="210" cy="315" r="130" fill="none" stroke="#6AFB73" stroke-width="6" opacity="0.95"/>
+<circle cx="210" cy="315" r="80.6" fill="none" stroke="#6AFB73" stroke-width="4.199999999999999" opacity="0.7"/>
+<circle cx="210" cy="315" r="36.400000000000006" fill="none" stroke="#6AFB73" stroke-width="4.199999999999999" opacity="0.7"/>
+<line x1="56.599999999999994" y1="315" x2="194.4" y2="315" stroke="#6AFB73" stroke-width="6"/>
+<line x1="225.6" y1="315" x2="363.4" y2="315" stroke="#6AFB73" stroke-width="6"/>
+<line x1="210" y1="161.6" x2="210" y2="299.4" stroke="#6AFB73" stroke-width="6"/>
+<line x1="210" y1="330.6" x2="210" y2="468.4" stroke="#6AFB73" stroke-width="6"/>
+<circle cx="210" cy="315" r="7.199999999999999" fill="#6AFB73"/>
+<path d="M210,315 L340,315 A130,130 0 0 0 249.0,190.98000000000002 Z" fill="url(#sweep)" opacity="0.55"/>
+<circle cx="268.5" cy="269.5" r="8.399999999999999" fill="#6AFB73"/>
+<circle cx="145.0" cy="367.0" r="6.6000000000000005" fill="#E63946"/>
+<text x="400" y="290" font-family="Inter, 'DejaVu Sans', Arial, sans-serif" font-weight="800" font-size="104" fill="#F7FAFC" letter-spacing="-3">HUNT<tspan fill="#6AFB73">-</tspan>SAGE</text>
+<text x="404" y="350" font-family="'DejaVu Sans Mono', Menlo, monospace" font-size="30" fill="#6AFB73">seek · analyze · neutralize</text>
+<text x="404" y="410" font-family="Inter, 'DejaVu Sans', Arial, sans-serif" font-size="28" fill="#8B98AE">Theory · 20 playbooks · Sigma rules · cheat sheets · labs</text>
+<text x="404" y="560" font-family="'DejaVu Sans Mono', Menlo, monospace" font-size="22" fill="#8B98AE" opacity="0.8">iamjammie.github.io/hunt-sage</text>
+</svg>

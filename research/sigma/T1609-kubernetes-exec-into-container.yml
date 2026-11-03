@@ -1,0 +1,37 @@
+title: Kubernetes Exec or Attach into Pod
+id: 75a36a98-eab0-43d5-a84c-c265733b01f3
+status: experimental
+description: |
+  Detects interactive access to running containers through the Kubernetes API: creation of the
+  pods/exec, pods/attach or pods/portforward subresources. Adversaries with a stolen kubeconfig or
+  service-account token use exec to run commands inside other workloads. Stack by user.username,
+  namespace and source IP; service accounts and non-kubectl user agents are the outliers.
+references:
+  - https://attack.mitre.org/techniques/T1609/
+  - https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.execution
+  - attack.t1609
+logsource:
+  product: kubernetes
+  service: audit
+detection:
+  selection:
+    verb: 'create'
+    objectRef.resource: 'pods'
+    objectRef.subresource:
+      - 'exec'
+      - 'attach'
+      - 'portforward'
+  filter_controllers:
+    user.username|startswith:
+      - 'system:kube-'
+      - 'system:node:'
+  condition: selection and not filter_controllers
+falsepositives:
+  - Developers and operators debugging their own workloads with kubectl exec (baseline per namespace and source range)
+  - CI/CD pipelines that run database migrations or smoke tests through exec
+  - Observability or security agents that attach to pods by design
+level: medium

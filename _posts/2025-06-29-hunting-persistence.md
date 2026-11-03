@@ -15,6 +15,7 @@ toc_label: "Contents"
 header:
   teaser: /assets/images/posts/persistence.png
 excerpt: "Attackers don't want to re-exploit you every session. They plant persistence — and there are dozens of places to look."
+attack: [T1053.005, T1546.003, T1574.001, T1547.001]
 ---
 
 ## Why Persistence Matters

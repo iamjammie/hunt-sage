@@ -1,0 +1,34 @@
+name: "Propose a Sigma rule"
+description: "Suggest a detection rule for research/sigma/."
+title: "[sigma] "
+labels: ["enhancement", "sigma"]
+body:
+  - type: input
+    id: technique
+    attributes:
+      label: ATT&CK technique
+      placeholder: "T1574.002"
+    validations:
+      required: true
+  - type: textarea
+    id: rule
+    attributes:
+      label: Rule (YAML) or the behaviour it should catch
+      render: yaml
+  - type: textarea
+    id: fps
+    attributes:
+      label: Known false positives
+      description: Rules without a false-positive section are not merged.
+    validations:
+      required: true
+  - type: dropdown
+    id: tested
+    attributes:
+      label: Has it fired in a lab?
+      options:
+        - "No"
+        - "Yes (Atomic Red Team or manual emulation)"
+        - "Yes, and it has run in production"
+    validations:
+      required: true

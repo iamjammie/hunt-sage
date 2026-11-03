@@ -2,15 +2,16 @@
 title: "Playbook: PowerShell Abuse"
 permalink: /hunt/playbooks/powershell-abuse/
 excerpt: "Encoded commands, download cradles, unusual parents and script-block content: the highest-yield first hunt."
+tactic: "Execution"
+attack: [T1059.001, T1027, T1105, T1562.001]
+difficulty: 1
+timebox: "2-4 hours"
+data: [sysmon, windows-security, edr, powershell]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1059.001 (PowerShell), T1027 (Obfuscation), T1105 (Ingress tool transfer), T1562.001 (impair defenses via downgrade/AMSI bypass) |
-| **Tactics** | Execution, Defense Evasion |
-| **Data** | Process creation with command line (Sysmon 1 / 4688 / EDR); PowerShell Script Block Logging (4104) |
-| **Time-box** | 2-4 hours |
-| **Difficulty** | ★☆☆ |
+{% include playbook-meta.html %}
+
+**Data used:** Process creation with command line (Sysmon 1 / 4688 / EDR); PowerShell Script Block Logging (4104)
 
 ## Hypothesis
 
@@ -147,3 +148,5 @@ Confirm your hunt queries and the [Sigma rule]({{ site.baseurl }}/research/sigma
 - MITRE ATT&CK T1059.001, <https://attack.mitre.org/techniques/T1059/001/>
 - Microsoft: *about_Logging_Windows*
 - Related post: [Threat Hunting 101]({{ site.baseurl }}/blog/threat-hunting-fundamentals/)
+
+{% include playbook-footer.html %}

@@ -1,0 +1,48 @@
+title: AD CS Certificate Request with Requester-Supplied Subject Alternative Name (ESC1)
+id: 0f928aca-f180-4df5-93f7-c8ef258a916f
+status: experimental
+description: |
+  Detects certificate requests received (4886) or issued (4887) by an enterprise CA whose
+  request Attributes carry a Subject Alternative Name (SAN:upn=, san:, upn=). Normal
+  auto-enrolment never supplies a SAN in the attribute string; the CA builds the subject from
+  Active Directory. A requester-supplied SAN is the hallmark of the ESC1 misconfiguration
+  described in SpecterOps' "Certified Pre-Owned": a template that allows the enrollee to supply
+  the subject and permits client authentication can yield a certificate for a different, more
+  privileged identity. Requires CA auditing: enable "Issue and manage certificate requests"
+  under the CA's Auditing tab plus the Object Access > Certification Services audit subcategory,
+  otherwise 4886/4887 are never written. Correlate the Requester field with the SAN identity;
+  a mismatch is the signal. The subsequent 4768 with Certificate Information populated shows the
+  certificate being used for Kerberos PKINIT logon.
+references:
+  - https://attack.mitre.org/techniques/T1649/
+  - https://posts.specterops.io/certified-pre-owned-d95910965cd2
+  - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4886
+  - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4887
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.credential_access
+  - attack.privilege_escalation
+  - attack.persistence
+  - attack.t1649
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID:
+      - 4886
+      - 4887
+    Attributes|contains:
+      - 'SAN:'
+      - 'san:'
+      - 'upn='
+      - 'UPN='
+      - 'dns='
+      - 'DNS='
+  condition: selection
+falsepositives:
+  - Legitimate certreq or MMC enrolment where an administrator deliberately supplies a SAN for a web server or service certificate; the Requester will be an admin or service account and the SAN a host name, not a user UPN
+  - Network device or MDM enrolment integrations (NDES, Intune certificate connector) that pass a SAN on behalf of devices; allow-list by Requester account
+  - Templates intentionally configured for subject-supplied SANs under manager approval; a matching 4888 (request denied) or pending state reduces risk
+level: high

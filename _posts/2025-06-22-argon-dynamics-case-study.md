@@ -15,6 +15,7 @@ toc_label: "Contents"
 header:
   teaser: /assets/images/posts/argon-nexus.png
 excerpt: "A regional company suffered an internal data spill. Walk through the investigation process — from first alert to full reconstruction of the attacker's timeline."
+attack: [T1566.001, T1140, T1087.002, T1069.002, T1039, T1560, T1041]
 ---
 
 > **Scenario Context**: Argon Dynamics is a small regional manufacturing company. They detected an anomaly in their DLP system suggesting internal data may have been copied and staged. No external alert fired. This is a hunt walkthrough using the [argon_nexus scenario](https://github.com/iamjammie/argon_nexus) — you can follow along with the challenge artifacts.

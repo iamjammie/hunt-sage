@@ -1,0 +1,1786 @@
+{
+  "name": "Hunt-Sage coverage",
+  "versions": {
+    "attack": "16",
+    "navigator": "5.1.0",
+    "layer": "4.5"
+  },
+  "domain": "enterprise-attack",
+  "description": "Techniques covered by Hunt-Sage playbooks, Sigma rules and write-ups. Green = Sigma rule, amber = playbook only, grey = write-up only.",
+  "sorting": 0,
+  "layout": {
+    "layout": "side",
+    "aggregateFunction": "max",
+    "showID": true,
+    "showName": true,
+    "showAggregateScores": false,
+    "countUnscored": false
+  },
+  "hideDisabled": false,
+  "techniques": [
+    {
+      "techniqueID": "T1078.002",
+      "tactic": "initial-access",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Service Account Interactive Logon",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1078.004",
+      "tactic": "initial-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Business Email Compromise & Mailbox Abuse; Playbook: Cloud & Identity (Entra ID, M365, AWS); Playbook: Kubernetes & Container Hunting; Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1133",
+      "tactic": "initial-access",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Ransomware Kill Chain; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1190",
+      "tactic": "initial-access",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Web Server Process Spawning Shell or Recon Tool; Playbook: Web Shells; Write-up: Hunt Pack: Linux Server Intrusion; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1566",
+      "tactic": "initial-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Cloud & Identity (Entra ID, M365, AWS)",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1566.001",
+      "tactic": "initial-access",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Execution from Extracted Archive, Disk Image Contents or Outlook Attachment Cache; Sigma: Office or Document Reader Application Spawns Script Interpreter or LOLBin; Playbook: Phishing & Initial Execution; Write-up: CTF Challenge: Argon Nexus \u2014 The Internal Data Spill; Write-up: Case Study: The Argon Dynamics Data Spill \u2014 A Hunt Walkthrough; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1566.002",
+      "tactic": "initial-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Phishing & Initial Execution; Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1047",
+      "tactic": "execution",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Lateral Movement",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1053.003",
+      "tactic": "execution",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1053.005",
+      "tactic": "execution",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Scheduled Task Created from Suspicious Location or Interpreter; Playbook: Persistence; Write-up: Hunting Persistence: Every Place an Attacker Can Survive a Reboot; Write-up: Stacking and Baselining: A Worked Example on Scheduled Tasks",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1053.007",
+      "tactic": "execution",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Kubernetes & Container Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1059",
+      "tactic": "execution",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1059.001",
+      "tactic": "execution",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: WinRM Host Process Spawning Shell or LOLBin; Sigma: PowerShell Encoded Command Execution; Playbook: PowerShell Abuse; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1059.002",
+      "tactic": "execution",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Suspicious osascript Invocation (Shell, Download or Password Dialog); Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1059.003",
+      "tactic": "execution",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Web Shells",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1059.004",
+      "tactic": "execution",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Linux Reverse Shell Command Line; Playbook: Linux Hunting; Playbook: macOS Hunting; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1204.001",
+      "tactic": "execution",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Phishing & Initial Execution",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1204.002",
+      "tactic": "execution",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Execution from Extracted Archive, Disk Image Contents or Outlook Attachment Cache; Sigma: Office or Document Reader Application Spawns Script Interpreter or LOLBin; Playbook: Phishing & Initial Execution",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1569.002",
+      "tactic": "execution",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Suspicious Windows Service Installation; Playbook: Lateral Movement; Playbook: Ransomware Precursors",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1609",
+      "tactic": "execution",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Kubernetes Exec or Attach into Pod; Playbook: Kubernetes & Container Hunting; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1610",
+      "tactic": "execution",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Privileged or Host-Namespace Pod Created; Playbook: Kubernetes & Container Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1053.003",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1053.005",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Scheduled Task Created from Suspicious Location or Interpreter; Playbook: Persistence; Write-up: Hunting Persistence: Every Place an Attacker Can Survive a Reboot; Write-up: Stacking and Baselining: A Worked Example on Scheduled Tasks",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1053.007",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Kubernetes & Container Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1078.002",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Service Account Interactive Logon",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1078.004",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Business Email Compromise & Mailbox Abuse; Playbook: Cloud & Identity (Entra ID, M365, AWS); Playbook: Kubernetes & Container Hunting; Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Local Account Created via Command Line; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098.001",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Cloud & Identity (Entra ID, M365, AWS)",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098.002",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Business Email Compromise & Mailbox Abuse",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098.003",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Cloud & Identity (Entra ID, M365, AWS); Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098.004",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098.005",
+      "tactic": "persistence",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1133",
+      "tactic": "persistence",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Ransomware Kill Chain; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1136.001",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Local Account Created via Command Line; Playbook: Linux Hunting; Playbook: Persistence; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1136.002",
+      "tactic": "persistence",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1197",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: BITSAdmin Download or Persistent Transfer Job; Playbook: LOLBin Proxy Execution",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1505.003",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Web Server Process Spawning Shell or Recon Tool; Playbook: Web Shells; Write-up: Hunt Pack: Linux Server Intrusion; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1525",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Kubernetes & Container Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1543.001",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: LaunchAgent Plist Written by a Non-Installer Process; Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1543.002",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1543.003",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Suspicious Windows Service Installation; Playbook: Persistence",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1543.004",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1546.003",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: WMI Event Subscription Persistence; Playbook: Persistence; Write-up: Hunting Persistence: Every Place an Attacker Can Survive a Reboot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1547.001",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Run Key Persistence with Suspicious Value; Playbook: Persistence; Write-up: Hunting Persistence: Every Place an Attacker Can Survive a Reboot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1547.015",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1556",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Cloud & Identity (Entra ID, M365, AWS)",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1556.006",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Business Email Compromise & Mailbox Abuse; Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Persistence",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574.001",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Well-Known Hijackable System DLL Loaded from Unusual Path; Sigma: DLL Side-Loaded from User-Writable Path; Playbook: DLL Search-Order Hijacking & Side-Loading; Write-up: Hunting Persistence: Every Place an Attacker Can Survive a Reboot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574.002",
+      "tactic": "persistence",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Well-Known Hijackable System DLL Loaded from Unusual Path; Sigma: DLL Side-Loaded from User-Writable Path; Playbook: DLL Search-Order Hijacking & Side-Loading",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574.006",
+      "tactic": "persistence",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1053.003",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1053.005",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Scheduled Task Created from Suspicious Location or Interpreter; Playbook: Persistence; Write-up: Hunting Persistence: Every Place an Attacker Can Survive a Reboot; Write-up: Stacking and Baselining: A Worked Example on Scheduled Tasks",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1053.007",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Kubernetes & Container Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1055",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Network Connection from Benign GUI Binary Commonly Used as Injection Host; Sigma: Remote Thread Created in Sensitive or Commonly Injected Process; Playbook: Defense Evasion; Playbook: Process Injection",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1055.001",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Remote Thread Created in Sensitive or Commonly Injected Process; Playbook: Process Injection",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1055.002",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Remote Thread Created in Sensitive or Commonly Injected Process; Playbook: Process Injection",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1055.012",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Network Connection from Benign GUI Binary Commonly Used as Injection Host; Playbook: Process Injection",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1078.002",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Service Account Interactive Logon",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1078.004",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Business Email Compromise & Mailbox Abuse; Playbook: Cloud & Identity (Entra ID, M365, AWS); Playbook: Kubernetes & Container Hunting; Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Local Account Created via Command Line; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098.001",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Cloud & Identity (Entra ID, M365, AWS)",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098.002",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Business Email Compromise & Mailbox Abuse",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098.003",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Cloud & Identity (Entra ID, M365, AWS); Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098.004",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1098.005",
+      "tactic": "privilege-escalation",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1484.001",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Ransomware Precursors; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1543.001",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: LaunchAgent Plist Written by a Non-Installer Process; Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1543.002",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1543.003",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Suspicious Windows Service Installation; Playbook: Persistence",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1543.004",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1546.003",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: WMI Event Subscription Persistence; Playbook: Persistence; Write-up: Hunting Persistence: Every Place an Attacker Can Survive a Reboot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1547.001",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Run Key Persistence with Suspicious Value; Playbook: Persistence; Write-up: Hunting Persistence: Every Place an Attacker Can Survive a Reboot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1547.015",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1548",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: UAC Bypass",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1548.002",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Auto-Elevated Binary Spawns Shell or LOLBin; Sigma: UAC Bypass via Shell-Handler Registry Hijack; Playbook: UAC Bypass; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1548.003",
+      "tactic": "privilege-escalation",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Persistence",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574.001",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Well-Known Hijackable System DLL Loaded from Unusual Path; Sigma: DLL Side-Loaded from User-Writable Path; Playbook: DLL Search-Order Hijacking & Side-Loading; Write-up: Hunting Persistence: Every Place an Attacker Can Survive a Reboot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574.002",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Well-Known Hijackable System DLL Loaded from Unusual Path; Sigma: DLL Side-Loaded from User-Writable Path; Playbook: DLL Search-Order Hijacking & Side-Loading",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574.006",
+      "tactic": "privilege-escalation",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1611",
+      "tactic": "privilege-escalation",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Privileged or Host-Namespace Pod Created; Playbook: Kubernetes & Container Hunting; Playbook: Linux Hunting; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1027",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: PowerShell Encoded Command Execution; Sigma: CertUtil LOLBin Encode/Decode Abuse; Playbook: PowerShell Abuse",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1027.006",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Phishing & Initial Execution",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1036",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Defense Evasion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1055",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Network Connection from Benign GUI Binary Commonly Used as Injection Host; Sigma: Remote Thread Created in Sensitive or Commonly Injected Process; Playbook: Defense Evasion; Playbook: Process Injection",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1055.001",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Remote Thread Created in Sensitive or Commonly Injected Process; Playbook: Process Injection",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1055.002",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Remote Thread Created in Sensitive or Commonly Injected Process; Playbook: Process Injection",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1055.012",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Network Connection from Benign GUI Binary Commonly Used as Injection Host; Playbook: Process Injection",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1070.001",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Windows Event Log Cleared; Playbook: Defense Evasion; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1070.002",
+      "tactic": "defense-evasion",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1070.003",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting; Write-up: Hunt Pack: Insider & Departing-Employee Data Theft; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1070.004",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting; Write-up: Hunt Pack: Insider & Departing-Employee Data Theft",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1070.006",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Defense Evasion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1078.002",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Service Account Interactive Logon",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1078.004",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Business Email Compromise & Mailbox Abuse; Playbook: Cloud & Identity (Entra ID, M365, AWS); Playbook: Kubernetes & Container Hunting; Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1112",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: UAC Bypass via Shell-Handler Registry Hijack; Playbook: UAC Bypass",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1140",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: CertUtil LOLBin Encode/Decode Abuse; Playbook: LOLBin Proxy Execution; Write-up: CTF Challenge: Argon Nexus \u2014 The Internal Data Spill; Write-up: Case Study: The Argon Dynamics Data Spill \u2014 A Hunt Walkthrough",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1197",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: BITSAdmin Download or Persistent Transfer Job; Playbook: LOLBin Proxy Execution",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1218",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: LOLBin Proxy Execution; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1218.005",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Mshta Executing Remote or Inline Script Content; Playbook: LOLBin Proxy Execution",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1218.010",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: LOLBin Proxy Execution",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1218.011",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Rundll32 Suspicious Invocation; Sigma: Auto-Elevated Binary Spawns Shell or LOLBin; Playbook: LOLBin Proxy Execution; Playbook: UAC Bypass",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1484.001",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Ransomware Precursors; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1548",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: UAC Bypass",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1548.002",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Auto-Elevated Binary Spawns Shell or LOLBin; Sigma: UAC Bypass via Shell-Handler Registry Hijack; Playbook: UAC Bypass; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1548.003",
+      "tactic": "defense-evasion",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1550",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Active Directory Certificate Services (AD CS) Abuse",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1550.002",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Possible Pass-the-Hash Lateral Movement; Playbook: Lateral Movement; Write-up: Hunting Lateral Movement: What Pass-the-Hash Looks Like in Your Logs; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1550.003",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Lateral Movement",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1553.001",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1556",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Cloud & Identity (Entra ID, M365, AWS)",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1556.006",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Business Email Compromise & Mailbox Abuse; Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1562.001",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Microsoft Defender Disabled or Excluded via PowerShell/Command Line; Playbook: Defense Evasion; Playbook: PowerShell Abuse; Playbook: Ransomware Precursors; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1562.002",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Defense Evasion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1564.008",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Suspicious Inbox Rule Hiding or Deleting Mail; Playbook: Business Email Compromise & Mailbox Abuse; Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Persistence",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574.001",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Well-Known Hijackable System DLL Loaded from Unusual Path; Sigma: DLL Side-Loaded from User-Writable Path; Playbook: DLL Search-Order Hijacking & Side-Loading; Write-up: Hunting Persistence: Every Place an Attacker Can Survive a Reboot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574.002",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Well-Known Hijackable System DLL Loaded from Unusual Path; Sigma: DLL Side-Loaded from User-Writable Path; Playbook: DLL Search-Order Hijacking & Side-Loading",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1574.006",
+      "tactic": "defense-evasion",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1610",
+      "tactic": "defense-evasion",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Privileged or Host-Namespace Pod Created; Playbook: Kubernetes & Container Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1003.001",
+      "tactic": "credential-access",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Suspicious LSASS Process Access; Sigma: Possible Pass-the-Hash Lateral Movement; Playbook: LSASS Credential Dumping; Write-up: Hunting Lateral Movement: What Pass-the-Hash Looks Like in Your Logs; Write-up: Hunt Pack: Active Directory Domain Dominance; Write-up: Hunt Pack: Ransomware Kill Chain; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1003.002",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: LSASS Credential Dumping",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1003.003",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: LSASS Credential Dumping",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1003.004",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: LSASS Credential Dumping",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1003.006",
+      "tactic": "credential-access",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: DCSync - Directory Replication from Non-Domain-Controller Account; Playbook: DCSync; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1056.002",
+      "tactic": "credential-access",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Suspicious osascript Invocation (Shell, Download or Password Dialog); Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1110",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Cloud & Identity (Entra ID, M365, AWS)",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1110.001",
+      "tactic": "credential-access",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1110.003",
+      "tactic": "credential-access",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1528",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Cloud & Identity (Entra ID, M365, AWS); Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1552.001",
+      "tactic": "credential-access",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Linux Server Intrusion; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1552.007",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Kubernetes & Container Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1555.001",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1556",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Cloud & Identity (Entra ID, M365, AWS)",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1556.006",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Business Email Compromise & Mailbox Abuse; Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1557.001",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Active Directory Certificate Services (AD CS) Abuse",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1558.003",
+      "tactic": "credential-access",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Kerberoasting - RC4 Service Ticket Requests; Playbook: Kerberoasting & AS-REP Roasting; Write-up: Hunt Pack: Active Directory Domain Dominance; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1558.004",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Kerberoasting & AS-REP Roasting; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1621",
+      "tactic": "credential-access",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Business Email Compromise & Mailbox Abuse; Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1649",
+      "tactic": "credential-access",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: AD CS Enumeration or Abuse Tooling Command Line; Sigma: AD CS Certificate Request with Requester-Supplied Subject Alternative Name (ESC1); Playbook: Active Directory Certificate Services (AD CS) Abuse; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1016",
+      "tactic": "discovery",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Active Directory Discovery & BloodHound Collection",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1018",
+      "tactic": "discovery",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: SMB Session and Local Group Enumeration via IPC$ Named Pipes; Sigma: Active Directory Enumeration Tooling on the Command Line; Playbook: Active Directory Discovery & BloodHound Collection; Playbook: Network Share & File Discovery; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1049",
+      "tactic": "discovery",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: SMB Session and Local Group Enumeration via IPC$ Named Pipes",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1069.001",
+      "tactic": "discovery",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: SMB Session and Local Group Enumeration via IPC$ Named Pipes",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1069.002",
+      "tactic": "discovery",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Active Directory Enumeration Tooling on the Command Line; Playbook: Active Directory Discovery & BloodHound Collection; Write-up: Case Study: The Argon Dynamics Data Spill \u2014 A Hunt Walkthrough; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1083",
+      "tactic": "discovery",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Network Share Enumeration Tooling on the Command Line; Playbook: Network Share & File Discovery; Write-up: Hunt Pack: Insider & Departing-Employee Data Theft; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1087.002",
+      "tactic": "discovery",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Active Directory Enumeration Tooling on the Command Line; Playbook: Active Directory Discovery & BloodHound Collection; Write-up: CTF Challenge: Argon Nexus \u2014 The Internal Data Spill; Write-up: Case Study: The Argon Dynamics Data Spill \u2014 A Hunt Walkthrough; Write-up: Hunt Pack: Active Directory Domain Dominance; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1135",
+      "tactic": "discovery",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Access to a Decoy or Honey Share; Sigma: Network Share Enumeration Tooling on the Command Line; Playbook: Network Share & File Discovery; Write-up: Hunt Pack: Insider & Departing-Employee Data Theft; Write-up: Hunt Pack: Ransomware Kill Chain; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1482",
+      "tactic": "discovery",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Active Directory Enumeration Tooling on the Command Line; Playbook: Active Directory Discovery & BloodHound Collection; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1518.001",
+      "tactic": "discovery",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1613",
+      "tactic": "discovery",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Kubernetes & Container Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1021.001",
+      "tactic": "lateral-movement",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Remote Desktop Enabled via Command Line or PowerShell; Playbook: Lateral Movement; Playbook: Remote Access Anomalies (RDP & WinRM); Write-up: Hunt Pack: Active Directory Domain Dominance; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1021.002",
+      "tactic": "lateral-movement",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Lateral Movement; Playbook: Network Share & File Discovery; Playbook: Ransomware Precursors; Playbook: Remote Access Anomalies (RDP & WinRM); Write-up: Hunt Pack: Active Directory Domain Dominance; Write-up: Hunt Pack: Ransomware Kill Chain; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1021.004",
+      "tactic": "lateral-movement",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Linux Hunting; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1021.006",
+      "tactic": "lateral-movement",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: WinRM Host Process Spawning Shell or LOLBin; Playbook: Lateral Movement; Playbook: Remote Access Anomalies (RDP & WinRM)",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1550",
+      "tactic": "lateral-movement",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Active Directory Certificate Services (AD CS) Abuse",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1550.002",
+      "tactic": "lateral-movement",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Possible Pass-the-Hash Lateral Movement; Playbook: Lateral Movement; Write-up: Hunting Lateral Movement: What Pass-the-Hash Looks Like in Your Logs; Write-up: Hunt Pack: Active Directory Domain Dominance",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1550.003",
+      "tactic": "lateral-movement",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Lateral Movement",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1005",
+      "tactic": "collection",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Insider & Departing-Employee Data Theft",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1039",
+      "tactic": "collection",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Access to a Decoy or Honey Share; Playbook: Network Share & File Discovery; Write-up: CTF Challenge: Argon Nexus \u2014 The Internal Data Spill; Write-up: Case Study: The Argon Dynamics Data Spill \u2014 A Hunt Walkthrough; Write-up: Hunt Pack: Insider & Departing-Employee Data Theft",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1056.002",
+      "tactic": "collection",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Suspicious osascript Invocation (Shell, Download or Password Dialog); Playbook: macOS Hunting",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1074",
+      "tactic": "collection",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Data Exfiltration",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1074.001",
+      "tactic": "collection",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Insider & Departing-Employee Data Theft; Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1114",
+      "tactic": "collection",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Suspicious Inbox Rule Hiding or Deleting Mail",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1114.002",
+      "tactic": "collection",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Business Email Compromise & Mailbox Abuse; Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1114.003",
+      "tactic": "collection",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Mailbox Forwarding to External Address; Playbook: Business Email Compromise & Mailbox Abuse; Playbook: Cloud & Identity (Entra ID, M365, AWS); Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover; Write-up: Hunt Pack: Insider & Departing-Employee Data Theft",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1213.002",
+      "tactic": "collection",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Insider & Departing-Employee Data Theft",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1530",
+      "tactic": "collection",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1557.001",
+      "tactic": "collection",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Active Directory Certificate Services (AD CS) Abuse",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1560",
+      "tactic": "collection",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Data Exfiltration; Write-up: CTF Challenge: Argon Nexus \u2014 The Internal Data Spill; Write-up: Case Study: The Argon Dynamics Data Spill \u2014 A Hunt Walkthrough",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1560.001",
+      "tactic": "collection",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Insider & Departing-Employee Data Theft",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1071.001",
+      "tactic": "command-and-control",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: C2 Beaconing & DNS Tunneling; Write-up: Hunting C2 Beaconing: Finding the Heartbeat in Your Network Traffic; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1071.004",
+      "tactic": "command-and-control",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: C2 Beaconing & DNS Tunneling; Write-up: Hunting C2 Beaconing: Finding the Heartbeat in Your Network Traffic",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1090",
+      "tactic": "command-and-control",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: C2 Beaconing & DNS Tunneling; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1095",
+      "tactic": "command-and-control",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: C2 Beaconing & DNS Tunneling",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1102",
+      "tactic": "command-and-control",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: C2 Beaconing & DNS Tunneling",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1105",
+      "tactic": "command-and-control",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: LOLBin Proxy Execution; Playbook: macOS Hunting; Playbook: PowerShell Abuse",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1568",
+      "tactic": "command-and-control",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: C2 Beaconing & DNS Tunneling",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1572",
+      "tactic": "command-and-control",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: C2 Beaconing & DNS Tunneling; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1573",
+      "tactic": "command-and-control",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: C2 Beaconing & DNS Tunneling",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1020",
+      "tactic": "exfiltration",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Data Exfiltration",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1041",
+      "tactic": "exfiltration",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Data Exfiltration; Write-up: CTF Challenge: Argon Nexus \u2014 The Internal Data Spill; Write-up: Case Study: The Argon Dynamics Data Spill \u2014 A Hunt Walkthrough",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1048",
+      "tactic": "exfiltration",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: CertUtil LOLBin Encode/Decode Abuse; Playbook: Data Exfiltration; Write-up: Hunt Pack: Linux Server Intrusion; Write-up: Hunt Pack: Web-Facing Compromise to Internal Pivot",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1048.002",
+      "tactic": "exfiltration",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Insider & Departing-Employee Data Theft",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1052.001",
+      "tactic": "exfiltration",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Insider & Departing-Employee Data Theft",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1537",
+      "tactic": "exfiltration",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Data Exfiltration",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1567.002",
+      "tactic": "exfiltration",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Rclone Usage Consistent with Data Exfiltration; Playbook: Data Exfiltration; Write-up: Hunt Pack: Insider & Departing-Employee Data Theft; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1486",
+      "tactic": "impact",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Ransomware Precursors; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1489",
+      "tactic": "impact",
+      "score": 66,
+      "color": "#f5b942",
+      "comment": "Playbook: Ransomware Precursors",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1490",
+      "tactic": "impact",
+      "score": 100,
+      "color": "#6afb73",
+      "comment": "Sigma: Shadow Copy Deletion or Recovery Inhibition; Playbook: Ransomware Precursors; Write-up: Hunt Pack: Ransomware Kill Chain",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1496",
+      "tactic": "impact",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Linux Server Intrusion",
+      "enabled": true,
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1657",
+      "tactic": "impact",
+      "score": 33,
+      "color": "#8b98ae",
+      "comment": "Write-up: Hunt Pack: Business Email Compromise & Cloud Identity Takeover",
+      "enabled": true,
+      "showSubtechniques": false
+    }
+  ],
+  "gradient": {
+    "colors": [
+      "#ffffff",
+      "#f5b942",
+      "#6afb73"
+    ],
+    "minValue": 0,
+    "maxValue": 100
+  },
+  "legendItems": [
+    {
+      "label": "Sigma rule (+ playbook)",
+      "color": "#6afb73"
+    },
+    {
+      "label": "Playbook only",
+      "color": "#f5b942"
+    },
+    {
+      "label": "Write-up only",
+      "color": "#8b98ae"
+    }
+  ],
+  "showTacticRowBackground": true,
+  "tacticRowBackground": "#0a0f1f",
+  "selectTechniquesAcrossTactics": true,
+  "selectSubtechniquesWithParent": false
+}
