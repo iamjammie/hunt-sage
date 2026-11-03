@@ -5,8 +5,6 @@ name: Preview screenshots
 # deploying. Useful for design PRs.
 
 on:
-  push:
-    branches: [claude/design-polish]   # temporary: remove before merge
   workflow_dispatch:
     inputs:
       ref:
