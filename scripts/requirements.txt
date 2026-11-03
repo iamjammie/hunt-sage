@@ -1,4 +1,4 @@
-pyyaml>=6.0
+pyyaml>=6.0.3
 pySigma>=1.5,<2
 pySigma-backend-splunk==2.1.0
 pySigma-backend-kusto==1.0.1
