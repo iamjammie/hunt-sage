@@ -108,14 +108,10 @@ html.hs-theme-light {
 }
 
 /* ---------- base ---------- */
-html {
-  min-height: 100%;
-  background: var(--hs-midnight);
-  background-image: linear-gradient(180deg, var(--hs-bg-top) 0%, var(--hs-midnight) 42%, var(--hs-bg-bottom) 100%);
-  background-attachment: fixed;
-  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-}
-body { background: transparent; color: var(--hs-text); font-family: var(--hs-font-sans); line-height: 1.6; }
+/* One flat surface everywhere: the masthead, sidebar and content all sit on the same base,
+   so the page reads as a single plane. Depth comes from bordered surfaces, not a background wash. */
+html { background: var(--hs-midnight); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { background: var(--hs-midnight); color: var(--hs-text); font-family: var(--hs-font-sans); line-height: 1.6; }
 /* deliberate cross-fade on theme switch (class is on <html> for ~360ms, set by theme-toggle.js) */
 html.hs-switching, html.hs-switching body, html.hs-switching .page__content,
 html.hs-switching .masthead, html.hs-switching .sidebar, html.hs-switching .toc,
