@@ -6,7 +6,7 @@ name: Preview screenshots
 
 on:
   push:
-    branches: [claude/one-stop-hub-overhaul]   # temporary: remove before merge
+    branches: [claude/design-pass]   # temporary: remove before merge
   workflow_dispatch:
     inputs:
       ref:
