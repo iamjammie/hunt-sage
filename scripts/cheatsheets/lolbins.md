@@ -1,55 +1,193 @@
 ---
 title: "LOLBins Quick Reference"
-excerpt: "Commonly abused Windows binaries: what they are used for and which arguments give them away."
+excerpt: "Signed Windows binaries attackers abuse to download, execute, dump and persist, and the telemetry that gives each one away."
 ---
 
-> Full catalogue: **[LOLBAS](https://lolbas-project.github.io/)**. Linux: **[GTFOBins](https://gtfobins.github.io/)**. Drivers: **[LOLDrivers](https://www.loldrivers.io/)**. macOS: **[LOOBins](https://www.loobins.io/)**.
+> Living catalogues: **[LOLBAS](https://lolbas-project.github.io/)** (Windows), **[GTFOBins](https://gtfobins.github.io/)** (Linux), **[LOOBins](https://www.loobins.io/)** (macOS), **[LOLDrivers](https://www.loldrivers.io/)** (vulnerable/malicious drivers), **[LOLRMM](https://lolrmm.io/)** (abused remote-management tools), **[WADComs](https://wadcoms.github.io/)** (AD/Windows offensive tooling, for mapping to artefacts).
 
-Detection principle: **binary + arguments + parent + network + user**. The binary alone is rarely enough.
+Attackers prefer signed, Microsoft-shipped binaries because they are trusted, pre-installed and often ignored by baseline allow-lists. The binary name alone is almost never the signal. Hunt on the combination:
 
-| Binary | Abuse | Suspicious argument patterns | MITRE |
+**binary + arguments + parent process + integrity level + network + user + path**
+
+A `rundll32.exe` launched by `services.exe` loading a System32 DLL is normal; the same binary launched by `winword.exe`, loading a DLL from `%TEMP%` and making an outbound connection, is not.
+
+## Download and ingress transfer
+
+| Binary | Legitimate use | Detection signals | ATT&CK |
 |---|---|---|---|
-| `certutil.exe` | Download, encode/decode | `-urlcache -split -f http...`, `-decode`, `-encode`, `-verifyctl` | T1105, T1140 |
-| `bitsadmin.exe` | Download, persistence | `/transfer`, `/addfile`, `/SetNotifyCmdLine` | T1197 |
-| `mshta.exe` | Run HTA/script | `http(s)://`, `javascript:`, `vbscript:` | T1218.005 |
-| `rundll32.exe` | Run DLL/script | `javascript:`, `comsvcs.dll, MiniDump`, DLL in `Temp`/`AppData`, no-arg spawn | T1218.011, T1003.001 |
-| `regsvr32.exe` | Squiblydoo | `/s /n /u /i:http://... scrobj.dll` | T1218.010 |
-| `msiexec.exe` | Run remote MSI | `/q /i http://...` | T1218.007 |
-| `wmic.exe` | Remote exec, recon, XSL | `/node:`, `process call create`, `/format:http...`, `shadowcopy delete` | T1047, T1220 |
-| `powershell.exe` | Everything | `-enc`, `-nop -w hidden`, `IEX`, `DownloadString` | T1059.001 |
-| `cmd.exe` | Command chaining | `/c` with `&`, `^` obfuscation, long cmdlines | T1059.003 |
-| `wscript.exe` / `cscript.exe` | Script host | `.js`, `.vbs`, `.wsf` from `AppData`/`Temp`/`Downloads` | T1059.005/.007 |
-| `schtasks.exe` | Persistence / remote exec | `/create ... /s <host>`, `/ru SYSTEM`, user-path actions | T1053.005 |
-| `sc.exe` | Service creation / tamper | `create ... binPath=`, `config ... start= disabled`, remote `\\host` | T1543.003, T1562.001 |
-| `reg.exe` | Persistence, dump hives | `add ...\Run`, `save HKLM\SAM|SYSTEM|SECURITY`, `export` | T1547.001, T1003.002 |
-| `net.exe` / `net1.exe` | Recon, accounts | `user /add`, `localgroup administrators /add`, `use \\host\ipc$`, `group "domain admins" /domain` | T1136, T1087, T1021.002 |
-| `nltest.exe` | Domain recon | `/dclist:`, `/domain_trusts` | T1482 |
-| `dsquery.exe`, `adfind.exe` | AD enumeration | `* -filter`, `-f "(objectcategory=...)"` | T1087.002 |
-| `whoami.exe` | Recon | `/all`, `/priv`, `/groups` | T1033 |
-| `tasklist.exe` / `taskkill.exe` | Recon / kill AV | `/fi`, `/im defender...` | T1057, T1562 |
-| `vssadmin.exe` / `diskshadow.exe` / `wbadmin.exe` / `bcdedit.exe` | Impact / NTDS access | `delete shadows`, `recoveryenabled no`, `create shadow` | T1490, T1003.003 |
-| `ntdsutil.exe` | Dump AD DB | `"ac i ntds" "ifm" "create full"` | T1003.003 |
-| `esentutl.exe` | Copy locked files | `/y /vss` | T1003.003 |
-| `msbuild.exe` | Compile & run inline C# | `.csproj`/`.xml` in user path; network connections from msbuild | T1127.001 |
-| `installutil.exe`, `regasm.exe`, `regsvcs.exe` | .NET proxy execution | `/U` with DLL from user path | T1218.004/.009 |
-| `cmstp.exe` | INF execution, UAC bypass | `/s /ns` with `.inf` from user path | T1218.003 |
-| `forfiles.exe`, `pcalua.exe`, `SyncAppvPublishingServer.exe` | Indirect command execution | `/c cmd`, `-a` path, `-p` | T1202 |
-| `control.exe` | CPL execution | `.cpl` from user path | T1218.002 |
-| `odbcconf.exe` | DLL load | `/a {REGSVR dll}` | T1218.008 |
-| `expand.exe`, `extrac32.exe`, `makecab.exe` | Copy/compress files | cab to/from UNC, ADS paths | T1105, T1560 |
-| `curl.exe`, `tar.exe`, `ssh.exe` (built-in) | Transfer, tunneling | `curl -o`, `ssh -R/-L/-D` tunnels | T1105, T1572 |
-| `ftp.exe` | Scripted transfer | `-s:script.txt` | T1048 |
-| `findstr.exe` | Download from UNC / search creds | `/V /L ... \\host\share` | T1105 |
-| `print.exe`, `xcopy.exe`, `robocopy.exe` | Copy files, staging | Copies to admin shares | T1570, T1074 |
-| `dnscmd.exe` | DNS server plug-in DLL | `/config /serverlevelplugindll` | T1543.003 |
-| `eventvwr.exe`, `fodhelper.exe`, `computerdefaults.exe`, `sdclt.exe` | UAC bypass via registry hijack | Preceding `HKCU\Software\Classes\...\command` write | T1548.002 |
+| `certutil.exe` | Certificate/CA management | `-urlcache`, `-split`, `-verifyctl`, `-f` with an `http(s)` URL; `-encode` / `-decode` turning files to/from base64 | T1105, T1140 |
+| `bitsadmin.exe` | Background file transfer | `/transfer`, `/addfile`, `/create`, `/resume`; `/SetNotifyCmdLine` chaining to another binary (also persistence) | T1197, T1105 |
+| `curl.exe` | HTTP client (built in since Win10 1803) | `-o` / `-O` writing to `%TEMP%`, `%APPDATA%`, `ProgramData`; upload with `-T` / `--upload-file`; non-browser user agent to a rare host | T1105, T1048 |
+| `powershell.exe` / `pwsh.exe` | Automation | `Invoke-WebRequest`, `iwr`, `Invoke-RestMethod`, `.DownloadString(`, `.DownloadFile(`, `Start-BitsTransfer`; often with `-nop -w hidden -enc` | T1105, T1059.001 |
+| `mshta.exe` | Run HTML applications | Remote `http(s)://` or `javascript:` / `vbscript:` argument (fetches and runs in one step) | T1218.005, T1105 |
+| `esentutl.exe` | ESE database utility | `/y` copy from a URL or UNC path; `/vss` to read locked files | T1105, T1003.003 |
+| `desktopimgdownldr.exe` | Lock-screen image fetch | Registry value set under `PersonalizationCSP` pointing at a remote URL, then the binary run | T1105 |
+| `finger.exe` | Finger protocol client | Output redirected to a file; used as a tiny TCP downloader to port 79 | T1105 |
+| `expand.exe` / `extrac32.exe` | Expand CAB archives | Source path is a UNC share or URL; writing to a user-writable path | T1105 |
+| `replace.exe` / `print.exe` | Replace/print files | Source is a UNC or remote path; `print /D:` writing an arbitrary file | T1105, T1570 |
+
+## Execution proxies
+
+| Binary | Legitimate use | Detection signals | ATT&CK |
+|---|---|---|---|
+| `rundll32.exe` | Run DLL exports | DLL from `%TEMP%`/`%APPDATA%`; `javascript:`; `comsvcs.dll, MiniDump`; no arguments then network; odd `ordinal` exports | T1218.011, T1003.001 |
+| `regsvr32.exe` | Register COM DLLs | "Squiblydoo": `/s /n /u /i:` with an `http(s)` URL and `scrobj.dll` | T1218.010 |
+| `mshta.exe` | Run HTA | Parent is Office, a browser or mail; remote content argument | T1218.005 |
+| `wscript.exe` / `cscript.exe` | Windows Script Host | `.js`, `.vbs`, `.wsf`, `.vbe` launched from `Downloads`/`%TEMP%`/`%APPDATA%`; Office or archive tool as parent | T1059.005, T1059.007 |
+| `msiexec.exe` | Install MSI packages | `/q /i` with an `http(s)` URL or a UNC path; MSI from a user-writable path | T1218.007 |
+| `installutil.exe` | .NET installer | `/logfile= /LogToConsole=false /U` with a DLL from a user path (runs the uninstall method) | T1218.004 |
+| `regasm.exe` / `regsvcs.exe` | .NET COM registration | `/U` with a DLL from a user-writable path | T1218.009 |
+| `msbuild.exe` | Build .NET projects | A `.csproj`/`.xml`/`.proj` under a user path; MSBuild making network connections or spawning `cmd`/`powershell` | T1127.001 |
+| `cmstp.exe` | Connection Manager profiles | `/s` / `/ns` with an `.inf` from a user path (also an auto-elevated UAC bypass) | T1218.003, T1548.002 |
+| `control.exe` | Control Panel | A `.cpl` (really a DLL) loaded from a user-writable path | T1218.002 |
+| `odbcconf.exe` | ODBC configuration | `/a` with `{REGSVR <dll>}`; `-f` response file registering a DLL | T1218.008 |
+| `wmic.exe` | WMI command line | `process call create`; `/node:` remote exec; `/format:` with a remote XSL (`.xsl`) | T1047, T1220 |
+| `forfiles.exe` / `pcalua.exe` | Batch over files / compat assistant | `/c cmd /c` or `-a` / `-p` spawning another binary (indirect execution hides the real parent) | T1202 |
+| `conhost.exe` | Console host | Used as a launcher prefix to break the parent/child chain | T1202 |
+| `scriptrunner.exe` | App-V script runner | `-appvscript` launching an arbitrary command | T1218 |
+| `mavinject.exe` | App-V DLL injection | `/INJECTRUNNING <pid>` with a DLL path (injects into a live process) | T1055.001 |
+| `xwizard.exe` | Extensible wizards | `RunWizard` with a CLSID, loading a DLL from the working directory | T1218 |
+| `msdt.exe` / `pcwrun.exe` | Diagnostics | External/URL protocol invocation (the "Follina" pattern); unexpected parent | T1218 |
+| `verclsid.exe` | Verify shell extension | Launched with a CLSID to approve a COM object out of the usual Explorer flow | T1218.012 |
+| `ieexec.exe` / `presentationhost.exe` | .NET/ClickOnce hosting | Loading a remote `.application` or `.xbap`/managed app | T1127 |
+
+## Credential and memory access
+
+| Binary | Legitimate use | Detection signals | ATT&CK |
+|---|---|---|---|
+| `rundll32.exe` + `comsvcs.dll` | COM services | `comsvcs.dll, MiniDump <pid> <file> full` against `lsass.exe` | T1003.001 |
+| `rdrleakdiag.exe` | Resource-leak diagnosis | `/memdump` / `/fullmemdmp` targeting the LSASS pid | T1003.001 |
+| `createdump.exe` | .NET crash dump | `-f <file> -u <pid>` or targeting `lsass.exe` | T1003.001 |
+| `sqldumper.exe` | SQL Server dump | `<lsass-pid> 0 0x01100:40` style full-process dump of LSASS | T1003.001 |
+| `werfault.exe` / `WerFaultSecure.exe` | Windows Error Reporting | Dumping LSASS via a forced error or `-u -p <pid>` | T1003.001 |
+| `tttracer.exe` | Time-Travel Debugging | `-dumpFull -attach <lsass-pid>` | T1003.001 |
+| `ntdsutil.exe` | AD database maintenance | `"activate instance ntds" "ifm" "create full"` run off a DC or by non-admins | T1003.003 |
+| `reg.exe` | Registry editor | `save` / `export` of `HKLM\SAM`, `HKLM\SYSTEM`, `HKLM\SECURITY` | T1003.002 |
+| `vssadmin.exe` / `diskshadow.exe` | Shadow copies | `create shadow` then reading `ntds.dit` / hives from the snapshot | T1003.003 |
+
+## Discovery and reconnaissance
+
+| Binary | Detection signals | ATT&CK |
+|---|---|---|
+| `net.exe` / `net1.exe` | `group "domain admins" /domain`, `user /domain`, `localgroup administrators`, `session`, `view`, `use \\host\ipc$` | T1087, T1069, T1135 |
+| `nltest.exe` | `/dclist:`, `/domain_trusts`, `/all_trusts`, `/dsgetdc:` | T1482, T1018 |
+| `dsquery.exe` / `dsget.exe` | `* -filter`, `-f "(objectcategory=...)"`, large result sets | T1087.002 |
+| `whoami.exe` | `/all`, `/priv`, `/groups` (quick token/privilege triage) | T1033 |
+| `systeminfo.exe`, `hostname.exe`, `ver` | Host and patch-level enumeration early in a session | T1082 |
+| `tasklist.exe` / `qprocess.exe` | `/v`, `/svc`, `/fi` filtering for security products | T1057, T1518.001 |
+| `quser.exe` / `qwinsta.exe` / `query.exe` | Who else is logged on, RDP session enumeration | T1033 |
+| `ipconfig`, `arp`, `route`, `netstat`, `nbtstat` | Network and neighbour discovery burst from one host | T1016, T1049 |
+| `reg.exe query` / `wevtutil el` | Reading config, listing event logs before tampering | T1012, T1082 |
+| `fsutil.exe` | `fsutil fsinfo`, `usn` queries; enumerating volumes | T1082 |
+
+A single one of these is noise. A **burst of many distinct discovery binaries from one host within minutes**, especially from a non-admin or a server that does not normally run them, is the hunt. Stack `(parent, child)` pairs and `dcount` of discovery binaries per host per hour.
+
+## Persistence and remote execution
+
+| Binary | Detection signals | ATT&CK |
+|---|---|---|
+| `schtasks.exe` | `/create` with `/ru SYSTEM`, an action in a user path, or `/s \\host` for remote; hidden tasks | T1053.005 |
+| `sc.exe` | `create ... binPath=` to a user path or `cmd /c`; `config ... start= auto`; remote `\\host` | T1543.003 |
+| `reg.exe` | `add` to `...\Run`, `RunOnce`, `Winlogon\Shell`/`Userinit`, `Image File Execution Options`, service `ImagePath` | T1547.001, T1546.012 |
+| `dnscmd.exe` | `/config /serverlevelplugindll <path>` (loads a DLL into the DNS service on a DC) | T1543.003 |
+| `at.exe` | Legacy scheduled jobs (deprecated but still present on older hosts) | T1053.002 |
+| `wmic.exe` / PowerShell CIM | `__EventFilter` / `CommandLineEventConsumer` WMI subscription creation (Sysmon 19/20/21) | T1546.003 |
+| `pwsh`/`powershell` profile writes | New `profile.ps1`, `Microsoft.PowerShell_profile.ps1` in user or all-users paths | T1546.013 |
+
+## Staging, archiving and copy
+
+| Binary | Detection signals | ATT&CK |
+|---|---|---|
+| `makecab.exe` / `cabarc.exe` | Compressing collected files before exfil, often in `%TEMP%` | T1560, T1074 |
+| `tar.exe` (built in) | `-c` creating an archive of a data directory; `.tar`/`.gz` in a staging path | T1560.001 |
+| `xcopy.exe` / `robocopy.exe` / `copy` | Bulk copy to `\\host\C$`/`ADMIN$` or a staging folder; `/mir`, `/s` across shares | T1570, T1074 |
+| `findstr.exe` | `/s /i password` recursively over config files; reading from a UNC share | T1552.001, T1105 |
+| `certreq.exe` | `-post` uploading a file to a remote URL (small exfil channel) | T1048 |
+
+## Impact and recovery inhibition
+
+| Binary | Detection signals | ATT&CK |
+|---|---|---|
+| `vssadmin.exe` | `delete shadows /all /quiet`, `resize shadowstorage` | T1490 |
+| `wbadmin.exe` | `delete catalog`, `delete systemstatebackup`, `delete backup` | T1490 |
+| `bcdedit.exe` | `/set {default} recoveryenabled no`, `bootstatuspolicy ignoreallfailures` | T1490 |
+| `wmic.exe` | `shadowcopy delete` | T1490 |
+| `cipher.exe` | `/w:` wiping free space (anti-forensic / destruction) | T1485, T1070.004 |
+| `fsutil.exe` | `usn deletejournal`, `file setzerodata` | T1070, T1485 |
+
+## Defense evasion and log tampering
+
+| Binary | Detection signals | ATT&CK |
+|---|---|---|
+| `wevtutil.exe` | `cl <log>` / `clear-log` (clearing Security, System, PowerShell logs) | T1070.001 |
+| `PowerShell` | `Clear-EventLog`, `Limit-EventLog`, `Remove-EventLog`; `Set-MpPreference` disabling Defender | T1070.001, T1562.001 |
+| `sc.exe` / `net stop` | Stopping EDR, Defender, WinDefend, Sysmon or the event-log service | T1562.001 |
+| `takeown.exe` / `icacls.exe` | Taking ownership / granting rights on security tooling or system files | T1222.001 |
+| `attrib.exe` | `+h +s` hiding dropped files | T1564.001 |
+| `fltmc.exe` | `unload` of an EDR/AV minifilter driver | T1562.001 |
+| `MpCmdRun.exe` | `-RemoveDefinitions -All`, `-DownloadFile` (Defender's own binary abused) | T1562.001, T1105 |
+
+## UAC bypass and elevation (auto-elevated binaries)
+
+Auto-elevating binaries spawn a High-integrity child after a hijacked registry handler is written. The signal is a **registry write to `HKCU\Software\Classes\...\shell\open\command` or `...\ms-settings\...`** immediately followed by the binary running and a Medium-to-High integrity transition.
+
+| Binary | Hijack path to watch | ATT&CK |
+|---|---|---|
+| `fodhelper.exe` | `HKCU\Software\Classes\ms-settings\Shell\Open\command` | T1548.002 |
+| `computerdefaults.exe` | `ms-settings` handler | T1548.002 |
+| `sdclt.exe` | `App Paths\control.exe` / `Folder\shell\open\command` | T1548.002 |
+| `eventvwr.exe` | `mscfile\shell\open\command` | T1548.002 |
+| `wsreset.exe` | `AppX...\Shell\open\command` | T1548.002 |
+| `slui.exe` | `exefile\shell\open\command` | T1548.002 |
+
+See the [UAC bypass playbook]({{ site.baseurl }}/hunt/playbooks/uac-bypass/).
+
+## Tunnelling and proxy
+
+| Binary | Detection signals | ATT&CK |
+|---|---|---|
+| `ssh.exe` (built in) | `-R` / `-L` / `-D` creating reverse, local or dynamic tunnels; outbound to a non-corporate host | T1572, T1090 |
+| `netsh.exe` | `interface portproxy add` (port forwarding); `advfirewall` rule changes to allow C2 | T1090, T1562.004 |
+| `OpenSSH sshd` | A listening `sshd` appearing on a workstation that should not run one | T1572 |
 
 ## Detection helpers
 
-- Use PE **`OriginalFileName`** to catch renamed copies.
-- Check **path**: these live in `System32`/`SysWOW64`; copies in `Users`, `Temp` or `ProgramData` are rarely legit.
-- **Parent matters**: Office, browser, mail client, `wmiprvse.exe`, `w3wp.exe`, `services.exe`, `wsmprovhost.exe` as parents of the above are high-signal.
-- **Network**: `rundll32`, `regsvr32`, `mshta`, `msbuild`, `certutil` making outbound connections is unusual.
-- **Command-line obfuscation**: carets (`c^e^r^t^u^t^i^l`), mixed case, env var substring tricks, `%COMSPEC%`, excessive length, `-` vs `/` vs `–` (en dash) switches. Sigma `|windash` handles switch variants.
+- **`OriginalFileName`** (Sysmon 1, Defender `ProcessVersionInfoOriginalFileName`): survives renaming, so a `svchost.exe` on disk whose `OriginalFileName` is `rundll32.exe` is caught.
+- **Path**: these ship in `System32` / `SysWOW64`. A copy running from `Users`, `%TEMP%`, `ProgramData`, `Public` or a mounted ISO is rarely legitimate.
+- **Parent/child**: Office apps, browsers, mail clients, `wmiprvse.exe`, `w3wp.exe`, `wsmprovhost.exe`, `mshta`, `wscript` as parents of interpreters or the binaries above are high-signal (see the [LOLBin proxy execution playbook]({{ site.baseurl }}/hunt/playbooks/lolbin-proxy-execution/)).
+- **Network from the unusual**: `rundll32`, `regsvr32`, `mshta`, `msbuild`, `certutil`, `installutil` making outbound connections (Sysmon 3, `DeviceNetworkEvents`).
+- **Integrity transition**: a Medium-integrity parent producing a High-integrity child via an auto-elevated binary.
+- **Command-line obfuscation**: carets (`c^e^r^t^u^t^i^l`), mixed case, `%COMSPEC%`/env-var substring tricks, excessive length, and switch variants (`-` vs `/` vs the en dash `–`). In Sigma the `|windash` modifier covers the switch variants; for base64 use `|base64offset|contains`.
 
-Related: [LOLBin proxy execution playbook]({{ site.baseurl }}/hunt/playbooks/lolbin-proxy-execution/).
+## Hunting one-liners
+
+Stack rare binary-from-unusual-path across the fleet (Defender XDR):
+
+```kql
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where FileName in~ ("rundll32.exe","regsvr32.exe","mshta.exe","certutil.exe","installutil.exe","msbuild.exe")
+| where FolderPath !startswith @"C:\Windows\System32" and FolderPath !startswith @"C:\Windows\SysWOW64"
+| summarize Hosts = dcount(DeviceName), Cmds = make_set(ProcessCommandLine, 5) by FileName, FolderPath
+| order by Hosts asc
+```
+
+LOLBin making a network connection (Splunk, Sysmon TA):
+
+```spl
+index=sysmon (EventCode=1 OR EventCode=3)
+| transaction ProcessGuid maxspan=5m
+| search EventCode=3 Image IN ("*\\rundll32.exe","*\\regsvr32.exe","*\\mshta.exe","*\\certutil.exe","*\\msbuild.exe")
+| stats count values(DestinationHostname) as dest by Computer Image
+```
+
+Renamed LOLBin (Sysmon `OriginalFileName` mismatch):
+
+```spl
+index=sysmon EventCode=1
+| eval base=lower(mvindex(split(Image,"\\"),-1))
+| where OriginalFileName!="" AND lower(OriginalFileName)!=base AND lower(OriginalFileName)!=base.".mui"
+| table _time Computer User Image OriginalFileName CommandLine
+```
+
+Related: [LOLBin proxy execution]({{ site.baseurl }}/hunt/playbooks/lolbin-proxy-execution/) · [PowerShell abuse]({{ site.baseurl }}/hunt/playbooks/powershell-abuse/) · [Process injection]({{ site.baseurl }}/hunt/playbooks/process-injection/) · [Query index]({{ site.baseurl }}/hunt/query-index/)
