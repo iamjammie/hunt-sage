@@ -5,6 +5,8 @@ name: Preview screenshots
 # deploying. Useful for design PRs.
 
 on:
+  push:
+    branches: [claude/one-stop-hub-overhaul]   # temporary: remove before merge
   workflow_dispatch:
     inputs:
       ref:
@@ -21,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.ref }}
+          ref: ${{ inputs.ref || github.ref_name }}
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"
@@ -50,6 +52,6 @@ jobs:
           git checkout --orphan preview-screenshots
           git rm -rfq --cached . && git clean -fdxq -e shots
           mv shots/* . && rmdir shots
-          echo "Screenshots of ${{ inputs.ref }} @ $sha" > README.md
-          git add -A && git commit -qm "Preview screenshots of ${{ inputs.ref }} @ $sha"
+          echo "Screenshots of ${{ inputs.ref || github.ref_name }} @ $sha" > README.md
+          git add -A && git commit -qm "Preview screenshots of ${{ inputs.ref || github.ref_name }} @ $sha"
           git push -f origin preview-screenshots
