@@ -435,6 +435,24 @@ a.hs-chip:hover { text-decoration: none; }
 .hs-stats-inline strong { color: var(--hs-green); font-family: var(--hs-font-mono); }
 .page__content .hs-heatmap-wrap { margin: 1em 0; }
 
+/* ---------- inline table of contents (wide pages, small screens) ---------- */
+/* On wide pages the TOC sits above the content; render it as a chip row instead of a tall list. */
+.page.wide .sidebar__right .toc { margin-bottom: 1.2em; }
+.page.wide .sidebar__right .toc .nav__title { font-size: 0.75em; padding: 0.4em 0.9em; }
+.page.wide .sidebar__right .toc__menu { display: flex; flex-wrap: wrap; gap: 0.35em; padding: 0.6em 0.8em; }
+.page.wide .sidebar__right .toc__menu > li { margin: 0; }
+.page.wide .sidebar__right .toc__menu ul { display: none; }
+.page.wide .sidebar__right .toc__menu a {
+  display: inline-block; border: 1px solid var(--hs-line); border-radius: 999px; padding: 0.25em 0.75em;
+  font-size: 0.74em; font-weight: 600; color: var(--hs-text-muted); background: var(--hs-surface-2); line-height: 1.3;
+}
+.page.wide .sidebar__right .toc__menu a:hover { color: var(--hs-text); border-color: var(--hs-green); background: var(--hs-surface-2); }
+/* On small screens every inline TOC becomes a collapsible block (toggle added by hunt-sage.js). */
+.toc .nav__title.hs-toc-toggle { cursor: pointer; user-select: none; }
+.toc .nav__title.hs-toc-toggle::after { content: "▾"; float: right; opacity: 0.7; }
+.toc.is-collapsed .nav__title.hs-toc-toggle::after { content: "▸"; }
+.toc.is-collapsed .toc__menu { display: none; }
+
 /* ---------- footer ---------- */
 .page__footer { background: var(--hs-surface); color: var(--hs-text-muted); border-top: 1px solid var(--hs-line); }
 .page__footer a { color: var(--hs-text-muted); }
