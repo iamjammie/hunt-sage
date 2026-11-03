@@ -23,7 +23,7 @@ feature_row:
     btn_label: "Read the path"
     btn_class: "btn--primary"
   - title: "Hunt: practice"
-    excerpt: "20 playbooks with hypothesis, data, KQL + SPL queries, triage, false positives and escalation criteria, plus a 70-hypothesis backlog and a query index."
+    excerpt: "20 playbooks with hypothesis, data, KQL + SPL queries, triage, false positives and escalation criteria, plus a 100-hypothesis backlog and a query index."
     url: "/hunt/"
     btn_label: "Open playbooks"
     btn_class: "btn--primary"
@@ -54,7 +54,7 @@ feature_row2:
   <li><strong>{{ site.data.coverage.summary.rules }}</strong><span>Sigma rules, CI-validated</span></li>
   <li><strong>{{ site.data.coverage.summary.techniques }}</strong><span>ATT&CK techniques mapped</span></li>
   <li><strong>8</strong><span>printable cheat sheets</span></li>
-  <li><strong>70+</strong><span>ready-made hunt hypotheses</span></li>
+  <li><strong>100+</strong><span>ready-made hunt hypotheses</span></li>
 </ul>
 
 {% include feature_row %}
