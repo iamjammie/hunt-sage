@@ -10,7 +10,7 @@ Most hunts are built from a small number of query shapes. This page collects the
 
 **Field names vary by connector, add-on and parser version.** `TargetUserName` in Sentinel's `SecurityEvent` is `Account_Name` (often multivalue) in the Splunk Windows TA and `user` in CIM; `Image` in the Sysmon TA is `FolderPath` plus `FileName` in Defender. Every query here is a starting point that has to be checked against your schema and your allow-lists before you trust its silence. Thresholds (`Hosts <= 3`, `CoV < 0.35`, `Km > 500`) are deliberately conservative starting points: widen them when the long tail is empty, tighten them when it is a page long.
 
-Syntax references: [KQL cheat sheet]({{ site.baseurl }}/cheatsheets/kql.pdf) and [Splunk SPL cheat sheet]({{ site.baseurl }}/cheatsheets/splunk-spl.pdf). The analytical reasoning behind each shape (search, stack, baseline, timing, sequence) is in [Hunting techniques]({{ site.baseurl }}/learn/hunting-techniques/); the hypotheses they test are in the [hypothesis library]({{ site.baseurl }}/hunt/hypotheses/).
+Syntax references: [KQL cheat sheet]({{ site.baseurl }}/cheatsheets/kql/) and [Splunk SPL cheat sheet]({{ site.baseurl }}/cheatsheets/splunk-spl/). The analytical reasoning behind each shape (search, stack, baseline, timing, sequence) is in [Hunting techniques]({{ site.baseurl }}/learn/hunting-techniques/); the hypotheses they test are in the [hypothesis library]({{ site.baseurl }}/hunt/hypotheses/).
 
 Assumed sources:
 
@@ -18,6 +18,8 @@ Assumed sources:
 |---|---|---|
 | Sentinel / Defender | `SecurityEvent`, `DeviceProcessEvents`, `DeviceNetworkEvents`, `DeviceLogonEvents`, `DeviceRegistryEvents`, `DeviceFileEvents`, `DnsEvents`, `CommonSecurityLog`, `SigninLogs`, `AuditLogs`, `AWSCloudTrail` | Security Events connector with command line auditing; MDE integration; DNS Analytics; CEF proxy; Entra ID and AWS connectors |
 | Splunk | `index=wineventlog` (Windows TA), `index=sysmon` (Sysmon TA), `index=proxy`, `index=dns` (Zeek), `index=zeek`, `index=azuread` (Microsoft Cloud Services add-on), `index=aws` (AWS add-on) | CIM-compliant TAs; URL Toolbox for entropy; `tstats` over the `Endpoint`, `Authentication` and `Web` data models where noted |
+
+<div class="hs-filter" data-hs-filter="sections" data-placeholder="Filter query patterns: first-seen, beacon, stacking, 4624..."></div>
 
 ## Process & command line
 

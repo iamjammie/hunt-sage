@@ -63,6 +63,8 @@ Be wary of using "incidents found" as the sole KPI: a team that finds nothing in
 
 ## Maturity self-assessment (HMM-based)
 
+> Prefer a scored version? The interactive [hunt maturity self-assessment]({{ site.baseurl }}/learn/maturity-assessment/) asks twenty questions across five dimensions and produces a scorecard you can paste into a report.
+
 Answer honestly:
 
 | Question | Yes → |

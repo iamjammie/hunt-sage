@@ -1,0 +1,93 @@
+# Telemetry sources referenced by the `data:` front matter of playbooks.
+# Drives the playbook finder (/hunt/finder/), the data-source key table on /hunt/ and the cards on each playbook.
+# `how` links to the page that explains how to enable or collect the source.
+- key: windows-security
+  label: Windows Security log
+  group: Endpoint
+  description: "Windows Security / System event logs: 4624, 4688, 4769, 5140, 7045 and friends (needs the Advanced Audit Policy)"
+  how: /learn/data-and-telemetry/#windows-logging-that-must-be-enabled-it-is-not-by-default
+- key: sysmon
+  label: Sysmon
+  group: Endpoint
+  description: "Sysmon events 1, 3, 7, 8, 10, 11, 12/13, 22 with a tuned configuration"
+  how: /learn/data-and-telemetry/
+- key: edr
+  label: EDR telemetry
+  group: Endpoint
+  description: "Any EDR with process, file, registry and network events; Defender for Endpoint tables are used as the example schema"
+  how: /learn/data-and-telemetry/
+- key: powershell
+  label: PowerShell logging
+  group: Endpoint
+  description: "Script block (4104) and module (4103) logging; transcription where available"
+  how: /learn/data-and-telemetry/#windows-logging-that-must-be-enabled-it-is-not-by-default
+- key: linux-auditd
+  label: Linux auditd / journald
+  group: Endpoint
+  description: "auditd execve and file rules, journald, auth logs, sudo logs"
+  how: /cheatsheets/linux-logs-auditd/
+- key: macos-unified-log
+  label: macOS unified log
+  group: Endpoint
+  description: "macOS unified logging and Endpoint Security framework events via an agent"
+  how: /hunt/playbooks/macos-hunting/#data-required
+- key: osquery
+  label: osquery
+  group: Endpoint
+  description: "Scheduled osquery packs for persistence, process and user tables across the fleet"
+  how: /hunt/playbooks/macos-hunting/#data-required
+- key: dns
+  label: DNS query logs
+  group: Network
+  description: "Resolver or client-side DNS queries and responses"
+  how: /cheatsheets/network-zeek/
+- key: proxy
+  label: Web proxy
+  group: Network
+  description: "Forward proxy or secure web gateway logs with URL, user agent, bytes and category"
+  how: /cheatsheets/network-zeek/
+- key: firewall
+  label: Firewall / NetFlow
+  group: Network
+  description: "Perimeter and internal flow logs: source, destination, port, protocol, bytes"
+  how: /cheatsheets/network-zeek/
+- key: zeek
+  label: Zeek
+  group: Network
+  description: "Zeek conn, dns, http, ssl, smb_files and files logs from a sensor on a span or tap"
+  how: /cheatsheets/network-zeek/
+- key: entra-id
+  label: Entra ID sign-in & audit
+  group: Identity & cloud
+  description: "SigninLogs, AADNonInteractiveUserSignInLogs and AuditLogs (or the equivalent from your IdP)"
+  how: /hunt/playbooks/cloud-identity/
+- key: m365-audit
+  label: Microsoft 365 Unified Audit Log
+  group: Identity & cloud
+  description: "Exchange, SharePoint and Teams operations from the Unified Audit Log (OfficeActivity / o365 management activity)"
+  how: /hunt/playbooks/business-email-compromise/#data-required
+- key: aws-cloudtrail
+  label: AWS CloudTrail
+  group: Identity & cloud
+  description: "Management and data events across accounts and regions"
+  how: /hunt/playbooks/cloud-identity/
+- key: kubernetes-audit
+  label: Kubernetes audit log
+  group: Identity & cloud
+  description: "API server audit events at Metadata/RequestResponse level for sensitive resources"
+  how: /hunt/playbooks/kubernetes-containers/#data-required
+- key: email
+  label: Email gateway / mail flow
+  group: Applications
+  description: "Mail gateway, message trace and attachment detonation logs"
+  how: /hunt/playbooks/initial-access-phishing/#data-required
+- key: adcs
+  label: AD CS logs
+  group: Applications
+  description: "Certificate Services audit events (4886-4899) and CA database exports"
+  how: /hunt/playbooks/adcs-abuse/#data-required
+- key: iis
+  label: Web server logs
+  group: Applications
+  description: "IIS, Apache or nginx access and error logs with method, URI, status and user agent"
+  how: /hunt/playbooks/web-shells/

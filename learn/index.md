@@ -3,11 +3,14 @@ title: "Learn Threat Hunting"
 permalink: /learn/
 excerpt: "A structured path from first principles to running a hunt program. Read in order, or jump to what you need."
 toc: false
+track_progress: false
 ---
 
 This is the theory half of Hunt-Sage. Each chapter is short, practical and ends with a pointer to the hands-on material in [Hunt]({{ site.baseurl }}/hunt/), [Cheat Sheets]({{ site.baseurl }}/cheatsheets/) and [Labs]({{ site.baseurl }}/labs/).
 
 ## The learning path
+
+<div class="hs-progress" markdown="1">
 
 | # | Chapter | You will be able to... |
 |---|---------|------------------------|
@@ -21,6 +24,10 @@ This is the theory half of Hunt-Sage. Each chapter is short, practical and ends 
 | 8 | [Building a hunt program]({{ site.baseurl }}/learn/building-a-hunt-program/) | Staff, measure and mature hunting in your organisation |
 | 9 | [Careers & interview prep]({{ site.baseurl }}/learn/career-and-interviews/) | Plan a path into hunting, build a portfolio, and answer the 40 questions interviewers ask |
 | - | [Glossary]({{ site.baseurl }}/learn/glossary/) | Decode the jargon |
+
+</div>
+
+Not sure where your team stands? Take the ten-minute [hunt maturity self-assessment]({{ site.baseurl }}/learn/maturity-assessment/) and it will point you at the chapters that matter most.
 
 ## Suggested tracks
 

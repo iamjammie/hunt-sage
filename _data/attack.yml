@@ -20,6 +20,7 @@ tactics:
 
 techniques:
   # --- Initial Access ---
+  - { id: T1133, name: External Remote Services, tactics: [initial_access, persistence] }
   - { id: T1190, name: Exploit Public-Facing Application, tactics: [initial_access] }
   - { id: T1566, name: Phishing, tactics: [initial_access] }
   - { id: T1566.001, name: "Phishing: Spearphishing Attachment", tactics: [initial_access] }
@@ -39,7 +40,12 @@ techniques:
   - { id: T1569.002, name: "System Services: Service Execution", tactics: [execution] }
   - { id: T1204.001, name: "User Execution: Malicious Link", tactics: [execution] }
   - { id: T1204.002, name: "User Execution: Malicious File", tactics: [execution] }
+  - { id: T1059.002, name: "Command and Scripting Interpreter: AppleScript", tactics: [execution] }
+  - { id: T1609, name: Container Administration Command, tactics: [execution] }
+  - { id: T1610, name: Deploy Container, tactics: [defense_evasion, execution] }
+  - { id: T1053.007, name: "Scheduled Task/Job: Container Orchestration Job", tactics: [execution, persistence, privilege_escalation] }
   # --- Persistence ---
+  - { id: T1136.002, name: "Create Account: Domain Account", tactics: [persistence] }
   - { id: T1547.001, name: "Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder", tactics: [persistence, privilege_escalation] }
   - { id: T1543.002, name: "Create or Modify System Process: Systemd Service", tactics: [persistence, privilege_escalation] }
   - { id: T1543.003, name: "Create or Modify System Process: Windows Service", tactics: [persistence, privilege_escalation] }
@@ -58,14 +64,23 @@ techniques:
   - { id: T1098.004, name: "Account Manipulation: SSH Authorized Keys", tactics: [persistence, privilege_escalation] }
   - { id: T1197, name: BITS Jobs, tactics: [defense_evasion, persistence] }
   - { id: T1556, name: Modify Authentication Process, tactics: [credential_access, defense_evasion, persistence] }
+  - { id: T1543.001, name: "Create or Modify System Process: Launch Agent", tactics: [persistence, privilege_escalation] }
+  - { id: T1543.004, name: "Create or Modify System Process: Launch Daemon", tactics: [persistence, privilege_escalation] }
+  - { id: T1547.015, name: "Boot or Logon Autostart Execution: Login Items", tactics: [persistence, privilege_escalation] }
+  - { id: T1525, name: Implant Internal Image, tactics: [persistence] }
+  - { id: T1098.002, name: "Account Manipulation: Additional Email Delegate Permissions", tactics: [persistence, privilege_escalation] }
+  - { id: T1098.005, name: "Account Manipulation: Device Registration", tactics: [persistence, privilege_escalation] }
   # --- Privilege Escalation ---
-  - { id: T1548.002, name: "Abuse Elevation Control Mechanism: Bypass User Account Control", tactics: [privilege_escalation, defense_evasion], planned: true }
+  - { id: T1548.002, name: "Abuse Elevation Control Mechanism: Bypass User Account Control", tactics: [privilege_escalation, defense_evasion] }
   - { id: T1055, name: Process Injection, tactics: [defense_evasion, privilege_escalation] }
   - { id: T1055.001, name: "Process Injection: Dynamic-link Library Injection", tactics: [defense_evasion, privilege_escalation] }
   - { id: T1055.002, name: "Process Injection: Portable Executable Injection", tactics: [defense_evasion, privilege_escalation] }
   - { id: T1055.012, name: "Process Injection: Process Hollowing", tactics: [defense_evasion, privilege_escalation] }
   - { id: T1484.001, name: "Domain or Tenant Policy Modification: Group Policy Modification", tactics: [defense_evasion, privilege_escalation] }
+  - { id: T1548, name: Abuse Elevation Control Mechanism, tactics: [privilege_escalation, defense_evasion] }
+  - { id: T1548.003, name: "Abuse Elevation Control Mechanism: Sudo and Sudo Caching", tactics: [privilege_escalation, defense_evasion] }
   # --- Defense Evasion ---
+  - { id: T1112, name: Modify Registry, tactics: [defense_evasion] }
   - { id: T1027, name: Obfuscated Files or Information, tactics: [defense_evasion] }
   - { id: T1027.006, name: "Obfuscated Files or Information: HTML Smuggling", tactics: [defense_evasion] }
   - { id: T1140, name: Deobfuscate/Decode Files or Information, tactics: [defense_evasion] }
@@ -84,7 +99,12 @@ techniques:
   - { id: T1550.002, name: "Use Alternate Authentication Material: Pass the Hash", tactics: [defense_evasion, lateral_movement] }
   - { id: T1550.003, name: "Use Alternate Authentication Material: Pass the Ticket", tactics: [defense_evasion, lateral_movement] }
   - { id: T1611, name: Escape to Host, tactics: [privilege_escalation] }
+  - { id: T1553.001, name: "Subvert Trust Controls: Gatekeeper Bypass", tactics: [defense_evasion] }
+  - { id: T1564.008, name: "Hide Artifacts: Email Hiding Rules", tactics: [defense_evasion] }
+  - { id: T1070.002, name: "Indicator Removal: Clear Linux or Mac System Logs", tactics: [defense_evasion] }
+  - { id: T1562.012, name: "Impair Defenses: Disable or Modify Linux Audit System", tactics: [defense_evasion] }
   # --- Credential Access ---
+  - { id: T1110.003, name: "Brute Force: Password Spraying", tactics: [credential_access] }
   - { id: T1003.001, name: "OS Credential Dumping: LSASS Memory", tactics: [credential_access] }
   - { id: T1003.002, name: "OS Credential Dumping: Security Account Manager", tactics: [credential_access] }
   - { id: T1003.003, name: "OS Credential Dumping: NTDS", tactics: [credential_access] }
@@ -96,6 +116,13 @@ techniques:
   - { id: T1528, name: Steal Application Access Token, tactics: [credential_access] }
   - { id: T1649, name: Steal or Forge Authentication Certificates, tactics: [credential_access] }
   - { id: T1557.001, name: "Adversary-in-the-Middle: LLMNR/NBT-NS Poisoning and SMB Relay", tactics: [credential_access, collection] }
+  - { id: T1555.001, name: "Credentials from Password Stores: Keychain", tactics: [credential_access] }
+  - { id: T1056.002, name: "Input Capture: GUI Input Capture", tactics: [collection, credential_access] }
+  - { id: T1621, name: Multi-Factor Authentication Request Generation, tactics: [credential_access] }
+  - { id: T1556.006, name: "Modify Authentication Process: Multi-Factor Authentication", tactics: [credential_access, defense_evasion, persistence] }
+  - { id: T1552.007, name: "Unsecured Credentials: Container API", tactics: [credential_access] }
+  - { id: T1552.001, name: "Unsecured Credentials: Credentials In Files", tactics: [credential_access] }
+  - { id: T1110.001, name: "Brute Force: Password Guessing", tactics: [credential_access] }
   # --- Discovery ---
   - { id: T1087.002, name: "Account Discovery: Domain Account", tactics: [discovery] }
   - { id: T1069.001, name: "Permission Groups Discovery: Local Groups", tactics: [discovery] }
@@ -104,7 +131,11 @@ techniques:
   - { id: T1018, name: Remote System Discovery, tactics: [discovery] }
   - { id: T1016, name: System Network Configuration Discovery, tactics: [discovery] }
   - { id: T1049, name: System Network Connections Discovery, tactics: [discovery] }
-  - { id: T1135, name: Network Share Discovery, tactics: [discovery], planned: true }
+  - { id: T1135, name: Network Share Discovery, tactics: [discovery] }
+  - { id: T1083, name: File and Directory Discovery, tactics: [discovery] }
+  - { id: T1518.001, name: "Software Discovery: Security Software Discovery", tactics: [discovery] }
+  - { id: T1613, name: Container and Resource Discovery, tactics: [discovery] }
+  - { id: T1082, name: System Information Discovery, tactics: [discovery] }
   # --- Lateral Movement ---
   - { id: T1021, name: Remote Services, tactics: [lateral_movement] }
   - { id: T1021.001, name: "Remote Services: Remote Desktop Protocol", tactics: [lateral_movement] }
@@ -112,10 +143,17 @@ techniques:
   - { id: T1021.004, name: "Remote Services: SSH", tactics: [lateral_movement] }
   - { id: T1021.006, name: "Remote Services: Windows Remote Management", tactics: [lateral_movement] }
   # --- Collection ---
+  - { id: T1530, name: Data from Cloud Storage, tactics: [collection] }
   - { id: T1039, name: Data from Network Shared Drive, tactics: [collection] }
   - { id: T1560, name: Archive Collected Data, tactics: [collection] }
   - { id: T1074, name: Data Staged, tactics: [collection] }
   - { id: T1114.003, name: "Email Collection: Email Forwarding Rule", tactics: [collection] }
+  - { id: T1114, name: Email Collection, tactics: [collection] }
+  - { id: T1114.002, name: "Email Collection: Remote Email Collection", tactics: [collection] }
+  - { id: T1213.002, name: "Data from Information Repositories: Sharepoint", tactics: [collection] }
+  - { id: T1005, name: Data from Local System, tactics: [collection] }
+  - { id: T1074.001, name: "Data Staged: Local Data Staging", tactics: [collection] }
+  - { id: T1560.001, name: "Archive Collected Data: Archive via Utility", tactics: [collection] }
   # --- Command and Control ---
   - { id: T1071, name: Application Layer Protocol, tactics: [command_and_control] }
   - { id: T1071.001, name: "Application Layer Protocol: Web Protocols", tactics: [command_and_control] }
@@ -126,14 +164,18 @@ techniques:
   - { id: T1090, name: Proxy, tactics: [command_and_control] }
   - { id: T1102, name: Web Service, tactics: [command_and_control] }
   - { id: T1105, name: Ingress Tool Transfer, tactics: [command_and_control] }
-  - { id: T1095, name: Non-Application Layer Protocol, tactics: [command_and_control], planned: true }
+  - { id: T1095, name: Non-Application Layer Protocol, tactics: [command_and_control] }
   # --- Exfiltration ---
   - { id: T1041, name: Exfiltration Over C2 Channel, tactics: [exfiltration] }
   - { id: T1048, name: Exfiltration Over Alternative Protocol, tactics: [exfiltration] }
   - { id: T1567.002, name: "Exfiltration Over Web Service: Exfiltration to Cloud Storage", tactics: [exfiltration] }
   - { id: T1537, name: Transfer Data to Cloud Account, tactics: [exfiltration] }
-  - { id: T1020, name: Automated Exfiltration, tactics: [exfiltration], planned: true }
+  - { id: T1020, name: Automated Exfiltration, tactics: [exfiltration] }
+  - { id: T1052.001, name: "Exfiltration Over Physical Medium: Exfiltration over USB", tactics: [exfiltration] }
+  - { id: T1048.002, name: "Exfiltration Over Alternative Protocol: Exfiltration Over Asymmetric Encrypted Non-C2 Protocol", tactics: [exfiltration] }
   # --- Impact ---
   - { id: T1490, name: Inhibit System Recovery, tactics: [impact] }
   - { id: T1486, name: Data Encrypted for Impact, tactics: [impact] }
   - { id: T1489, name: Service Stop, tactics: [impact] }
+  - { id: T1657, name: Financial Theft, tactics: [impact] }
+  - { id: T1496, name: Resource Hijacking, tactics: [impact] }

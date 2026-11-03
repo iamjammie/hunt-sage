@@ -3,19 +3,15 @@ title: "Playbook: Data Exfiltration"
 permalink: /hunt/playbooks/data-exfiltration/
 excerpt: "Staging, archiving and egress: rclone/MEGA/WinSCP, cloud-storage uploads, unusual volume and protocol abuse."
 tactic: "Exfiltration"
-attack: [T1074, T1560, T1041, T1048, T1567.002, T1537]
+attack: [T1074, T1560, T1041, T1048, T1567.002, T1537, T1020]
 difficulty: 3
 timebox: "1-2 days"
 data: [edr, proxy, firewall, dns, zeek]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1074 (Data Staged), T1560 (Archive Collected Data), T1041 (Exfil over C2), T1048 (Exfil over Alternative Protocol), T1567.002 (Exfil to Cloud Storage), T1537 (Transfer to Cloud Account) |
-| **Tactics** | Collection, Exfiltration |
-| **Data** | EDR process/file/network; proxy logs with bytes-out; firewall/NetFlow; DNS; cloud storage access logs; DLP |
-| **Time-box** | 1-2 days |
-| **Difficulty** | ★★★ |
+{% include playbook-meta.html %}
+
+**Data used:** EDR process/file/network; proxy logs with bytes-out; firewall/NetFlow; DNS; cloud storage access logs; DLP
 
 ## Hypothesis
 
@@ -102,6 +98,30 @@ index=firewall action=allowed NOT dest_ip=10.0.0.0/8 NOT dest_ip=172.16.0.0/12 N
 
 Bucket policy or ACL changes making data public, cross-account snapshot sharing (EBS/RDS), new external SAS tokens, mass `GetObject` / `Download` by one principal. Details in [Cloud & identity]({{ site.baseurl }}/hunt/playbooks/cloud-identity/).
 
+### 7. Automated exfiltration (T1020)
+
+Hands-off exfil looks like a machine, not a person: the same host pushes a similar byte volume to the same destination at a regular interval, uploads fire seconds after a burst of file modifications, or a scheduled task / cron job carries `curl`, `rclone`, `aws s3 cp`, `scp` or `Invoke-WebRequest -Method Post` in its command line.
+
+```kql
+// Regular, same-size transfers to one external destination: low variance in interval and bytes
+CommonSecurityLog
+| where TimeGenerated > ago(14d) and ipv4_is_private(DestinationIP) == false and SentBytes > 1000000
+| order by SourceIP, DestinationIP, TimeGenerated asc
+| extend Gap = datetime_diff("minute", TimeGenerated, prev(TimeGenerated)), SamePair = SourceIP == prev(SourceIP) and DestinationIP == prev(DestinationIP)
+| where SamePair
+| summarize Transfers = count(), AvgGap = avg(Gap), GapStd = stdev(Gap), AvgBytes = avg(SentBytes), BytesStd = stdev(SentBytes) by SourceIP, DestinationIP
+| where Transfers >= 7 and GapStd < AvgGap * 0.15 and BytesStd < AvgBytes * 0.25
+```
+
+```spl
+index=edr (sourcetype="XmlWinEventLog:Security" EventCode=4698) OR (sourcetype=linux_cron OR source="/var/log/cron")
+| rex field=_raw "(?i)(?<cmd>(curl|rclone|aws s3 cp|aws s3 sync|scp |sftp |Invoke-WebRequest|Invoke-RestMethod)[^\"<]{0,200})"
+| where isnotnull(cmd)
+| stats count values(cmd) as cmds earliest(_time) as first by host user
+```
+
+Join a hit with the volume step above: a scheduled job plus a regular upload cadence from the same host is automated exfil until proven to be a backup, and backups have change tickets.
+
 ## Triage
 
 | Question | Why |
@@ -125,3 +145,5 @@ Archives with sensitive content are created on a server and uploaded to a non-ap
 - Emulate: `Invoke-AtomicTest T1560.001`, `T1048`, `T1567.002` using test endpoints you control.
 - Detection: [rclone usage]({{ site.baseurl }}/research/sigma/T1567.002-rclone-exfiltration.yml)
 - Hardening: egress allow-listing, DLP on endpoints/email/web, block unsanctioned cloud storage at proxy, restrict `rclone`/`MEGAsync` via WDAC/AppLocker, enforce egress byte-count alerts for servers.
+
+{% include playbook-footer.html %}

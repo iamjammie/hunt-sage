@@ -9,13 +9,9 @@ timebox: "3-4 hours"
 data: [windows-security, sysmon, edr]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1021.001 (Remote Desktop Protocol), T1021.006 (Windows Remote Management), T1021.002 (SMB/Windows Admin Shares) |
-| **Tactic** | Lateral Movement |
-| **Data** | Security 4624 (LogonType 10/7/3), 4778/4779, 5140/5145; TerminalServices-LocalSessionManager 21/22/25; PowerShell 4104; Sysmon 1/3/13; EDR process, network and registry events |
-| **Time-box** | 3-4 hours |
-| **Difficulty** | ★★☆ |
+{% include playbook-meta.html %}
+
+**Data used:** Security 4624 (LogonType 10/7/3), 4778/4779, 5140/5145; TerminalServices-LocalSessionManager 21/22/25; PowerShell 4104; Sysmon 1/3/13; EDR process, network and registry events
 
 ## Background
 
@@ -237,4 +233,6 @@ Contain by disabling the account, isolating the source host and reviewing every 
 - Detection: [WinRM host process spawning a shell]({{ site.baseurl }}/research/sigma/T1021.006-wsmprovhost-spawns-shell.yml), [RDP enabled via command line]({{ site.baseurl }}/research/sigma/T1021.001-rdp-enabled-via-command-line.yml). Convert the baseline queries in steps 1, 2 and 6 into scheduled hunts rather than alerts; they need the asset-role join that Sigma cannot express.
 - Hardening: restrict RDP and WinRM to jump hosts with host firewall rules (block 3389/5985/5986 workstation-to-workstation); require NLA and MFA on RDP gateways; deny `Remote Desktop Users` membership by Group Policy; set WinRM `AllowUnencrypted = false` and limit `TrustedHosts`; enforce admin tiering so privileged accounts cannot log on to workstations; enable Restricted Admin or Remote Credential Guard to stop credential exposure on the destination; turn on *Detailed File Share* auditing on servers only, where its volume is manageable.
 
-See also: [Lateral movement playbook]({{ site.baseurl }}/hunt/playbooks/lateral-movement/) · [Windows Security event IDs cheat sheet]({{ site.baseurl }}/cheatsheets/windows-event-ids.pdf) · [Sysmon cheat sheet]({{ site.baseurl }}/cheatsheets/sysmon.pdf) · [PowerShell abuse]({{ site.baseurl }}/hunt/playbooks/powershell-abuse/).
+See also: [Lateral movement playbook]({{ site.baseurl }}/hunt/playbooks/lateral-movement/) · [Windows Security event IDs cheat sheet]({{ site.baseurl }}/cheatsheets/windows-event-ids/) · [Sysmon cheat sheet]({{ site.baseurl }}/cheatsheets/sysmon/) · [PowerShell abuse]({{ site.baseurl }}/hunt/playbooks/powershell-abuse/).
+
+{% include playbook-footer.html %}

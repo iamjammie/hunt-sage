@@ -9,13 +9,9 @@ timebox: "4-6 hours"
 data: [sysmon, edr]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1574.001 (DLL Search Order Hijacking), T1574.002 (DLL Side-Loading) |
-| **Tactic** | Persistence / Privilege Escalation / Defense Evasion |
-| **Data** | Sysmon 7 (ImageLoaded, Signed, SignatureStatus, OriginalFileName), Sysmon 11 (file create); Defender `DeviceImageLoadEvents`, `DeviceFileEvents`; EDR module-load telemetry |
-| **Time-box** | 4-6 hours |
-| **Difficulty** | ★★★ |
+{% include playbook-meta.html %}
+
+**Data used:** Sysmon 7 (ImageLoaded, Signed, SignatureStatus, OriginalFileName), Sysmon 11 (file create); Defender `DeviceImageLoadEvents`, `DeviceFileEvents`; EDR module-load telemetry
 
 ## Background
 
@@ -222,4 +218,6 @@ Acquire the DLL and loader, check the DLL's exports and imports, and sweep the f
 - Detection: [System DLL loaded from unusual path]({{ site.baseurl }}/research/sigma/T1574.001-system-dll-loaded-from-unusual-path.yml), [DLL side-load from user-writable path]({{ site.baseurl }}/research/sigma/T1574.002-dll-sideload-from-user-writable-path.yml). Keep the rare-path stacking (steps 5 and 6) as scheduled hunts.
 - Hardening: `SafeDllSearchMode` enabled (default since XP SP2; verify the registry value `HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\SafeDllSearchMode = 1`); set `CWDIllegalInDllSearch` (`HKLM\...\Session Manager\CWDIllegalInDllSearch = 0xFFFFFFFF`) to remove the current directory from the search path; application control (WDAC or AppLocker **with DLL rules enabled**) so unsigned DLLs cannot load from user-writable locations; fix weak NTFS permissions on service and `Program Files` directories; remove or restrict the services that look for phantom DLLs (IKEEXT, unused Terminal Services components); use `SetDefaultDllDirectories`/`LOAD_LIBRARY_SEARCH_SYSTEM32` in in-house code.
 
-See also: [Persistence playbook]({{ site.baseurl }}/hunt/playbooks/persistence/) · [LOLBin proxy execution]({{ site.baseurl }}/hunt/playbooks/lolbin-proxy-execution/) · [Defense evasion]({{ site.baseurl }}/hunt/playbooks/defense-evasion/) · [Sysmon cheat sheet]({{ site.baseurl }}/cheatsheets/sysmon.pdf) · [Hijack Libs](https://hijacklibs.net).
+See also: [Persistence playbook]({{ site.baseurl }}/hunt/playbooks/persistence/) · [LOLBin proxy execution]({{ site.baseurl }}/hunt/playbooks/lolbin-proxy-execution/) · [Defense evasion]({{ site.baseurl }}/hunt/playbooks/defense-evasion/) · [Sysmon cheat sheet]({{ site.baseurl }}/cheatsheets/sysmon/) · [Hijack Libs](https://hijacklibs.net).
+
+{% include playbook-footer.html %}

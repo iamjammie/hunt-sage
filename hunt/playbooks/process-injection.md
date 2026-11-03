@@ -9,13 +9,9 @@ timebox: "1-2 days"
 data: [sysmon, edr]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1055 (Process Injection), T1055.001 (DLL Injection), T1055.002 (PE Injection), T1055.012 (Process Hollowing) |
-| **Tactic** | Defense Evasion / Privilege Escalation |
-| **Data** | Sysmon 8 (CreateRemoteThread), 10 (ProcessAccess), 1 (ProcessCreate), 3 (NetworkConnect), 7 (ImageLoad); Defender `DeviceEvents`, `DeviceProcessEvents`, `DeviceNetworkEvents`; PowerShell 4104; EDR memory-scan / unbacked-module telemetry |
-| **Time-box** | 1-2 days |
-| **Difficulty** | ★★★ |
+{% include playbook-meta.html %}
+
+**Data used:** Sysmon 8 (CreateRemoteThread), 10 (ProcessAccess), 1 (ProcessCreate), 3 (NetworkConnect), 7 (ImageLoad); Defender `DeviceEvents`, `DeviceProcessEvents`, `DeviceNetworkEvents`; PowerShell 4104; EDR memory-scan / unbacked-module telemetry
 
 ## Background
 
@@ -199,4 +195,6 @@ A thread or write-access handle into `lsass.exe`/`winlogon.exe` from anything ot
 - Detection: [Remote thread into sensitive process]({{ site.baseurl }}/research/sigma/T1055-remote-thread-into-sensitive-process.yml), [Network connection from benign GUI binary]({{ site.baseurl }}/research/sigma/T1055-hollowed-process-network-connection.yml); pair with [Suspicious LSASS access]({{ site.baseurl }}/research/sigma/T1003.001-lsass-access-suspicious.yml) for the read-mask side.
 - Hardening: ASR rules ("Block Office applications from injecting code into other processes", "Block credential stealing from LSASS"); LSASS as Protected Process Light (`RunAsPPL`) and Credential Guard; Arbitrary Code Guard for browsers and Office via Exploit Protection; Constrained Language Mode and AMSI for PowerShell; remove local admin so injection into other users' processes fails.
 
-See also: [LSASS credential dumping]({{ site.baseurl }}/hunt/playbooks/lsass-credential-dumping/) for read-access masks, [PowerShell abuse]({{ site.baseurl }}/hunt/playbooks/powershell-abuse/) for 4104 collection, [Defense evasion]({{ site.baseurl }}/hunt/playbooks/defense-evasion/) for masquerading, and the [Sysmon cheat sheet]({{ site.baseurl }}/cheatsheets/sysmon.pdf).
+See also: [LSASS credential dumping]({{ site.baseurl }}/hunt/playbooks/lsass-credential-dumping/) for read-access masks, [PowerShell abuse]({{ site.baseurl }}/hunt/playbooks/powershell-abuse/) for 4104 collection, [Defense evasion]({{ site.baseurl }}/hunt/playbooks/defense-evasion/) for masquerading, and the [Sysmon cheat sheet]({{ site.baseurl }}/cheatsheets/sysmon/).
+
+{% include playbook-footer.html %}

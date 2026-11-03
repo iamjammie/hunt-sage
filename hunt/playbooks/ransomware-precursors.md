@@ -9,13 +9,9 @@ timebox: "3-5 hours"
 data: [edr, sysmon, windows-security]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1490 (Inhibit System Recovery), T1486 (Data Encrypted for Impact), T1489 (Service Stop), T1562.001, T1021.002, T1484.001 (GPO modification), T1569.002 |
-| **Tactic** | Impact (and the preceding stages) |
-| **Data** | Process creation; Defender/EDR; file telemetry; Security 4688/5136/5145; Sysmon 11 |
-| **Time-box** | 3-5 hours |
-| **Difficulty** | ★★☆ |
+{% include playbook-meta.html %}
+
+**Data used:** Process creation; Defender/EDR; file telemetry; Security 4688/5136/5145; Sysmon 11
 
 ## Hypothesis
 
@@ -105,3 +101,5 @@ Shadow-copy deletion or recovery disabling outside change control: **immediately
 - Emulate: `Invoke-AtomicTest T1490` (in a snapshot-restorable VM only)
 - Detection: [Shadow copy deletion]({{ site.baseurl }}/research/sigma/T1490-shadow-copy-deletion.yml)
 - Hardening: immutable/offline backups tested regularly; restrict `vssadmin`/`bcdedit` for non-admins; ASR rule *Use advanced protection against ransomware*; controlled folder access on file servers; segment backup network; canary files; patch internet-facing systems and MFA on remote access.
+
+{% include playbook-footer.html %}

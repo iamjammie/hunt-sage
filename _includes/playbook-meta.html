@@ -1,0 +1,44 @@
+{% comment %}
+Playbook header card, rendered from front matter (tactic, attack, difficulty, timebox, data).
+Technique names come from _data/attack.yml, data-source labels from _data/datasources.yml,
+Sigma rule and hypothesis counts from the generated _data/coverage.yml.
+{% endcomment %}
+{% assign meta = site.data.coverage.playbooks | where: "url", page.permalink | first %}
+{% assign slug = page.permalink | remove: "/hunt/playbooks/" | remove: "/" %}
+<div class="hs-pbmeta hs-no-attack-links">
+  <div class="hs-pbmeta__grid">
+    <div class="hs-pbmeta__item">
+      <span class="hs-pbmeta__label">Tactic</span>
+      <a class="hs-pbmeta__value" href="{{ '/hunt/' | relative_url }}#{{ page.tactic | slugify }}">{{ page.tactic }}</a>
+    </div>
+    <div class="hs-pbmeta__item">
+      <span class="hs-pbmeta__label">Difficulty</span>
+      <span class="hs-pbmeta__value"><span class="hs-stars" aria-label="difficulty {{ page.difficulty }} of 3">{% if page.difficulty == 1 %}★☆☆{% elsif page.difficulty == 2 %}★★☆{% else %}★★★{% endif %}</span></span>
+    </div>
+    <div class="hs-pbmeta__item">
+      <span class="hs-pbmeta__label">Time-box</span>
+      <span class="hs-pbmeta__value">{{ page.timebox }}</span>
+    </div>
+    <div class="hs-pbmeta__item">
+      <span class="hs-pbmeta__label">Detections</span>
+      <span class="hs-pbmeta__value">{% if meta and meta.rules.size > 0 %}<a href="#detections-and-next-steps">{{ meta.rules.size }} Sigma rule{% if meta.rules.size != 1 %}s{% endif %}</a>{% else %}none yet{% endif %}{% if meta and meta.hypotheses.size > 0 %} · <a href="#detections-and-next-steps">{{ meta.hypotheses.size }} hypothes{% if meta.hypotheses.size == 1 %}is{% else %}es{% endif %}</a>{% endif %}</span>
+    </div>
+  </div>
+  <div class="hs-pbmeta__row">
+    <span class="hs-pbmeta__label">ATT&amp;CK</span>
+    <ul class="hs-pbmeta__chips">
+      {% for id in page.attack %}{% assign t = site.data.attack.techniques | where: "id", id | first %}{% assign path = id | replace: ".", "/" %}
+      <li><a class="hs-attack" href="https://attack.mitre.org/techniques/{{ path }}/" target="_blank" rel="noopener" title="{{ t.name | default: id }} on attack.mitre.org">{{ id }}</a>{% if t %} <span class="hs-pbmeta__name">{{ t.name | split: ": " | last }}</span>{% endif %}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="hs-pbmeta__row">
+    <span class="hs-pbmeta__label">Telemetry</span>
+    <ul class="hs-pbmeta__chips">
+      {% for key in page.data %}{% assign ds = site.data.datasources | where: "key", key | first %}
+      <li><a class="hs-chip hs-chip--data" href="{{ ds.how | default: '/learn/data-and-telemetry/' | relative_url }}" title="{{ ds.description | default: key }}">{{ ds.label | default: key }}</a></li>
+      {% endfor %}
+      <li><a class="hs-chip hs-chip--muted" href="{{ '/hunt/finder/' | relative_url }}" title="Check which playbooks your telemetry supports">Have these? Check in the finder</a></li>
+    </ul>
+  </div>
+</div>

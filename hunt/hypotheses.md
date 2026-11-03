@@ -1,7 +1,7 @@
 ---
 title: "Hunt Hypothesis Library"
 permalink: /hunt/hypotheses/
-excerpt: "A ready-to-use backlog of 101 testable hunt hypotheses, grouped by ATT&CK tactic, each with the data it needs, the analytical technique and the playbook that runs it."
+excerpt: "A ready-to-use backlog of 122 testable hunt hypotheses, grouped by ATT&CK tactic, each with the data it needs, the analytical technique and the playbook that runs it."
 classes: wide
 toc: true
 toc_sticky: true
@@ -38,6 +38,8 @@ If a hypothesis cannot be finished inside its box, split it. "Hunt for lateral m
 - **Technique** is the analytical method from [Hunting techniques]({{ site.baseurl }}/learn/hunting-techniques/): *search* (known pattern), *stack* (frequency / long tail), *baseline* (compare now with a known-good period), *cluster* (group by attributes and look at outliers), *timing* (intervals, sequences, bursts), *honeytoken* (planted object; any touch is a hit).
 - **Data needed** uses the same source names as the playbooks. Verify coverage first with the checklist in [Data & telemetry]({{ site.baseurl }}/learn/data-and-telemetry/); a negative result on a missing log is not a result.
 - **Playbook** links to the playbook whose queries run this hypothesis. `-` means you will write the queries yourself; the [query index]({{ site.baseurl }}/hunt/query-index/) has the reusable patterns.
+
+<div class="hs-filter" data-hs-filter data-placeholder="Filter hypotheses: H-012, T1059, kerberos, honeytoken, m365-audit..."></div>
 
 ## Initial Access
 
@@ -88,6 +90,9 @@ If a hypothesis cannot be finished inside its box, split it. "Hunt for lateral m
 | H-028 | If a named-pipe impersonation (potato-family) escalation occurred, then we would see `CreateNamedPipe` for unusual pipe names (Sysmon 17/18) immediately followed by a SYSTEM-level child of the same process. | T1134.001 | sysmon | timing | [process-injection]({{ site.baseurl }}/hunt/playbooks/process-injection/) |
 | H-029 | If a service is being hijacked for escalation, then we would see `ImagePath` or `binPath` changes to existing services (Sysmon 13, 7040) pointing at a user-writable path, or unquoted-path services receiving a new executable in the path's prefix directory. | T1574.011, T1574.009 | sysmon, windows-security | search | [dll-hijacking]({{ site.baseurl }}/hunt/playbooks/dll-hijacking/) |
 | H-030 | If downloaded tools are being used for escalation, then we would see executables in user-writable paths with a `Zone.Identifier` ADS (Sysmon 15) that later run elevated (`IntegrityLevel == High` or `System`). | T1068, T1204.002 | sysmon, edr | timing | - |
+| H-102 | If a UAC bypass is in use, then we would see an auto-elevated binary (fodhelper, computerdefaults, sdclt, eventvwr) spawn a shell or LOLBin at High integrity whose parent chain ran at Medium integrity. | T1548.002 | edr, sysmon | search | [uac-bypass]({{ site.baseurl }}/hunt/playbooks/uac-bypass/) |
+| H-103 | If a shell-handler UAC bypass is in use, then we would see a write to an `open\command` or `DelegateExecute` value under `HKCU\Software\Classes\` seconds before an auto-elevated binary runs, often followed by deletion of the key. | T1548.002, T1112 | sysmon, edr | timing | [uac-bypass]({{ site.baseurl }}/hunt/playbooks/uac-bypass/) |
+| H-104 | If UAC is being weakened to ease elevation, then we would see `EnableLUA` or `ConsentPromptBehaviorAdmin` set to 0 outside a change window. | T1548.002, T1112 | sysmon, windows-security | search | [uac-bypass]({{ site.baseurl }}/hunt/playbooks/uac-bypass/) |
 
 ## Defense Evasion
 
@@ -129,6 +134,10 @@ If a hypothesis cannot be finished inside its box, split it. "Hunt for lateral m
 | H-054 | If shares are being enumerated for staging or spread, then we would see 5140/5145 access to `IPC$` and `ADMIN$` on many hosts from one account in a burst, or `net view /all` and `Get-SmbShare` across hosts. | T1135, T1018 | windows-security, edr | stack | [ransomware-precursors]({{ site.baseurl }}/hunt/playbooks/ransomware-precursors/) |
 | H-055 | If an attacker is looking for high-value sessions, then we would see 4624 logon type 3 to many hosts with no file access (session enumeration via `NetSessionEnum`/`NetWkstaUserEnum`), by an account that is not a monitoring service. | T1033, T1049 | windows-security | stack | [ad-discovery-bloodhound]({{ site.baseurl }}/hunt/playbooks/ad-discovery-bloodhound/) |
 | H-056 | If security tooling is being enumerated, then we would see `tasklist /svc`, `sc query`, `Get-MpComputerStatus`, `wmic /namespace:\\root\SecurityCenter2` or `fltmc` in command lines from non-admin users. | T1518.001 | edr, sysmon | search | [defense-evasion]({{ site.baseurl }}/hunt/playbooks/defense-evasion/) |
+| H-105 | If an adversary is locating data, then we would see one account enumerate or access an unusually large number of distinct shares or servers within an hour versus its 45-day baseline. | T1135, T1021.002 | windows-security, zeek | baseline | [network-share-discovery]({{ site.baseurl }}/hunt/playbooks/network-share-discovery/) |
+| H-106 | If share-enumeration tooling is being run, then we would see three or more `net view`, `net share`, `Find-DomainShare`, SharpShares or Snaffler commands from one host in 15 minutes. | T1135, T1083 | edr, sysmon | stack | [network-share-discovery]({{ site.baseurl }}/hunt/playbooks/network-share-discovery/) |
+| H-107 | If data on shares is being collected, then we would see reads of sensitive file types (`.kdbx`, `id_rsa`, `web.config`, `unattend.xml`, `NTDS.dit`) in 5145 detailed file-share events. | T1039, T1083 | windows-security | search | [network-share-discovery]({{ site.baseurl }}/hunt/playbooks/network-share-discovery/) |
+| H-108 | If an intruder is sweeping shares, then we would see any access (5140/5145) to a decoy share that no business process uses. | T1135, T1039 | windows-security | honeytoken | [network-share-discovery]({{ site.baseurl }}/hunt/playbooks/network-share-discovery/) |
 
 ## Lateral Movement
 
@@ -151,6 +160,10 @@ If a hypothesis cannot be finished inside its box, split it. "Hunt for lateral m
 | H-066 | If mailboxes are being harvested, then we would see `MailItemsAccessed` with high counts from an unfamiliar client app ID or IP, `New-MailboxExportRequest`, or eDiscovery searches by non-compliance staff. | T1114.002 | email | baseline | [cloud-identity]({{ site.baseurl }}/hunt/playbooks/cloud-identity/) |
 | H-067 | If keystrokes or screens are being captured, then we would see unsigned processes calling `SetWindowsHookEx` style APIs (EDR API telemetry), or periodic image file writes (`.png`, `.jpg`) to a hidden folder by a non-graphics process. | T1056.001, T1113 | edr | cluster | - |
 | H-068 | If clipboard or credential-prompt capture is being used, then we would see `powershell.exe` or scripts loading `System.Windows.Forms` with `Get-Clipboard`, or `Get-Credential` prompts from non-admin tooling in 4104. | T1115, T1056.002 | powershell | search | [powershell-abuse]({{ site.baseurl }}/hunt/playbooks/powershell-abuse/) |
+| H-109 | If a mailbox has been taken over for BEC, then we would see an inbox rule created via New-InboxRule or Set-InboxRule that deletes, marks as read or moves mail to RSS Feeds, Archive or Conversation History, keyed on words such as invoice, payment or password, from a client IP the user has never signed in from. | T1564.008, T1114 | m365-audit, entra-id | search | [business-email-compromise]({{ site.baseurl }}/hunt/playbooks/business-email-compromise/) |
+| H-110 | If an adversary is maintaining access to a compromised mailbox, then we would see ForwardingSmtpAddress set, an inbox rule with ForwardTo or RedirectTo, or a transport rule redirecting mail to a domain that is not one of our accepted or partner domains. | T1114.003 | m365-audit | search | [business-email-compromise]({{ site.baseurl }}/hunt/playbooks/business-email-compromise/) |
+| H-111 | If a stolen session is being used for BEC, then we would see a successful sign-in from a new country or ASN, or with no MFA claim, followed within an hour by a New-InboxRule, Set-Mailbox, Add-MailboxPermission, OAuth consent to Mail.Read or Mail.ReadWrite, or a new MFA method registration for the same account. | T1078.004, T1098.002, T1556.006 | entra-id, m365-audit | timing | [business-email-compromise]({{ site.baseurl }}/hunt/playbooks/business-email-compromise/) |
+| H-112 | If a mailbox is being bulk-collected before a payment fraud, then we would see MailItemsAccessed counts more than five times the account's 30-day daily average from a new client or IP, alongside mailbox searches for invoice, wire, bank or payroll terms. | T1114.002 | m365-audit | baseline | [business-email-compromise]({{ site.baseurl }}/hunt/playbooks/business-email-compromise/) |
 
 ## Command & Control
 
@@ -163,6 +176,7 @@ If a hypothesis cannot be finished inside its box, split it. "Hunt for lateral m
 | H-073 | If an interactive tunnel or SOCKS proxy is active, then we would see external connections lasting more than four hours with roughly balanced bytes in and out, from a process that is not a VPN or collaboration client. | T1572, T1090 | zeek, firewall, edr | cluster | [c2-beaconing]({{ site.baseurl }}/hunt/playbooks/c2-beaconing/) |
 | H-074 | If a legitimate web service is being used for C2, then we would see non-browser processes connecting to `pastebin`, `discord`, `telegram`, `github`, `dropbox` or `onedrive` APIs, or those domains contacted by servers that have no user sessions. | T1102 | edr, proxy | stack | [c2-beaconing]({{ site.baseurl }}/hunt/playbooks/c2-beaconing/) |
 | H-075 | If ingress tool transfer is happening, then we would see `certutil -urlcache`, `bitsadmin /transfer`, `Invoke-WebRequest`, `curl -o` or `Start-BitsTransfer` writing executables to disk, followed within five minutes by execution of the written file. | T1105 | edr, sysmon | timing | [lolbin-proxy-execution]({{ site.baseurl }}/hunt/playbooks/lolbin-proxy-execution/) |
+| H-113 | If an implant is using a non-application-layer channel, then we would see ICMP to the internet with non-default payload sizes or steady rates, or raw TCP/UDP flows to high ports with no recognised service and a regular interval, from a host-protocol pair never seen in the 30-day baseline. | T1095 | zeek, firewall | baseline | [c2-beaconing]({{ site.baseurl }}/hunt/playbooks/c2-beaconing/) |
 
 ## Exfiltration
 
@@ -172,6 +186,7 @@ If a hypothesis cannot be finished inside its box, split it. "Hunt for lateral m
 | H-077 | If `rclone`, `MEGAsync` or `WinSCP` are being used for bulk exfiltration, then we would see processes with those `OriginalFileName` values (even if renamed), or command lines with `copy`/`sync` and `--config`, on servers that do not normally run them. | T1567.002, T1048 | edr, sysmon | search | [data-exfiltration]({{ site.baseurl }}/hunt/playbooks/data-exfiltration/) |
 | H-078 | If exfiltration is over an alternative protocol, then we would see outbound SSH, FTP or raw TCP to public IPs from servers whose normal egress is HTTP(S) only, with outbound bytes exceeding inbound by 10:1. | T1048 | firewall, zeek | baseline | [data-exfiltration]({{ site.baseurl }}/hunt/playbooks/data-exfiltration/) |
 | H-079 | If exfiltration is scheduled to blend in, then we would see large outbound transfers that recur at the same hour daily from the same host to the same destination, and that destination is not a backup or replication target. | T1029, T1041 | firewall, proxy | timing | [data-exfiltration]({{ site.baseurl }}/hunt/playbooks/data-exfiltration/) |
+| H-114 | If exfiltration has been automated, then we would see one host sending near-identical byte volumes to the same external destination at a regular interval, or a scheduled task or cron job whose command line contains `curl`, `rclone`, `aws s3 cp`, `scp` or `Invoke-WebRequest -Method Post`. | T1020 | firewall, zeek, edr | timing | [data-exfiltration]({{ site.baseurl }}/hunt/playbooks/data-exfiltration/) |
 
 ## Impact
 
@@ -209,6 +224,28 @@ If a hypothesis cannot be finished inside its box, split it. "Hunt for lateral m
 | H-099 | If execution from writable locations is being used, then we would see processes whose executable path is `/tmp`, `/dev/shm`, `/var/tmp` or a home directory, stacked by hash across the fleet and present on fewer than three hosts. | T1059.004, T1105 | linux-auditd, edr | stack | [linux-hunting]({{ site.baseurl }}/hunt/playbooks/linux-hunting/) |
 | H-100 | If logs are being tampered with on Linux, then we would see `history -c`, `unset HISTFILE`, `HISTSIZE=0`, truncation of `/var/log/auth.log`, `wtmp`, `btmp` or `lastlog`, or `auditctl -e 0` outside maintenance. | T1070.002, T1070.003, T1562.012 | linux-auditd | search | [linux-hunting]({{ site.baseurl }}/hunt/playbooks/linux-hunting/) |
 | H-101 | If SSH is being used to pivot, then we would see one host opening SSH sessions to more than ten internal hosts in an hour, or accepted SSH logons for accounts from a source IP that has never authenticated to that host. | T1021.004 | linux-auditd, firewall, zeek | baseline | [linux-hunting]({{ site.baseurl }}/hunt/playbooks/linux-hunting/) |
+
+## Containers & Kubernetes
+
+Clusters are servers with a richer audit log. The API server records every request, so the hunts are about identity, verb and object: who did what to which resource, from where.
+
+| # | Hypothesis | ATT&CK | Data needed | Technique | Playbook |
+|---|---|---|---|---|---|
+| H-115 | If a kubeconfig or service-account token has been stolen, then we would see pods/exec, pods/attach or pods/portforward requests in the API audit log from a system:serviceaccount identity, from a source IP outside the cluster and admin ranges, or with a curl, python-requests or Go-http-client user agent. | T1609, T1552.007 | kubernetes-audit | stack | [kubernetes-containers]({{ site.baseurl }}/hunt/playbooks/kubernetes-containers/) |
+| H-116 | If an adversary is preparing a container escape, then we would see a pod, deployment or job created with privileged: true, hostPID, hostNetwork, a hostPath volume on / or the container runtime socket, or SYS_ADMIN capabilities, by an identity that is not the GitOps controller or a known DaemonSet owner. | T1611, T1610 | kubernetes-audit | search | [kubernetes-containers]({{ site.baseurl }}/hunt/playbooks/kubernetes-containers/) |
+| H-117 | If a compromised identity is escalating in the cluster, then we would see a new ClusterRoleBinding or RoleBinding to cluster-admin or a role with wildcard verbs or resources, a subject that is a workload ServiceAccount, or impersonation of system:masters, outside a change window. | T1078.004, T1613 | kubernetes-audit | search | [kubernetes-containers]({{ site.baseurl }}/hunt/playbooks/kubernetes-containers/) |
+| H-118 | If a cluster is being enumerated or has been seeded with persistence, then we would see one identity list eight or more resource types in ten minutes with many 403 responses, bulk secrets reads across namespaces, or CronJobs and DaemonSets created in kube-system by a non-controller identity pulling images from a registry outside our allow-list. | T1613, T1552.007, T1053.007, T1525 | kubernetes-audit | stack | [kubernetes-containers]({{ site.baseurl }}/hunt/playbooks/kubernetes-containers/) |
+
+## macOS
+
+Mac fleets get the same persistence-first treatment as Windows; the locations differ, the long-tail logic does not.
+
+| # | Hypothesis | ATT&CK | Data needed | Technique | Playbook |
+|---|---|---|---|---|---|
+| H-119 | If a Mac has been compromised, then we would see a LaunchAgent or LaunchDaemon plist created in `~/Library/LaunchAgents`, `/Library/LaunchAgents` or `/Library/LaunchDaemons` by a shell, `osascript`, Python, a browser or a process in `/tmp` or `/Volumes`, with `ProgramArguments` pointing to a user-writable path. | T1543.001, T1543.004 | edr, osquery | stack | [macos-hunting]({{ site.baseurl }}/hunt/playbooks/macos-hunting/) |
+| H-120 | If a stealer is prompting the user for their macOS password, then we would see `osascript` run with `display dialog` and `hidden answer` from a non-MDM parent, followed within minutes by Keychain reads from the same process tree. | T1056.002, T1555.001, T1059.002 | edr, macos-unified-log | timing | [macos-hunting]({{ site.baseurl }}/hunt/playbooks/macos-hunting/) |
+| H-121 | If a dropper is bypassing Gatekeeper, then we would see the quarantine attribute removed with `xattr` or Gatekeeper disabled with `spctl` from a process in `Downloads`, `/tmp` or a mounted disk image, with the affected file executing within ten minutes. | T1553.001, T1105 | edr | search | [macos-hunting]({{ site.baseurl }}/hunt/playbooks/macos-hunting/) |
+| H-122 | If malware is checking for defences before acting on a Mac, then we would see `sw_vers`, `system_profiler SPApplicationsDataType` and `ps` or `pgrep` for EDR process names within one minute from the same non-MDM parent. | T1518.001 | edr, osquery | timing | [macos-hunting]({{ site.baseurl }}/hunt/playbooks/macos-hunting/) |
 
 ## Retire, recycle, promote
 

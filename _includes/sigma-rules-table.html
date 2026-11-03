@@ -9,10 +9,14 @@
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1055-hollowed-process-network-connection.yml">Network Connection from Benign GUI Binary Commonly Used as Injection Host</a></td><td><code>T1055</code>, <code>T1055.012</code></td><td><code>windows / network_connection</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Defense Evasion, Privilege Escalation, Command and Control</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1055-remote-thread-into-sensitive-process.yml">Remote Thread Created in Sensitive or Commonly Injected Process</a></td><td><code>T1055</code>, <code>T1055.001</code>, <code>T1055.002</code></td><td><code>windows / create_remote_thread</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Defense Evasion, Privilege Escalation</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1059.001-powershell-encoded-command.yml">PowerShell Encoded Command Execution</a></td><td><code>T1059.001</code>, <code>T1027</code></td><td><code>windows / process_creation</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Execution, Defense Evasion</td></tr>
+<tr><td><a href="{{ site.baseurl }}/research/sigma/T1059.002-osascript-suspicious-invocation.yml">Suspicious osascript Invocation (Shell, Download or Password Dialog)</a></td><td><code>T1059.002</code>, <code>T1056.002</code></td><td><code>macos / process_creation</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Execution, Credential Access</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1059.004-linux-reverse-shell.yml">Linux Reverse Shell Command Line</a></td><td><code>T1059.004</code></td><td><code>linux / process_creation</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Execution</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1070.001-security-log-cleared.yml">Windows Event Log Cleared</a></td><td><code>T1070.001</code></td><td><code>windows / security</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Defense Evasion</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1078.002-service-account-interactive-logon.yml">Service Account Interactive Logon</a></td><td><code>T1078.002</code></td><td><code>windows / security</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Persistence, Privilege Escalation, Lateral Movement</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1087.002-ad-enumeration-tooling-command-line.yml">Active Directory Enumeration Tooling on the Command Line</a></td><td><code>T1087.002</code>, <code>T1069.002</code>, <code>T1482</code>, <code>T1018</code></td><td><code>windows / process_creation</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Discovery</td></tr>
+<tr><td><a href="{{ site.baseurl }}/research/sigma/T1114.003-mailbox-forwarding-to-external.yml">Mailbox Forwarding to External Address</a></td><td><code>T1114.003</code></td><td><code>m365 / exchange</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Collection</td></tr>
+<tr><td><a href="{{ site.baseurl }}/research/sigma/T1135-honey-share-access.yml">Access to a Decoy or Honey Share</a></td><td><code>T1135</code>, <code>T1039</code></td><td><code>windows / security</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Discovery</td></tr>
+<tr><td><a href="{{ site.baseurl }}/research/sigma/T1135-share-enumeration-tooling-command-line.yml">Network Share Enumeration Tooling on the Command Line</a></td><td><code>T1135</code>, <code>T1083</code></td><td><code>windows / process_creation</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Discovery</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1136.001-local-account-created-cli.yml">Local Account Created via Command Line</a></td><td><code>T1136.001</code>, <code>T1098</code></td><td><code>windows / process_creation</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Persistence, Privilege Escalation</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1140-certutil-encode-lolbin.yml">CertUtil LOLBin Encode/Decode Abuse</a></td><td><code>T1140</code>, <code>T1027</code>, <code>T1048</code></td><td><code>windows / process_creation</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Defense Evasion, Exfiltration</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1197-bitsadmin-transfer.yml">BITSAdmin Download or Persistent Transfer Job</a></td><td><code>T1197</code></td><td><code>windows / process_creation</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Defense Evasion, Persistence</td></tr>
@@ -21,16 +25,22 @@
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1218.011-rundll32-suspicious-invocation.yml">Rundll32 Suspicious Invocation</a></td><td><code>T1218.011</code></td><td><code>windows / process_creation</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Defense Evasion, Execution</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1490-shadow-copy-deletion.yml">Shadow Copy Deletion or Recovery Inhibition</a></td><td><code>T1490</code></td><td><code>windows / process_creation</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Impact</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1505.003-webserver-spawns-shell.yml">Web Server Process Spawning Shell or Recon Tool</a></td><td><code>T1505.003</code>, <code>T1190</code></td><td><code>windows / process_creation</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Persistence, Initial Access</td></tr>
+<tr><td><a href="{{ site.baseurl }}/research/sigma/T1543.001-launch-agent-plist-in-user-writable-path.yml">LaunchAgent Plist Written by a Non-Installer Process</a></td><td><code>T1543.001</code></td><td><code>macos / file_event</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Persistence, Privilege Escalation</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1543.003-suspicious-service-install.yml">Suspicious Windows Service Installation</a></td><td><code>T1543.003</code>, <code>T1569.002</code></td><td><code>windows / system</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Persistence, Privilege Escalation, Lateral Movement, Execution</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1546.003-wmi-event-subscription.yml">WMI Event Subscription Persistence</a></td><td><code>T1546.003</code></td><td><code>windows / sysmon</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Persistence, Privilege Escalation</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1547.001-run-key-suspicious-value.yml">Run Key Persistence with Suspicious Value</a></td><td><code>T1547.001</code></td><td><code>windows / registry_set</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Persistence, Privilege Escalation</td></tr>
+<tr><td><a href="{{ site.baseurl }}/research/sigma/T1548.002-uac-bypass-auto-elevated-parent.yml">Auto-Elevated Binary Spawns Shell or LOLBin</a></td><td><code>T1548.002</code>, <code>T1218.011</code></td><td><code>windows / process_creation</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Privilege Escalation, Defense Evasion</td></tr>
+<tr><td><a href="{{ site.baseurl }}/research/sigma/T1548.002-uac-bypass-ms-settings-registry-hijack.yml">UAC Bypass via Shell-Handler Registry Hijack</a></td><td><code>T1548.002</code>, <code>T1112</code></td><td><code>windows / registry_set</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Privilege Escalation, Defense Evasion</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1550.002-pass-the-hash.yml">Possible Pass-the-Hash Lateral Movement</a></td><td><code>T1550.002</code>, <code>T1003.001</code></td><td><code>windows / security</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Lateral Movement, Credential Access</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1558.003-kerberoasting-rc4-tgs.yml">Kerberoasting - RC4 Service Ticket Requests</a></td><td><code>T1558.003</code></td><td><code>windows / security</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Credential Access</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1562.001-defender-tampering-powershell.yml">Microsoft Defender Disabled or Excluded via PowerShell/Command Line</a></td><td><code>T1562.001</code></td><td><code>windows / process_creation</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Defense Evasion</td></tr>
+<tr><td><a href="{{ site.baseurl }}/research/sigma/T1564.008-suspicious-inbox-rule-hiding-mail.yml">Suspicious Inbox Rule Hiding or Deleting Mail</a></td><td><code>T1564.008</code>, <code>T1114</code></td><td><code>m365 / exchange</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Defense Evasion, Collection</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1566.001-office-application-spawns-interpreter.yml">Office or Document Reader Application Spawns Script Interpreter or LOLBin</a></td><td><code>T1566.001</code>, <code>T1204.002</code></td><td><code>windows / process_creation</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Initial Access, Execution</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1567.002-rclone-exfiltration.yml">Rclone Usage Consistent with Data Exfiltration</a></td><td><code>T1567.002</code></td><td><code>windows / process_creation</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Exfiltration</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1574.001-system-dll-loaded-from-unusual-path.yml">Well-Known Hijackable System DLL Loaded from Unusual Path</a></td><td><code>T1574.001</code>, <code>T1574.002</code></td><td><code>windows / image_load</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Persistence, Privilege Escalation, Defense Evasion</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1574.002-dll-sideload-from-user-writable-path.yml">DLL Side-Loaded from User-Writable Path</a></td><td><code>T1574.002</code>, <code>T1574.001</code></td><td><code>windows / image_load</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Persistence, Privilege Escalation, Defense Evasion</td></tr>
+<tr><td><a href="{{ site.baseurl }}/research/sigma/T1609-kubernetes-exec-into-container.yml">Kubernetes Exec or Attach into Pod</a></td><td><code>T1609</code></td><td><code>kubernetes / audit</code></td><td>medium</td><td><span class="hs-chip">experimental</span></td><td>Execution</td></tr>
+<tr><td><a href="{{ site.baseurl }}/research/sigma/T1611-privileged-or-hostpath-pod-created.yml">Privileged or Host-Namespace Pod Created</a></td><td><code>T1611</code>, <code>T1610</code></td><td><code>kubernetes / audit</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Privilege Escalation, Execution</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1649-adcs-enumeration-tooling.yml">AD CS Enumeration or Abuse Tooling Command Line</a></td><td><code>T1649</code></td><td><code>windows / process_creation</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Credential Access, Discovery</td></tr>
 <tr><td><a href="{{ site.baseurl }}/research/sigma/T1649-certificate-request-with-san-esc1.yml">AD CS Certificate Request with Requester-Supplied Subject Alternative Name (ESC1)</a></td><td><code>T1649</code></td><td><code>windows / security</code></td><td>high</td><td><span class="hs-chip">experimental</span></td><td>Credential Access, Privilege Escalation, Persistence</td></tr>
 </tbody></table>
@@ -40,24 +50,28 @@
 <li><a href="{{ site.baseurl }}/research/sigma/T1505.003-webserver-spawns-shell.yml">Web Server Process Spawning Shell or Recon Tool</a> (T1505.003, T1190, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1566.001-office-application-spawns-interpreter.yml">Office or Document Reader Application Spawns Script Interpreter or LOLBin</a> (T1566.001, T1204.002, high)</li>
 </ul>
-<h3 id="tactic-execution">Execution <small>(9)</small></h3><ul>
+<h3 id="tactic-execution">Execution <small>(12)</small></h3><ul>
 <li><a href="{{ site.baseurl }}/research/sigma/T1021.006-wsmprovhost-spawns-shell.yml">WinRM Host Process Spawning Shell or LOLBin</a> (T1021.006, T1059.001, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1053.005-schtasks-suspicious-create.yml">Scheduled Task Created from Suspicious Location or Interpreter</a> (T1053.005, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1059.001-powershell-encoded-command.yml">PowerShell Encoded Command Execution</a> (T1059.001, T1027, medium)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1059.002-osascript-suspicious-invocation.yml">Suspicious osascript Invocation (Shell, Download or Password Dialog)</a> (T1059.002, T1056.002, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1059.004-linux-reverse-shell.yml">Linux Reverse Shell Command Line</a> (T1059.004, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1204.002-execution-from-mounted-image-or-archive.yml">Execution from Extracted Archive, Disk Image Contents or Outlook Attachment Cache</a> (T1204.002, T1566.001, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1218.005-mshta-remote-or-script.yml">Mshta Executing Remote or Inline Script Content</a> (T1218.005, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1218.011-rundll32-suspicious-invocation.yml">Rundll32 Suspicious Invocation</a> (T1218.011, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1543.003-suspicious-service-install.yml">Suspicious Windows Service Installation</a> (T1543.003, T1569.002, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1566.001-office-application-spawns-interpreter.yml">Office or Document Reader Application Spawns Script Interpreter or LOLBin</a> (T1566.001, T1204.002, high)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1609-kubernetes-exec-into-container.yml">Kubernetes Exec or Attach into Pod</a> (T1609, medium)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1611-privileged-or-hostpath-pod-created.yml">Privileged or Host-Namespace Pod Created</a> (T1611, T1610, high)</li>
 </ul>
-<h3 id="tactic-persistence">Persistence <small>(12)</small></h3><ul>
+<h3 id="tactic-persistence">Persistence <small>(13)</small></h3><ul>
 <li><a href="{{ site.baseurl }}/research/sigma/T1021.001-rdp-enabled-via-command-line.yml">Remote Desktop Enabled via Command Line or PowerShell</a> (T1021.001, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1053.005-schtasks-suspicious-create.yml">Scheduled Task Created from Suspicious Location or Interpreter</a> (T1053.005, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1078.002-service-account-interactive-logon.yml">Service Account Interactive Logon</a> (T1078.002, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1136.001-local-account-created-cli.yml">Local Account Created via Command Line</a> (T1136.001, T1098, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1197-bitsadmin-transfer.yml">BITSAdmin Download or Persistent Transfer Job</a> (T1197, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1505.003-webserver-spawns-shell.yml">Web Server Process Spawning Shell or Recon Tool</a> (T1505.003, T1190, high)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1543.001-launch-agent-plist-in-user-writable-path.yml">LaunchAgent Plist Written by a Non-Installer Process</a> (T1543.001, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1543.003-suspicious-service-install.yml">Suspicious Windows Service Installation</a> (T1543.003, T1569.002, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1546.003-wmi-event-subscription.yml">WMI Event Subscription Persistence</a> (T1546.003, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1547.001-run-key-suspicious-value.yml">Run Key Persistence with Suspicious Value</a> (T1547.001, medium)</li>
@@ -65,20 +79,24 @@
 <li><a href="{{ site.baseurl }}/research/sigma/T1574.002-dll-sideload-from-user-writable-path.yml">DLL Side-Loaded from User-Writable Path</a> (T1574.002, T1574.001, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1649-certificate-request-with-san-esc1.yml">AD CS Certificate Request with Requester-Supplied Subject Alternative Name (ESC1)</a> (T1649, high)</li>
 </ul>
-<h3 id="tactic-privilege-escalation">Privilege Escalation <small>(11)</small></h3><ul>
+<h3 id="tactic-privilege-escalation">Privilege Escalation <small>(15)</small></h3><ul>
 <li><a href="{{ site.baseurl }}/research/sigma/T1053.005-schtasks-suspicious-create.yml">Scheduled Task Created from Suspicious Location or Interpreter</a> (T1053.005, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1055-hollowed-process-network-connection.yml">Network Connection from Benign GUI Binary Commonly Used as Injection Host</a> (T1055, T1055.012, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1055-remote-thread-into-sensitive-process.yml">Remote Thread Created in Sensitive or Commonly Injected Process</a> (T1055, T1055.001, T1055.002, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1078.002-service-account-interactive-logon.yml">Service Account Interactive Logon</a> (T1078.002, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1136.001-local-account-created-cli.yml">Local Account Created via Command Line</a> (T1136.001, T1098, medium)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1543.001-launch-agent-plist-in-user-writable-path.yml">LaunchAgent Plist Written by a Non-Installer Process</a> (T1543.001, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1543.003-suspicious-service-install.yml">Suspicious Windows Service Installation</a> (T1543.003, T1569.002, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1546.003-wmi-event-subscription.yml">WMI Event Subscription Persistence</a> (T1546.003, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1547.001-run-key-suspicious-value.yml">Run Key Persistence with Suspicious Value</a> (T1547.001, medium)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1548.002-uac-bypass-auto-elevated-parent.yml">Auto-Elevated Binary Spawns Shell or LOLBin</a> (T1548.002, T1218.011, high)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1548.002-uac-bypass-ms-settings-registry-hijack.yml">UAC Bypass via Shell-Handler Registry Hijack</a> (T1548.002, T1112, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1574.001-system-dll-loaded-from-unusual-path.yml">Well-Known Hijackable System DLL Loaded from Unusual Path</a> (T1574.001, T1574.002, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1574.002-dll-sideload-from-user-writable-path.yml">DLL Side-Loaded from User-Writable Path</a> (T1574.002, T1574.001, medium)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1611-privileged-or-hostpath-pod-created.yml">Privileged or Host-Namespace Pod Created</a> (T1611, T1610, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1649-certificate-request-with-san-esc1.yml">AD CS Certificate Request with Requester-Supplied Subject Alternative Name (ESC1)</a> (T1649, high)</li>
 </ul>
-<h3 id="tactic-defense-evasion">Defense Evasion <small>(11)</small></h3><ul>
+<h3 id="tactic-defense-evasion">Defense Evasion <small>(14)</small></h3><ul>
 <li><a href="{{ site.baseurl }}/research/sigma/T1055-hollowed-process-network-connection.yml">Network Connection from Benign GUI Binary Commonly Used as Injection Host</a> (T1055, T1055.012, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1055-remote-thread-into-sensitive-process.yml">Remote Thread Created in Sensitive or Commonly Injected Process</a> (T1055, T1055.001, T1055.002, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1059.001-powershell-encoded-command.yml">PowerShell Encoded Command Execution</a> (T1059.001, T1027, medium)</li>
@@ -87,21 +105,27 @@
 <li><a href="{{ site.baseurl }}/research/sigma/T1197-bitsadmin-transfer.yml">BITSAdmin Download or Persistent Transfer Job</a> (T1197, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1218.005-mshta-remote-or-script.yml">Mshta Executing Remote or Inline Script Content</a> (T1218.005, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1218.011-rundll32-suspicious-invocation.yml">Rundll32 Suspicious Invocation</a> (T1218.011, high)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1548.002-uac-bypass-auto-elevated-parent.yml">Auto-Elevated Binary Spawns Shell or LOLBin</a> (T1548.002, T1218.011, high)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1548.002-uac-bypass-ms-settings-registry-hijack.yml">UAC Bypass via Shell-Handler Registry Hijack</a> (T1548.002, T1112, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1562.001-defender-tampering-powershell.yml">Microsoft Defender Disabled or Excluded via PowerShell/Command Line</a> (T1562.001, high)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1564.008-suspicious-inbox-rule-hiding-mail.yml">Suspicious Inbox Rule Hiding or Deleting Mail</a> (T1564.008, T1114, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1574.001-system-dll-loaded-from-unusual-path.yml">Well-Known Hijackable System DLL Loaded from Unusual Path</a> (T1574.001, T1574.002, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1574.002-dll-sideload-from-user-writable-path.yml">DLL Side-Loaded from User-Writable Path</a> (T1574.002, T1574.001, medium)</li>
 </ul>
-<h3 id="tactic-credential-access">Credential Access <small>(6)</small></h3><ul>
+<h3 id="tactic-credential-access">Credential Access <small>(7)</small></h3><ul>
 <li><a href="{{ site.baseurl }}/research/sigma/T1003.001-lsass-access-suspicious.yml">Suspicious LSASS Process Access</a> (T1003.001, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1003.006-dcsync-replication.yml">DCSync - Directory Replication from Non-Domain-Controller Account</a> (T1003.006, high)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1059.002-osascript-suspicious-invocation.yml">Suspicious osascript Invocation (Shell, Download or Password Dialog)</a> (T1059.002, T1056.002, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1550.002-pass-the-hash.yml">Possible Pass-the-Hash Lateral Movement</a> (T1550.002, T1003.001, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1558.003-kerberoasting-rc4-tgs.yml">Kerberoasting - RC4 Service Ticket Requests</a> (T1558.003, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1649-adcs-enumeration-tooling.yml">AD CS Enumeration or Abuse Tooling Command Line</a> (T1649, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1649-certificate-request-with-san-esc1.yml">AD CS Certificate Request with Requester-Supplied Subject Alternative Name (ESC1)</a> (T1649, high)</li>
 </ul>
-<h3 id="tactic-discovery">Discovery <small>(3)</small></h3><ul>
+<h3 id="tactic-discovery">Discovery <small>(5)</small></h3><ul>
 <li><a href="{{ site.baseurl }}/research/sigma/T1018-session-enumeration-burst-smb.yml">SMB Session and Local Group Enumeration via IPC$ Named Pipes</a> (T1018, T1049, T1069.001, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1087.002-ad-enumeration-tooling-command-line.yml">Active Directory Enumeration Tooling on the Command Line</a> (T1087.002, T1069.002, T1482, T1018, medium)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1135-honey-share-access.yml">Access to a Decoy or Honey Share</a> (T1135, T1039, high)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1135-share-enumeration-tooling-command-line.yml">Network Share Enumeration Tooling on the Command Line</a> (T1135, T1083, medium)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1649-adcs-enumeration-tooling.yml">AD CS Enumeration or Abuse Tooling Command Line</a> (T1649, high)</li>
 </ul>
 <h3 id="tactic-lateral-movement">Lateral Movement <small>(5)</small></h3><ul>
@@ -110,6 +134,10 @@
 <li><a href="{{ site.baseurl }}/research/sigma/T1078.002-service-account-interactive-logon.yml">Service Account Interactive Logon</a> (T1078.002, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1543.003-suspicious-service-install.yml">Suspicious Windows Service Installation</a> (T1543.003, T1569.002, high)</li>
 <li><a href="{{ site.baseurl }}/research/sigma/T1550.002-pass-the-hash.yml">Possible Pass-the-Hash Lateral Movement</a> (T1550.002, T1003.001, medium)</li>
+</ul>
+<h3 id="tactic-collection">Collection <small>(2)</small></h3><ul>
+<li><a href="{{ site.baseurl }}/research/sigma/T1114.003-mailbox-forwarding-to-external.yml">Mailbox Forwarding to External Address</a> (T1114.003, medium)</li>
+<li><a href="{{ site.baseurl }}/research/sigma/T1564.008-suspicious-inbox-rule-hiding-mail.yml">Suspicious Inbox Rule Hiding or Deleting Mail</a> (T1564.008, T1114, medium)</li>
 </ul>
 <h3 id="tactic-command-and-control">Command and Control <small>(1)</small></h3><ul>
 <li><a href="{{ site.baseurl }}/research/sigma/T1055-hollowed-process-network-connection.yml">Network Connection from Benign GUI Binary Commonly Used as Injection Host</a> (T1055, T1055.012, high)</li>

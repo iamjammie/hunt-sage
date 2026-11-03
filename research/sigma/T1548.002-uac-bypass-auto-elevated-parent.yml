@@ -1,0 +1,43 @@
+title: Auto-Elevated Binary Spawns Shell or LOLBin
+id: b2e8d7a1-4c3f-4a6b-9e1d-5f0c2a9b8e76
+status: experimental
+description: |
+  Detects an auto-elevated Windows binary (fodhelper, computerdefaults, sdclt, eventvwr, slui,
+  wsreset, cmstp) spawning a command interpreter, script host or signed proxy binary. These
+  parents have no legitimate reason to launch shells and are the final stage of many UAC bypasses.
+references:
+  - https://attack.mitre.org/techniques/T1548/002/
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.privilege_escalation
+  - attack.defense_evasion
+  - attack.t1548.002
+  - attack.t1218.011
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    ParentImage|endswith:
+      - '\fodhelper.exe'
+      - '\computerdefaults.exe'
+      - '\sdclt.exe'
+      - '\eventvwr.exe'
+      - '\slui.exe'
+      - '\wsreset.exe'
+      - '\cmstp.exe'
+    Image|endswith:
+      - '\cmd.exe'
+      - '\powershell.exe'
+      - '\pwsh.exe'
+      - '\rundll32.exe'
+      - '\regsvr32.exe'
+      - '\mshta.exe'
+      - '\wscript.exe'
+      - '\cscript.exe'
+  condition: selection
+falsepositives:
+  - Rare administrative or troubleshooting workflows launched from these utilities
+  - Endpoint management tooling that scripts Windows settings applets
+level: high

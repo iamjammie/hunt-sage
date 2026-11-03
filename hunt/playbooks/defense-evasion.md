@@ -9,13 +9,9 @@ timebox: "3-4 hours"
 data: [windows-security, sysmon, powershell, edr]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1070.001 (Clear Windows Event Logs), T1562.001 (Disable/Modify Tools), T1562.002 (Disable Event Logging), T1036 (Masquerading), T1055 (Process Injection), T1070.006 (Timestomp) |
-| **Tactic** | Defense Evasion |
-| **Data** | Security 1102, System 104, Sysmon 1/8/10/25/26, PowerShell 4104, Defender 5001/5007/5010, registry telemetry |
-| **Time-box** | 3-4 hours |
-| **Difficulty** | ★★☆ |
+{% include playbook-meta.html %}
+
+**Data used:** Security 1102, System 104, Sysmon 1/8/10/25/26, PowerShell 4104, Defender 5001/5007/5010, registry telemetry
 
 ## Hypothesis
 
@@ -137,3 +133,5 @@ Log clearing or security-tool disabling occurs outside an approved change, espec
 - Emulate: `Invoke-AtomicTest T1070.001`, `T1562.001`, `T1036.003`
 - Detection: [Security log cleared]({{ site.baseurl }}/research/sigma/T1070.001-security-log-cleared.yml), [Defender tampering]({{ site.baseurl }}/research/sigma/T1562.001-defender-tampering-powershell.yml)
 - Hardening: Defender **Tamper Protection**; forward logs off-host in near real time; restrict `SeSecurityPrivilege`/`SeDebugPrivilege`; WDAC driver block list.
+
+{% include playbook-footer.html %}
