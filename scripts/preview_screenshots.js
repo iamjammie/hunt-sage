@@ -55,7 +55,7 @@ const path = require('path');
       await page.click('[data-hs-theme-toggle]').catch(e => errors.push('toggle: ' + e));
       await page.waitForTimeout(300);
       await page.screenshot({ path: path.join(out, name + '-light.png') });
-      const dbg = await page.evaluate(() => { const el = document.querySelector('.page__title'); if (!el) return 'no title'; const cs = getComputedStyle(el); return [cs.color, cs.opacity, cs.webkitTextFillColor, cs.visibility, el.className, document.documentElement.className].join(' | '); }).catch(e => String(e));
+      const dbg = await page.evaluate(() => { const el = document.querySelector('.page__title'); if (!el) return 'no title'; const cs = getComputedStyle(el); const r = el.getBoundingClientRect(); const top = document.elementFromPoint(r.left + 20, r.top + r.height / 3); const chain = []; for (let n = el; n && n !== document; n = n.parentElement) { const c = getComputedStyle(n); if (c.opacity !== '1' || c.filter !== 'none' || c.mixBlendMode !== 'normal') chain.push(n.tagName + '.' + n.className + ':' + c.opacity + '/' + c.filter + '/' + c.mixBlendMode); } return [cs.color, cs.opacity, cs.webkitTextFillColor, cs.textShadow, cs.webkitTextStroke, cs.backgroundClip, cs.mixBlendMode, cs.filter, 'top=' + (top ? top.tagName + '.' + top.className : 'none'), 'anims=' + el.getAnimations({subtree:true}).length, 'chain=' + chain.join(','), 'html=' + document.documentElement.className].join(' | '); }).catch(e => String(e));
       console.log('title-debug', name, dbg);
     }
     console.log(name, errors.length ? 'ERRORS: ' + errors.join(' | ') : 'ok');
