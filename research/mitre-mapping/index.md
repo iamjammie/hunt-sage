@@ -2,9 +2,7 @@
 title: "MITRE ATT&CK Detection Coverage Map"
 permalink: /research/mitre-mapping/
 layout: single
-toc: true
-toc_label: "Tactics"
-toc_sticky: true
+toc: false
 excerpt: "Every technique Hunt-Sage covers, generated from the playbooks, Sigma rules and write-ups themselves, with an importable ATT&CK Navigator layer."
 ---
 
