@@ -542,6 +542,29 @@
     render();
   }
 
+  /* ------------------------------------------------------- collapsible TOC
+   * Below 64em the inline "On this page" list pushes content a screen down; make it a toggle. */
+  function setupTocToggle() {
+    var toc = $(".sidebar__right .toc");
+    if (!toc) return;
+    var title = toc.querySelector(".nav__title");
+    if (!title) return;
+    var mq = window.matchMedia("(max-width: 64em)");
+    var collapsedByUser = null;
+    function paint() {
+      var small = mq.matches;
+      title.classList.toggle("hs-toc-toggle", small);
+      title.setAttribute("role", small ? "button" : "heading");
+      title.setAttribute("tabindex", small ? "0" : "-1");
+      toc.classList.toggle("is-collapsed", small && (collapsedByUser === null ? true : collapsedByUser));
+    }
+    function toggle() { if (!mq.matches) return; collapsedByUser = !toc.classList.contains("is-collapsed") ? true : false; paint(); }
+    title.addEventListener("click", toggle);
+    title.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+    if (mq.addEventListener) mq.addEventListener("change", paint); else if (mq.addListener) mq.addListener(paint);
+    paint();
+  }
+
   /* ---------------------------------------------------------------- boot */
   document.addEventListener("DOMContentLoaded", function () {
     var content = $(".page__content") || document.body;
@@ -550,6 +573,7 @@
     setupProgress(content);
     setupFinder();
     setupAssessment();
+    setupTocToggle();
     linkAttackIds(content);
     styleStars(content);
   });
