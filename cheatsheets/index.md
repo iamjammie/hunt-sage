@@ -22,4 +22,4 @@ Eight compact references, each available two ways: as a **web page** with a live
 
 Other quick references: [ATT&CK coverage map]({{ site.baseurl }}/research/mitre-mapping/) · [Glossary]({{ site.baseurl }}/learn/glossary/) · [Sigma rules]({{ site.baseurl }}/research/sigma/)
 
-*Licence: © 2025 iamjammie. Educational use permitted with attribution (keep the watermark and footer intact when sharing).*
+*Licence: © 2025-2026 iamjammie. Educational use permitted with attribution (keep the watermark and footer intact when sharing).*

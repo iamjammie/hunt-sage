@@ -61,7 +61,9 @@ blockquote { margin: 5pt 0; padding: 4pt 8pt; background: #f1f6f3; border-left: 
 blockquote p { margin: 2pt 0; }
 table { width: 100%; border-collapse: collapse; margin: 4pt 0 8pt; font-size: 7.9pt; }
 th { background: #0A0F1F; color: #fff; text-align: left; padding: 3pt 5pt; font-weight: 600; }
-td { padding: 2.6pt 5pt; border-bottom: 0.6pt solid #d6dde8; vertical-align: top; word-break: break-word; }
+td { padding: 2.6pt 5pt; border-bottom: 0.6pt solid #d6dde8; vertical-align: top; overflow-wrap: break-word; }
+td:first-child { white-space: nowrap; }
+td:first-child:has(strong), td:first-child:has(code), td:first-child:has(a) { white-space: normal; }
 tr { break-inside: avoid; }
 tbody tr:nth-child(even) td { background: rgba(244, 247, 251, 0.85); }
 code { font-family: 'DejaVu Sans Mono', Menlo, Consolas, monospace; font-size: 0.88em; background: #eef2f7;
@@ -77,7 +79,7 @@ hr { border: 0; border-top: 0.6pt solid #d6dde8; margin: 8pt 0; }
 FOOTER = (
     '<div style="width:100%;font-family:Inter,Arial,sans-serif;font-size:6.8pt;color:#5b6678;'
     'padding:0 12mm;display:flex;justify-content:space-between;-webkit-print-color-adjust:exact;">'
-    f'<span><b style="color:#0A0F1F">{REPO}</b> &nbsp;·&nbsp; © 2025 iamjammie · educational use with attribution</span>'
+    f'<span><b style="color:#0A0F1F">{REPO}</b> &nbsp;·&nbsp; © 2025-2026 iamjammie · educational use with attribution</span>'
     '<span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span></div>'
 )
 
