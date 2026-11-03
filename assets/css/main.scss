@@ -24,6 +24,7 @@
   --hs-gray: #2C3542;
   --hs-white: #F7FAFC;
   --hs-code-bg: #0D1526;
+  --hs-row-alt: rgba(17, 26, 46, 0.6);
   --hs-heat-full: #1E4F2E;
   --hs-heat-hunt: #4A3E22;
   --hs-heat-note: #26303F;
@@ -43,6 +44,7 @@ html.hs-theme-light {
   --hs-green-ink: #E3F7E6;
   --hs-code-bg: #F0F3F8;
   --hs-white: #15202F;
+  --hs-row-alt: rgba(238, 242, 248, 0.7);
   --hs-heat-full: #CFF2D6;
   --hs-heat-hunt: #FBECC5;
   --hs-heat-note: #E2E7EF;
@@ -66,7 +68,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--hs-green); outl
 .page__content { color: var(--hs-text); }
 .page__content p, .page__content li { line-height: 1.65; }
 .page__meta, .page__date, .archive__item-excerpt { color: var(--hs-text-muted); }
-.page__title { font-size: 1.9em; }
+.page__title { font-size: 1.9em; color: var(--hs-text); }
+.page__content table, .page__content td, .page__content th, .page__content strong { color: var(--hs-text); }
 
 /* ---------- masthead & nav ---------- */
 .masthead {
@@ -177,7 +180,7 @@ div.highlighter-rouge[class*="language-"]::before {
 .page__content thead { background: var(--hs-surface-2); border-bottom: 2px solid var(--hs-line); }
 .page__content th { color: var(--hs-text); font-weight: 600; }
 .page__content td, .page__content th { border-bottom: 1px solid var(--hs-line); vertical-align: top; }
-.page__content tbody tr:nth-child(even) { background: rgba(17, 26, 46, 0.6); }
+.page__content tbody tr:nth-child(even) { background: var(--hs-row-alt); }
 .page__content tbody tr:hover { background: var(--hs-surface-2); }
 
 /* ATT&CK id badges (added by attack-links.js) */
@@ -251,13 +254,13 @@ a.hs-attack:hover { text-decoration: none; filter: brightness(1.15); }
 .taxonomy__index a, .page__taxonomy-item { color: var(--hs-text-muted); border-color: var(--hs-line); }
 
 /* ---------- ATT&CK coverage heatmap ---------- */
-.hs-heatmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(8.5em, 1fr)); gap: 0.5em; margin: 1.2em 0; }
+.hs-heatmap { display: grid; grid-template-columns: repeat(auto-fill, minmax(7.5em, 1fr)); gap: 0.5em; margin: 1.2em 0; }
 .hs-heatmap__tactic { background: var(--hs-surface); border: 1px solid var(--hs-line); border-radius: var(--hs-radius); padding: 0.5em; min-width: 0; }
 .hs-heatmap__tactic h4 { margin: 0 0 0.4em; font-size: 0.7em; font-weight: 600; color: var(--hs-text-muted); border: 0; line-height: 1.25; }
 .hs-heatmap__tactic h4 small { display: block; font-family: var(--hs-font-mono); font-weight: 400; color: var(--hs-text-muted); opacity: 0.7; }
 .hs-heatmap__cell { display: block; font-size: 0.66em; line-height: 1.25; padding: 0.35em 0.4em; margin-bottom: 0.3em; border-radius: 4px; border: 1px solid var(--hs-line); color: var(--hs-text); text-decoration: none; }
 .hs-heatmap__cell:hover { text-decoration: none; outline: 1px solid var(--hs-green); }
-.hs-heatmap__cell code { font-family: var(--hs-font-mono); font-size: 0.9em; opacity: 0.8; display: block; }
+.hs-heatmap__cell code { font-family: var(--hs-font-mono); font-size: 0.9em; opacity: 0.8; display: block; background: transparent; border: 0; padding: 0; color: inherit; }
 .hs-heatmap__cell--full { background: var(--hs-heat-full); border-color: var(--hs-green); }
 .hs-heatmap__cell--hunt { background: var(--hs-heat-hunt); border-color: var(--hs-amber); }
 .hs-heatmap__cell--note { background: var(--hs-heat-note); }
