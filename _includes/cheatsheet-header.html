@@ -1,0 +1,10 @@
+{% comment %}Toolbar at the top of every generated cheat-sheet page: PDF download, source link, live row filter.{% endcomment %}
+<div class="hs-toolbar hs-no-attack-links">
+  <div class="hs-toolbar__actions">
+    <a class="btn btn--primary btn--small" href="{{ page.pdf | relative_url }}"><i class="fas fa-fw fa-file-pdf" aria-hidden="true"></i> Download the PDF</a>
+    <a class="btn btn--inverse btn--small" href="https://github.com/{{ site.repository }}/blob/main/{{ page.source }}"><i class="fab fa-fw fa-github" aria-hidden="true"></i> Source</a>
+    <button type="button" class="btn btn--inverse btn--small" onclick="window.print()"><i class="fas fa-fw fa-print" aria-hidden="true"></i> Print</button>
+  </div>
+  <div class="hs-filter" data-hs-filter data-placeholder="Filter rows: event id, keyword, technique..."></div>
+</div>
+<p class="hs-toolbar__hint">Typing in the filter hides table rows that do not match and collapses empty sections. Other sheets: {% for s in site.pages %}{% if s.cheatsheet and s.permalink != page.permalink %}<a href="{{ s.permalink | relative_url }}">{{ s.title | replace: " for Hunters", "" }}</a> · {% endif %}{% endfor %}<a href="{{ '/cheatsheets/' | relative_url }}">all sheets</a>.</p>

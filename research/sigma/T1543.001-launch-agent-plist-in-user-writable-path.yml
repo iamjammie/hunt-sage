@@ -1,0 +1,46 @@
+title: LaunchAgent Plist Written by a Non-Installer Process
+id: 7c2e4b9a-8d31-4f6e-9a57-2b0d1e8c6f43
+status: experimental
+description: |
+  Detects a property list being created or modified in a LaunchAgents directory (per-user or
+  system-wide) by a process other than the platform installer, package tooling or common MDM agents.
+  Shells, osascript, Python, browsers and binaries running from temporary paths writing LaunchAgents
+  is the standard persistence step of macOS stealers and droppers. Tune the filter to your MDM and
+  software-deployment agents.
+references:
+  - https://attack.mitre.org/techniques/T1543/001/
+  - https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.persistence
+  - attack.privilege_escalation
+  - attack.t1543.001
+logsource:
+  category: file_event
+  product: macos
+detection:
+  selection:
+    TargetFilename|contains: '/Library/LaunchAgents/'
+    TargetFilename|endswith: '.plist'
+  filter_installers:
+    Image|endswith:
+      - '/usr/sbin/installer'
+      - '/System/Library/PrivateFrameworks/PackageKit.framework/Resources/installd'
+      - '/usr/libexec/package_script_service'
+      - '/usr/local/bin/brew'
+      - '/usr/local/bin/jamf'
+      - '/usr/local/jamf/bin/jamf'
+      - '/Library/Kandji/Kandji Agent.app/Contents/MacOS/kandji-agent'
+      - '/usr/local/bin/mosyled'
+      - '/System/Library/CoreServices/Software Update.app/Contents/Resources/softwareupdated'
+  filter_system_paths:
+    Image|startswith:
+      - '/System/'
+      - '/usr/libexec/'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - Legitimate applications that install their own update agents (Zoom, Microsoft AutoUpdate, Adobe, Google Keystone, Dropbox); allow-list by signer and program path
+  - Developers creating LaunchAgents for local tooling
+  - MDM or software-deployment agents not covered by the filter
+level: medium

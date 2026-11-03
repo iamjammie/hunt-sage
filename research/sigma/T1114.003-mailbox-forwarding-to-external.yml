@@ -1,0 +1,54 @@
+title: Mailbox Forwarding to External Address
+id: 96896d54-a252-48b7-8bba-854513b0196e
+status: experimental
+description: |
+  Detects Exchange Online changes that forward or redirect a user's mail: ForwardingSmtpAddress or
+  ForwardingAddress set on a mailbox, inbox rules with ForwardTo / RedirectTo / ForwardAsAttachmentTo,
+  and transport rules that redirect or blind-copy messages. Adversaries configure these after a
+  mailbox takeover so that copies of finance and supplier threads keep arriving after the password is
+  reset. Filter your own accepted domains and known archiving services in the SIEM.
+references:
+  - https://attack.mitre.org/techniques/T1114/003/
+  - https://learn.microsoft.com/en-us/microsoft-365/security/office-365-security/outbound-spam-policies-external-email-forwarding
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.collection
+  - attack.t1114.003
+logsource:
+  product: m365
+  service: exchange
+detection:
+  selection_mailbox:
+    eventSource: 'Exchange'
+    eventName: 'Set-Mailbox'
+    Parameters|contains:
+      - 'ForwardingSmtpAddress'
+      - 'ForwardingAddress'
+      - 'DeliverToMailboxAndForward'
+  selection_rule:
+    eventSource: 'Exchange'
+    eventName:
+      - 'New-InboxRule'
+      - 'Set-InboxRule'
+      - 'UpdateInboxRules'
+    Parameters|contains:
+      - 'ForwardTo'
+      - 'RedirectTo'
+      - 'ForwardAsAttachmentTo'
+  selection_transport:
+    eventSource: 'Exchange'
+    eventName:
+      - 'New-TransportRule'
+      - 'Set-TransportRule'
+    Parameters|contains:
+      - 'RedirectMessageTo'
+      - 'BlindCopyTo'
+      - 'AddToRecipients'
+      - 'CopyTo'
+  condition: 1 of selection_*
+falsepositives:
+  - Users forwarding to a personal address in breach of policy (still worth a conversation)
+  - Journaling, archiving or e-discovery services configured during onboarding
+  - Shared-mailbox owners forwarding to a team distribution list inside the tenant (filter accepted domains downstream)
+level: medium

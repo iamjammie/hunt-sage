@@ -1,0 +1,49 @@
+title: Suspicious osascript Invocation (Shell, Download or Password Dialog)
+id: 5f8a1d62-3c47-4b0e-8e21-9a6c7d4b2f10
+status: experimental
+description: |
+  Detects osascript (AppleScript / JavaScript for Automation) being used to run shell commands,
+  download content, create login items or display a password-collecting dialog. Stealers use
+  osascript dialogs with a hidden-answer field to phish the user's macOS password and "do shell
+  script" chains to stage payloads. MDM notification scripts use osascript too, but never with a
+  hidden-answer prompt; exclude your MDM script paths rather than the binary.
+references:
+  - https://attack.mitre.org/techniques/T1059/002/
+  - https://attack.mitre.org/techniques/T1056/002/
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.execution
+  - attack.credential_access
+  - attack.t1059.002
+  - attack.t1056.002
+logsource:
+  category: process_creation
+  product: macos
+detection:
+  selection_image:
+    Image|endswith: '/osascript'
+  selection_shell:
+    CommandLine|contains:
+      - 'do shell script'
+      - 'curl '
+      - 'wget '
+      - 'base64'
+      - 'login item'
+      - '-l JavaScript'
+  selection_dialog:
+    CommandLine|contains|all:
+      - 'display dialog'
+      - 'hidden answer'
+  filter_mdm:
+    ParentImage|contains:
+      - '/Library/Application Support/JAMF/'
+      - '/Library/Kandji/'
+      - '/usr/local/jamf/'
+      - '/Library/Addigy/'
+  condition: selection_image and (selection_shell or selection_dialog) and not filter_mdm
+falsepositives:
+  - MDM and IT automation scripts that use osascript for user notifications (add their parent paths to the filter)
+  - Developers and power users running AppleScript automation that shells out
+  - Installers that register login items through System Events
+level: medium

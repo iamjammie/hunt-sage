@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0A0F1F"/>
+    <stop offset="1" stop-color="#111A2E"/>
+  </linearGradient>
+  <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#6AFB73" stop-opacity="0"/>
+    <stop offset="1" stop-color="#6AFB73" stop-opacity="0.9"/>
+  </linearGradient>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M40 0H0V40" fill="none" stroke="#6AFB73" stroke-opacity="0.07" stroke-width="1"/>
+  </pattern>
+</defs>
+<rect width="512" height="512" rx="92.16" fill="url(#bg)"/>
+<circle cx="256.0" cy="256.0" r="163.84" fill="none" stroke="#6AFB73" stroke-width="15.36" opacity="0.95"/>
+<circle cx="256.0" cy="256.0" r="101.5808" fill="none" stroke="#6AFB73" stroke-width="10.751999999999999" opacity="0.7"/>
+<circle cx="256.0" cy="256.0" r="45.87520000000001" fill="none" stroke="#6AFB73" stroke-width="10.751999999999999" opacity="0.7"/>
+<line x1="62.668800000000005" y1="256.0" x2="236.3392" y2="256.0" stroke="#6AFB73" stroke-width="15.36"/>
+<line x1="275.6608" y1="256.0" x2="449.33119999999997" y2="256.0" stroke="#6AFB73" stroke-width="15.36"/>
+<line x1="256.0" y1="62.668800000000005" x2="256.0" y2="236.3392" stroke="#6AFB73" stroke-width="15.36"/>
+<line x1="256.0" y1="275.6608" x2="256.0" y2="449.33119999999997" stroke="#6AFB73" stroke-width="15.36"/>
+<circle cx="256.0" cy="256.0" r="18.432" fill="#6AFB73"/>
+<path d="M256.0,256.0 L419.84000000000003,256.0 A163.84,163.84 0 0 0 305.152,99.69664 Z" fill="url(#sweep)" opacity="0.55"/>
+<circle cx="329.728" cy="198.656" r="21.503999999999998" fill="#6AFB73"/>
+<circle cx="174.07999999999998" cy="321.536" r="16.896" fill="#E63946"/>
+</svg>

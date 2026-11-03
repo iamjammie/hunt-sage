@@ -1,0 +1,49 @@
+title: SMB Session and Local Group Enumeration via IPC$ Named Pipes
+id: 18e24d65-d8e0-4502-be4a-6550035d06db
+status: experimental
+description: |
+  Detects access to the srvsvc, wkssvc, samr and lsarpc named pipes over the IPC$ share (event
+  5145, requires Audit Detailed File Share). These are the RPC interfaces used by NetSessionEnum,
+  NetWkstaUserEnum and remote SAM lookups, which SharpHound, PowerView and net view/net session
+  use to map logged-on users and local administrators across the domain. A single event is noise:
+  domain controllers, management servers and Windows itself use these pipes constantly. Aggregate
+  by SubjectUserName and IpAddress across distinct target computers (for example 20 or more hosts
+  within 10 minutes) and alert on the fan-out, not on the individual event. Tune the threshold per
+  environment and allow-list scanner and monitoring accounts by account and source address.
+references:
+  - https://attack.mitre.org/techniques/T1018/
+  - https://attack.mitre.org/techniques/T1049/
+  - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-5145
+  - https://bloodhound.specterops.io/collect-data/ce-collection/sharphound-flags
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.discovery
+  - attack.t1018
+  - attack.t1049
+  - attack.t1069.001
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 5145
+    ShareName|endswith: '\IPC$'
+    RelativeTargetName:
+      - 'srvsvc'
+      - 'wkssvc'
+      - 'samr'
+      - 'lsarpc'
+  filter_machine_accounts:
+    SubjectUserName|endswith: '$'
+  filter_local:
+    IpAddress:
+      - '127.0.0.1'
+      - '::1'
+      - '-'
+  condition: selection and not 1 of filter_*
+falsepositives:
+  - Domain controllers, SCCM, monitoring and backup servers querying members (allow-list by account and source IP)
+  - Vulnerability scanners performing authenticated checks
+  - Administrators using Computer Management or net view against a handful of hosts; the aggregation threshold removes these
+level: medium

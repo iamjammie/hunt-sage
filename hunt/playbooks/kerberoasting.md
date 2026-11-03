@@ -2,15 +2,16 @@
 title: "Playbook: Kerberoasting & AS-REP Roasting"
 permalink: /hunt/playbooks/kerberoasting/
 excerpt: "Spot offline-crackable Kerberos ticket requests on the domain controller."
+tactic: "Credential Access"
+attack: [T1558.003, T1558.004]
+difficulty: 2
+timebox: "2-3 hours"
+data: [windows-security, edr]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1558.003 (Kerberoasting), T1558.004 (AS-REP Roasting) |
-| **Tactic** | Credential Access |
-| **Data** | Domain controller Security log: 4769 (service ticket), 4768 (TGT request); LDAP query telemetry if available |
-| **Time-box** | 2-3 hours |
-| **Difficulty** | ★★☆ |
+{% include playbook-meta.html %}
+
+**Data used:** Domain controller Security log: 4769 (service ticket), 4768 (TGT request); LDAP query telemetry if available
 
 ## Background
 
@@ -116,4 +117,6 @@ Burst from a non-admin workstation or any request for a honey SPN. Reset targete
 - Detection: [Kerberoasting via RC4 TGS requests]({{ site.baseurl }}/research/sigma/T1558.003-kerberoasting-rc4-tgs.yml)
 - Hardening: gMSA for services; AES-only (`msDS-SupportedEncryptionTypes`, disable RC4 where feasible); long random passwords; remove unnecessary SPNs; require preauth everywhere.
 
-See also: [Active Directory attacks cheat sheet]({{ site.baseurl }}/cheatsheets/active-directory-attacks.pdf).
+See also: [Active Directory attacks cheat sheet]({{ site.baseurl }}/cheatsheets/active-directory-attacks/).
+
+{% include playbook-footer.html %}

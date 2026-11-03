@@ -2,15 +2,16 @@
 title: "Playbook: Web Shells"
 permalink: /hunt/playbooks/web-shells/
 excerpt: "Find persistence and command execution via web servers: process lineage, new script files, and access-log anomalies."
+tactic: "Persistence"
+attack: [T1505.003, T1190, T1059.003]
+difficulty: 2
+timebox: "3-5 hours"
+data: [edr, sysmon, iis, zeek]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1505.003 (Web Shell), T1190 (Exploit Public-Facing Application), T1059 |
-| **Tactics** | Initial Access, Persistence |
-| **Data** | EDR/Sysmon process creation and file creation on web servers; IIS/Apache/nginx access logs; WAF; Zeek `http` |
-| **Time-box** | 3-5 hours |
-| **Difficulty** | ★★☆ |
+{% include playbook-meta.html %}
+
+**Data used:** EDR/Sysmon process creation and file creation on web servers; IIS/Apache/nginx access logs; WAF; Zeek `http`
 
 ## Hypothesis
 
@@ -105,3 +106,5 @@ Any interpreter/recon child of a web server not explained by the application, or
 - Emulate with a benign test page that runs `whoami` under a lab IIS/Apache site (never expose the lab to the internet).
 - Detection: [Web server spawning shell]({{ site.baseurl }}/research/sigma/T1505.003-webserver-spawns-shell.yml)
 - Hardening: read-only web roots and file-integrity monitoring; deny write/execute to app pool identities; WAF; patch edge services; segment DMZ from internal networks; egress filtering for web servers.
+
+{% include playbook-footer.html %}

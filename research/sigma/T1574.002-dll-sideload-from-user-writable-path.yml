@@ -1,0 +1,87 @@
+title: DLL Side-Loaded from User-Writable Path
+id: 6b04831a-9229-4d08-b4ce-7c3133ac5624
+status: experimental
+description: |
+  Detects a DLL being loaded from a user-writable staging location (user Temp, Downloads,
+  Public, Roaming AppData, ProgramData root, Windows\Temp, PerfLogs) either by a process that
+  runs from outside those locations (a trusted binary pulled into loading a dropped DLL) or,
+  where Sysmon records signature data, when the DLL itself is unsigned or carries an invalid
+  signature. Side-loading kits drop a legitimate signed executable next to a malicious DLL it
+  resolves by name; the executable passes allow-listing while the DLL runs the payload.
+  Requires Sysmon event 7 or equivalent module-load telemetry.
+references:
+  - https://attack.mitre.org/techniques/T1574/002/
+  - https://hijacklibs.net
+  - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.persistence
+  - attack.privilege_escalation
+  - attack.defense_evasion
+  - attack.t1574.002
+  - attack.t1574.001
+logsource:
+  category: image_load
+  product: windows
+detection:
+  selection_user_path:
+    ImageLoaded|contains:
+      - '\AppData\Local\Temp\'
+      - '\AppData\Roaming\'
+      - '\Downloads\'
+      - '\Users\Public\'
+      - 'C:\ProgramData\'
+      - 'C:\Windows\Temp\'
+      - 'C:\PerfLogs\'
+      - 'C:\Users\Default\'
+    ImageLoaded|endswith: '.dll'
+  selection_unsigned_dll:
+    Signed: 'false'
+  selection_bad_signature:
+    SignatureStatus:
+      - 'Unavailable'
+      - 'Expired'
+      - 'Revoked'
+      - 'Bad'
+  loader_in_same_area:
+    Image|contains:
+      - '\AppData\Local\Temp\'
+      - '\AppData\Roaming\'
+      - '\Downloads\'
+      - '\Users\Public\'
+      - 'C:\ProgramData\'
+      - 'C:\Windows\Temp\'
+      - 'C:\PerfLogs\'
+  filter_installers_and_proxies:
+    Image|endswith:
+      - '\msiexec.exe'
+      - '\rundll32.exe'
+      - '\regsvr32.exe'
+      - '\dllhost.exe'
+      - '\WerFault.exe'
+      - '\MsMpEng.exe'
+      - '\MpCmdRun.exe'
+  filter_known_signed_appdata_apps:
+    ImageLoaded|contains:
+      - '\AppData\Local\Microsoft\OneDrive\'
+      - '\AppData\Local\Microsoft\Teams\'
+      - '\AppData\Local\Microsoft\EdgeUpdate\'
+      - '\AppData\Local\Google\Update\'
+      - '\AppData\Local\Programs\'
+      - '\AppData\Local\slack\'
+      - '\AppData\Local\Discord\'
+      - '\AppData\Local\Zoom\'
+      - 'C:\ProgramData\Microsoft\'
+      - 'C:\ProgramData\Package Cache\'
+    Signed: 'true'
+    SignatureStatus: 'Valid'
+  filter_dotnet_native_images:
+    ImageLoaded|contains: '\Microsoft\CLR_v'
+  condition: selection_user_path and (selection_unsigned_dll or selection_bad_signature or not loader_in_same_area) and not 1 of filter_*
+falsepositives:
+  - Self-updating applications installed per user (Electron apps, browsers, chat clients) whose DLLs live under AppData; extend the signed-vendor filter with path and signer once baselined
+  - Installers and setup bootstrappers running from Downloads or Temp that load their own unsigned helper DLLs; short-lived and tied to a setup.exe parent
+  - Developer tooling (Python, Node, Rust/Go builds) loading freshly compiled unsigned DLLs from the user profile; scope the rule out on developer hosts or filter by project path
+  - Defender for Endpoint sampling of image loads means some legitimate loads appear rare; confirm prevalence with the Sysmon data before escalating
+level: medium

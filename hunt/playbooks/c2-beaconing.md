@@ -2,15 +2,16 @@
 title: "Playbook: C2 Beaconing & DNS Tunneling"
 permalink: /hunt/playbooks/c2-beaconing/
 excerpt: "Find regular check-ins, rare destinations, odd TLS/HTTP fingerprints and DNS abuse using timing and frequency analysis."
+tactic: "Command and Control"
+attack: [T1071.001, T1071.004, T1573, T1568, T1572, T1090, T1102, T1095]
+difficulty: 3
+timebox: "1-2 days"
+data: [proxy, dns, firewall, zeek, edr]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1071.001 (Web), T1071.004 (DNS), T1573 (Encrypted Channel), T1568 (Dynamic Resolution/DGA), T1572 (Protocol Tunneling), T1090 (Proxy), T1102 (Web Service) |
-| **Tactic** | Command & Control |
-| **Data** | Proxy / firewall / NetFlow; DNS logs; Zeek `conn`, `dns`, `http`, `ssl`; EDR network events |
-| **Time-box** | 1-2 days |
-| **Difficulty** | ★★★ |
+{% include playbook-meta.html %}
+
+**Data used:** Proxy / firewall / NetFlow; DNS logs; Zeek `conn`, `dns`, `http`, `ssl`; EDR network events
 
 ## Hypothesis
 
@@ -113,6 +114,34 @@ Use the effective second-level domain (public suffix list) in production; `co.uk
 
 Interactive C2 (SOCKS, tunnels) shows long-lived connections and balanced bytes in/out; beacons show tiny constant requests. Rank by `duration`, `orig_bytes`/`resp_bytes` in Zeek `conn.log`.
 
+### 7. Non-application-layer protocols (T1095)
+
+Implants that skip HTTP and DNS use ICMP, raw TCP or UDP. The web-proxy and DNS hunts above never see them, so go to the flow data: Zeek `conn.log`, firewall logs, NetFlow.
+
+- **ICMP** between an internal host and the internet with payload sizes other than the OS default (64 bytes on Linux, 40 on Windows), high packet counts, or a steady rate; Zeek records these as `proto=icmp` with `orig_bytes`/`resp_bytes`.
+- **Raw TCP/UDP** to high ports (not 80/443/53/123) with the same interval and size pattern as step 1, and `service` empty or `-` in Zeek because no application protocol was recognised.
+- **First-seen protocol per host**: a file server that has never spoken UDP to the internet and starts to is worth ten minutes.
+
+```kql
+// Zeek conn.log in Sentinel (Corelight / custom table): ICMP or unrecognised-service flows to public IPs, stacked by host
+Corelight_CL
+| where TimeGenerated > ago(7d) and ipv4_is_private(id_resp_h_s) == false
+| where proto_s == "icmp" or (proto_s in ("tcp", "udp") and isempty(service_s) and id_resp_p_d !in (80, 443, 53, 123, 22, 25))
+| summarize Flows = count(), Dest = dcount(id_resp_h_s), BytesOut = sum(orig_bytes_d), AvgBytes = avg(orig_bytes_d), FirstSeen = min(TimeGenerated) by id_orig_h_s, proto_s, id_resp_p_d
+| where Flows > 50 or (proto_s == "icmp" and AvgBytes > 100)
+| order by Flows desc
+```
+
+```spl
+index=zeek sourcetype=zeek_conn NOT (id.resp_h=10.0.0.0/8 OR id.resp_h=172.16.0.0/12 OR id.resp_h=192.168.0.0/16)
+| search proto=icmp OR (proto IN (tcp,udp) service="-" NOT id.resp_p IN (80,443,53,123,22,25))
+| stats count dc(id.resp_h) as dests sum(orig_bytes) as out avg(orig_bytes) as avg_out min(_time) as first_seen by id.orig_h proto id.resp_p
+| where count>50 OR (proto="icmp" AND avg_out>100)
+| sort - count
+```
+
+Baseline host-to-protocol pairs over 30 days first; pairs appearing for the first time this week are the shortlist, and the regularity test from step 1 confirms a beacon.
+
 ## Triage
 
 1. Destination: domain age, hosting ASN, certificate, reputation, passive DNS history, other internal hosts contacting it.
@@ -134,3 +163,5 @@ A non-browser or injected process beacons to a rare external destination, especi
 - Emulate in the lab with a **benign beacon**: a scheduled `curl` loop with jitter; or Atomic Red Team `T1071.001` / `T1071.004`, or frameworks such as Sliver/Mythic/Havoc on isolated infrastructure.
 - Detection: scheduled analytic producing top-N beacon candidates per day, enriched with threat intel and an allow-list.
 - Hardening: egress filtering/default-deny for servers, force proxy use with TLS inspection where lawful, DNS filtering (RPZ) and logging, block DoH to unapproved resolvers.
+
+{% include playbook-footer.html %}

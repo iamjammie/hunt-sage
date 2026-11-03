@@ -1,0 +1,56 @@
+title: Privileged or Host-Namespace Pod Created
+id: a0c234ae-d730-4d0f-ac7b-3a457a73a58b
+status: experimental
+description: |
+  Detects pods created or updated with settings that allow a container to reach the node: a privileged
+  security context, host PID, network or IPC namespaces, a hostPath volume, or dangerous Linux
+  capabilities (SYS_ADMIN, SYS_PTRACE, SYS_MODULE). These are the standard precursors to a container
+  escape. Exclude known CNI, CSI, logging and security DaemonSets by namespace and name downstream.
+references:
+  - https://attack.mitre.org/techniques/T1611/
+  - https://kubernetes.io/docs/concepts/security/pod-security-standards/
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.privilege_escalation
+  - attack.t1611
+  - attack.execution
+  - attack.t1610
+logsource:
+  product: kubernetes
+  service: audit
+detection:
+  selection_request:
+    verb:
+      - 'create'
+      - 'update'
+      - 'patch'
+    objectRef.resource:
+      - 'pods'
+      - 'deployments'
+      - 'daemonsets'
+      - 'statefulsets'
+      - 'jobs'
+      - 'cronjobs'
+  escape_privileged:
+    requestObject.spec.containers.securityContext.privileged: 'true'
+  escape_hostpid:
+    requestObject.spec.hostPID: 'true'
+  escape_hostnetwork:
+    requestObject.spec.hostNetwork: 'true'
+  escape_hostipc:
+    requestObject.spec.hostIPC: 'true'
+  escape_hostpath:
+    requestObject.spec.volumes.hostPath.path|startswith: '/'
+  escape_capabilities:
+    requestObject.spec.containers.securityContext.capabilities.add|contains:
+      - 'SYS_ADMIN'
+      - 'SYS_PTRACE'
+      - 'SYS_MODULE'
+      - 'ALL'
+  condition: selection_request and 1 of escape_*
+falsepositives:
+  - CNI and CSI drivers, log shippers, node exporters and security agents that legitimately run privileged with hostPath (allow-list by namespace and workload name)
+  - Cluster upgrade and node bootstrap jobs
+  - Platform teams deploying debugging DaemonSets during incidents
+level: high

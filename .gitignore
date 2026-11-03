@@ -4,3 +4,7 @@ _site/
 .venv/
 __pycache__/
 *.pyc
+vendor/
+.bundle/
+Gemfile.lock
+node_modules/

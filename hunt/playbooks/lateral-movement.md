@@ -2,15 +2,16 @@
 title: "Playbook: Lateral Movement"
 permalink: /hunt/playbooks/lateral-movement/
 excerpt: "Hunt SMB/PsExec, RDP, WinRM, WMI and pass-the-hash/ticket movement using logon graphs and fan-out analysis."
+tactic: "Lateral Movement"
+attack: [T1021.001, T1021.002, T1021.006, T1047, T1569.002, T1550.002, T1550.003]
+difficulty: 3
+timebox: "1-2 days"
+data: [windows-security, sysmon, edr, zeek]
 ---
 
-| Field | Detail |
-|---|---|
-| **ATT&CK** | T1021.001 (RDP), T1021.002 (SMB/Admin Shares), T1021.006 (WinRM), T1047 (WMI), T1569.002 (Service Execution), T1550.002/.003 (PtH / PtT) |
-| **Tactic** | Lateral Movement |
-| **Data** | Security 4624/4625/4648/4672/4776, 5140/5145 (shares), 7045/4697 (services); Sysmon 1/3; network flow |
-| **Time-box** | 1-2 days |
-| **Difficulty** | ★★★ |
+{% include playbook-meta.html %}
+
+**Data used:** Security 4624/4625/4648/4672/4776, 5140/5145 (shares), 7045/4697 (services); Sysmon 1/3; network flow
 
 ## Hypothesis
 
@@ -130,3 +131,5 @@ Privileged account activity from a non-admin source, `PSEXESVC`/`ADMIN$` executi
 - Emulate: `Invoke-AtomicTest T1021.002`, `T1021.006`, `T1047`, `T1569.002`
 - Detection: [Suspicious service install]({{ site.baseurl }}/research/sigma/T1543.003-suspicious-service-install.yml), [Pass-the-hash]({{ site.baseurl }}/research/sigma/T1550.002-pass-the-hash.yml)
 - Hardening: LAPS for local admin; deny network logon for local accounts; tiering/PAWs; restrict SMB/RDP/WinRM between workstations with host firewall; disable NTLM where feasible; Credential Guard.
+
+{% include playbook-footer.html %}

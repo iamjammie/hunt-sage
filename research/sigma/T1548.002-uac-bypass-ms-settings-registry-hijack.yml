@@ -1,0 +1,39 @@
+title: UAC Bypass via Shell-Handler Registry Hijack
+id: 7c1f3a2e-9d64-4b1a-8f2c-0a5e6b7d4c91
+status: experimental
+description: |
+  Detects writes to per-user shell "open" command or DelegateExecute handlers under
+  HKCU\Software\Classes that auto-elevated Windows binaries (fodhelper, computerdefaults,
+  sdclt, eventvwr) resolve, a common way to run a command at High integrity with no UAC prompt.
+references:
+  - https://attack.mitre.org/techniques/T1548/002/
+author: hunt-sage (iamjammie)
+date: 2026-11-03
+tags:
+  - attack.privilege_escalation
+  - attack.defense_evasion
+  - attack.t1548.002
+  - attack.t1112
+logsource:
+  category: registry_set
+  product: windows
+detection:
+  selection_handler:
+    TargetObject|contains:
+      - '\Software\Classes\ms-settings\shell\open\command'
+      - '\Software\Classes\mscfile\shell\open\command'
+      - '\Software\Classes\exefile\shell\runas\command\isolatedCommand'
+      - '\Software\Classes\Folder\shell\open\command'
+  selection_delegate:
+    TargetObject|contains: '\Software\Classes\'
+    TargetObject|endswith: '\DelegateExecute'
+  filter_legit:
+    Image|endswith:
+      - '\explorer.exe'
+      - '\msiexec.exe'
+      - '\svchost.exe'
+  condition: (selection_handler or selection_delegate) and not filter_legit
+falsepositives:
+  - Software installers that register per-user file associations
+  - Developer tooling that sets shell handlers under HKCU
+level: high

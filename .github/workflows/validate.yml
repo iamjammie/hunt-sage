@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   validate:
+    name: Sigma rules, links, coverage data
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,3 +24,33 @@ jobs:
         run: python scripts/validate_rules.py
       - name: Check site links and front matter
         run: python scripts/check_links.py
+      - name: Check ATT&CK coverage data is up to date
+        run: python scripts/build_coverage.py --check
+      - name: Check cheat-sheet web pages are up to date
+        run: python scripts/build_cheatsheet_pages.py --check
+      - name: Syntax-check site JavaScript
+        run: node -e "new Function(require('fs').readFileSync('assets/js/hunt-sage.js','utf8')); new Function(require('fs').readFileSync('assets/js/theme-toggle.js','utf8'))"
+
+  build:
+    name: Jekyll build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - name: Build site
+        run: bundle exec jekyll build --strict_front_matter
+        env:
+          JEKYLL_ENV: production
+      - name: Check the built site for unresolved Liquid or broken includes
+        run: |
+          test -f _site/index.html
+          ! grep -rl "Liquid Exception" _site/ || (echo "Liquid errors in output" && exit 1)
+      - name: Upload built site for preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-preview
+          path: _site
+          retention-days: 7

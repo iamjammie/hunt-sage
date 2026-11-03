@@ -14,6 +14,7 @@ toc_label: "Contents"
 header:
   teaser: /assets/images/posts/c2-beaconing.png
 excerpt: "C2 beaconing is how attackers maintain persistence and receive commands. It has a rhythm. If you know how to look, you can hear it."
+attack: [T1071.001, T1071.004]
 ---
 
 ## The C2 Problem
