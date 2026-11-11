@@ -31,6 +31,14 @@ Theory, 25 hunt playbooks, 6 scenario hunt packs, a 122-hypothesis library, quer
 
 ---
 
+<!-- suite-nav:start -->
+> **Part of the [iamjammie Hunt suite](https://iamjammie.github.io/FluxHunt/suite.html)** — open-source, offline-first security tooling and knowledge.
+>
+> 🧠 **Hunt-Sage** (knowledge) · 🌊 [FluxHunt](https://github.com/iamjammie/FluxHunt) (wire) · 🖥️ [HostHunt](https://github.com/iamjammie/HostHunt) (box) · 📡 [HostVigil](https://github.com/iamjammie/HostVigil) (fleet) · 🔐 [ADHuntX](https://github.com/iamjammie/ADHuntX) (directory) · 🎯 [Sentinel Matrix](https://github.com/iamjammie/Sentinel-Matrix) (detection coverage) · 🧬 [TTP NEXUS](https://github.com/iamjammie/TTP-Nexus) (frameworks) · 🛡️ [ThreatIntFlux](https://github.com/iamjammie/ThreatIntFlux) (threat intel) · 🔦 [Photonwire](https://github.com/iamjammie/PhotonWire) (air gap) · 🛰️ [SPECTRA](https://github.com/iamjammie/SPECTRA---Space-Cyber-Framework) (space)
+>
+> [Suite hub](https://iamjammie.github.io/FluxHunt/suite.html) · [All projects](https://github.com/iamjammie)
+<!-- suite-nav:end -->
+
 ## What is Hunt-Sage?
 
 A public knowledge base that takes you from **"what is threat hunting?"** to **running hunts, shipping detections and building a hunt program**, with the theory and the practical, copy-paste-ready material in one place. Everything is defensive, vendor-neutral where it can be, and written for people who have a SIEM open in the next tab.
